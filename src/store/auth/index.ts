@@ -2,17 +2,17 @@ import { Module } from 'vuex';
 import getters from './getters';
 import actions from './actions';
 import mutations from './mutations';
-import { LoginState } from './types';
+import { AuthState } from './types';
 import { RootState } from '../types';
 
-export const state: LoginState = {
+export const state: AuthState = {
   jwtToken: '',
-  user: {},
+  user: null,
 };
 
 const namespaced = true;
 
-const lecture: Module<LoginState, RootState> = {
+const lesson: Module<AuthState, RootState> = {
   namespaced,
   state,
   getters,
@@ -20,4 +20,4 @@ const lecture: Module<LoginState, RootState> = {
   mutations,
 };
 
-export default lecture;
+export default lesson;

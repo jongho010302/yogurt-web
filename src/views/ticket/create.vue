@@ -8,15 +8,15 @@
 
           <!-- 수강권 종류 -->
           <div class="text-weight-bold">수강권 종류</div>
-          <q-option-group v-model="lectureType" :options="lectureTypeOptions" :color="primaryColor" inline class="q-mb-xl" />
+          <q-option-group v-model="lessonType" :options="lessonTypeOptions" :color="primaryColor" inline class="q-mb-xl" />
 
           <!-- 수강권 명 -->
           <div class="text-weight-bold">수강권 명</div>
-          <q-input v-model="lectureTitle" dense placeholder="수강권 명을 입력하세요." :color="primaryColor" class="q-mb-xl" />
+          <q-input v-model="lessonTitle" dense placeholder="수강권 명을 입력하세요." :color="primaryColor" class="q-mb-xl" />
 
            <!-- 이용 횟수 -->
           <div class="text-weight-bold">이용 횟수</div>
-          <q-input v-model.number="lectureCount" type="number" dense placeholder="이용 횟수를 입력하세요" :color="primaryColor" class="q-mb-xl" style="max-width: 200px" />
+          <q-input v-model.number="lessonCount" type="number" dense placeholder="이용 횟수를 입력하세요" :color="primaryColor" class="q-mb-xl" style="max-width: 200px" />
 
           <!-- 수강권 사용기한 -->
           <div class="text-weight-bold">수강권 사용기한</div>
@@ -65,8 +65,8 @@ export default class TicketCard extends Vue {
     return {
       step: 1,
       // Step 1
-      lectureType: 'group',
-      lectureTypeOptions: [
+      lessonType: 'group',
+      lessonTypeOptions: [
         {
           label: '그룹형 수업 전용',
           value: 'group',
@@ -76,8 +76,8 @@ export default class TicketCard extends Vue {
           value: 'private',
         }
       ],
-      lectureTitle: '',
-      lectureCount: 30,
+      lessonTitle: '',
+      lessonCount: 30,
       availablePeriod: 30,
       availablePeriodOptions: [
         {
@@ -113,9 +113,9 @@ export default class TicketCard extends Vue {
   onSubmit(stepper: any) {
     if(this.$data.step === 3) {
       this.$store.dispatch(`${namespace}/saveTicket`, {
-        lectureType: this.$data.lectureType,
-        lectureTitle: this.$data.lectureTitle,
-        lectureCount: this.$data.lectureCount,
+        lessonType: this.$data.lessonType,
+        lessonTitle: this.$data.lessonTitle,
+        lessonCount: this.$data.lessonCount,
         availablePeriod: this.$data.availablePeriod,
         maxTrainee: this.$data.maxTrainee,
         price: this.$data.price

@@ -8,7 +8,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
-import { parseDate } from '../../assets/common';
+import { parseDate } from '../../util';
 
 const namespace = 'staff';
 
@@ -21,11 +21,11 @@ export default class TicketCard extends Vue {
       staffName: '',
       phone: '',
       introduce: '',
-      staffType: 'lecturer',
+      staffType: 'lessonr',
       staffTypeOptions: [
         {
           label: '강사',
-          value: 'lecturer',
+          value: 'lessonr',
         },
         {
           label: '매니저',

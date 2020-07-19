@@ -6,6 +6,7 @@
       <q-select
         v-model="periodFilter"
         :options="periodOptions"
+        :color="primaryColor"
         outlined
         style="width: 90px"
       />
@@ -27,8 +28,9 @@
 
       <!-- 수업 타입 필터 -->
       <q-select
-        v-model="lectureTypeFilter"
-        :options="lectureTypeOptions"
+        v-model="lessonTypeFilter"
+        :options="lessonTypeOptions"
+        :color="primaryColor"
         outlined
         style="width: 130px"
       />
@@ -36,7 +38,7 @@
 
     <!-- 테이블 -->
     <q-table
-      :data="lectureList"
+      :data="lessons"
       :columns="columns"
       color="primary"
       row-key="name"
@@ -70,26 +72,26 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 
-const namespace = 'lecture';
+const namespace = 'lesson';
 
 @Component
-export default class Lecture extends Vue {
+export default class Lesson extends Vue {
   data() {
     return {
       // Filter
-      periodFilter: '날짜',
-      periodOptions: ['날짜', '기간'],
-      lectureTypeFilter: {
-        label: '그룹',
+      periodFilter: 'date',
+      periodOptions: ['date', 'term'],
+      lessonTypeFilter: {
+        label: 'group',
         value: 'group',
       },
-      lectureTypeOptions: [
+      lessonTypeOptions: [
         {
-          label: '그룹',
+          label: 'group',
           value: 'group',
         },
         {
-          label: '프라이빗',
+          label: 'private',
           value: 'private',
         },
       ],
@@ -99,13 +101,13 @@ export default class Lecture extends Vue {
       // Calendar
       selected: [],
       columns: [
-        { name: 'lectureDate', required: true, label: '수업일시', align: 'center', field: (row: any) => row.name, sortable: true },
-        { name: 'instructor', align: 'center', label: '강사', field: 'instructor' },
-        { name: 'lectureType', align: 'center', label: '수업', field: 'lectureType' },
-        { name: 'lectureName', align: 'center', label: '수업명', field: 'lectureName' },
-        { name: 'entry', align: 'center', label: '인원', field: 'entry' },
-        { name: 'reservationTime', align: 'center', label: '예약 가능 시간', field: 'reservationTime' },
-        { name: 'cancelTime', align: 'center', label: '취소 가능 시간', field: 'cancelTime' },
+        { name: 'lessonDate', required: true, label: 'lesson date', align: 'center', field: (row: any) => row.name, sortable: true },
+        { name: 'instructor', align: 'center', label: 'instructor', field: 'instructor' },
+        { name: 'lessonType', align: 'center', label: 'lesson type', field: 'lessonType' },
+        { name: 'lessonName', align: 'center', label: 'lesso name', field: 'lessonName' },
+        { name: 'entry', align: 'center', label: 'entry', field: 'entry' },
+        { name: 'reservationTime', align: 'center', label: 'reservation time', field: 'reservationTime' },
+        { name: 'cancelTime', align: 'center', label: 'cancel time', field: 'cancelTime' },
       ],
     };
   }
@@ -114,8 +116,8 @@ export default class Lecture extends Vue {
     return this.$store.state.primaryColor;
   }
 
-  get lectureList() {
-    return this.$store.getters[`${namespace}/getLectureList`];
+  get lessons() {
+    return this.$store.getters[`${namespace}/getLessons`];
   }
 
   // Life Cycle
@@ -138,29 +140,29 @@ export default class Lecture extends Vue {
   }
 
   getSelectedString() {
-    return this.$data.selected.length === 0 ? '' : `${this.$data.selected.length} record${this.$data.selected.length > 1 ? 's' : ''} selected of ${this.lectureList.length}`;
+    return this.$data.selected.length === 0 ? '' : `${this.$data.selected.length} record${this.$data.selected.length > 1 ? 's' : ''} selected of ${this.lessons.length}`;
   }
 
-  loadLectureList() {
-    this.$store.dispatch(`${namespace}/loadLectureList`, {
-      lectureDate: this.$data.dateFilter,
-      lectureType: this.$data.lectureTypeFilter.value,
+  loadLessons() {
+    this.$store.dispatch(`${namespace}/loadLessons`, {
+      lessonDate: this.$data.dateFilter,
+      lessonType: this.$data.lessonTypeFilter.value,
     });
   }
 
   @Watch('periodFilter')
   onPeriodFilterChanged() {
-    this.loadLectureList();
+    this.loadLessons();
   }
 
-  @Watch('lectureTypeFilter')
-  onLectureTypeFilterChanged() {
-    this.loadLectureList();
+  @Watch('lessonTypeFilter')
+  onLessonTypeFilterChanged() {
+    this.loadLessons();
   }
 
   @Watch('dateFilter')
   onDateFilterChanged() {
-    this.loadLectureList();
+    this.loadLessons();
   }
 }
 </script>

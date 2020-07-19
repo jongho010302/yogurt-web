@@ -25,7 +25,3 @@ export const parseDate = (paramDate: Date, paramFormat: string): string => {
 	
 	return format;
 };
-
-export const yogurtAlert = (message: string) => {
-	alert(message);
-};

@@ -3,24 +3,24 @@
     <div class="col-2"></div>
     <div class="col-8">
       <div class="q-mb-md"></div>
-      <q-stepper v-model="step" ref="stepper" active-color="black" :done-color="primaryColor" class="no-shadow" animated>
-        <q-step :name="1" title="기본 정보 기입" icon="assignment" :done="step > 1">
+      <q-stepper v-model="step" ref="stepper" :active-color="primaryColor" :done-color="primaryColor" class="no-shadow" animated>
+        <q-step :name="1" title="Enter basic information" icon="assignment" :done="step > 1">
 
           <!-- 이름 -->
-          <div class="text-weight-bold">이름</div>
-          <q-input v-model="staffName" dense placeholder="이름을 입력해주세요." :color="primaryColor" style="width: 300px" class="q-mb-xl" />
+          <div class="text-weight-bold">name</div>
+          <q-input v-model="staffName" dense placeholder="Please enter your name" :color="primaryColor" style="width: 300px" class="q-mb-xl" />
 
           <!-- 프로필 -->
 
           <!-- 등록 일자 -->
-          <div class="text-weight-bold">등록 일자</div>
-          <q-input v-model="regDate" :color="primaryColor" mask="####-##-##" dense class="q-mb-xl" style="width: 120px; height: 50px">
+          <div class="text-weight-bold">hired date</div>
+          <q-input v-model="hiredAt" :color="primaryColor" mask="####-##-##" dense class="q-mb-xl" style="width: 120px; height: 50px">
             <template v-slot:prepend>
-              <q-icon name="event" style="cursor: pointer">
+              <q-icon name="event" :color="primaryColor" style="cursor: pointer">
                 <q-menu>
                   <q-list dense>
                     <q-item style="padding: 0 0px">
-                      <q-date v-model="regDate" :color="primaryColor" minimal />
+                      <q-date v-model="hiredAt" :color="primaryColor" minimal />
                     </q-item>
                   </q-list>
                 </q-menu>
@@ -29,74 +29,74 @@
           </q-input>
 
           <!-- 역할 -->
-          <div class="text-weight-bold">역할</div>
+          <div class="text-weight-bold">role</div>
           <q-option-group v-model="staffType" :options="staffTypeOptions" :color="primaryColor" inline class="q-mb-xl" />
 
           <!-- 자기소개 -->
-          <div class="text-weight-bold">자기소개</div>
-          <q-input v-model="introduce" dense placeholder="자기 소개를 입력하세요." :color="primaryColor" class="q-mb-xl" />
+          <div class="text-weight-bold">self-introduce</div>
+          <q-input v-model="introduce" dense placeholder="Please enter your self-introduce" :color="primaryColor" class="q-mb-xl" />
 
           <!-- 전화번호 -->
-          <div class="text-weight-bold">전화번호</div>
-          <q-input v-model="phone" dense placeholder="전화번호를 입력해주세요." :color="primaryColor" style="width: 300px" class="q-mb-xl" mask="###-####-####" />
+          <div class="text-weight-bold">phone number</div>
+          <q-input v-model="phone" dense placeholder="Please enter your phone number" :color="primaryColor" style="width: 300px" class="q-mb-xl" mask="###-####-####" />
 
         </q-step>
 
-        <q-step :name="2" title="근무시간 설정" icon="assignment" :done="step > 2">
-          <div class="text-h5 text-weight-bold q-mb-lg">근무 시간</div>
+        <q-step :name="2" title="working time" icon="assignment" :done="step > 2">
+          <div class="text-h5 text-weight-bold q-mb-lg">working time</div>
 
-          <div class="text-weight-bold q-mb-md q-mt-md">월요일</div>
+          <div class="text-weight-bold q-mb-md q-mt-md">monday</div>
           <div class="row items-center">
-            <q-input v-model="monWorkingStartTime" dense :disabled="isMonHoliday" class="q-mr-md" style="width: 100px" /> ~
-            <q-input v-model="monWorkingEndTime" dense :disabled="isMonHoliday" class="q-ml-md" style="width: 100px" />
-            <q-checkbox v-model="isMonHoliday" dense class="q-ml-md q-mr-sm" /> 휴무일
+            <q-input v-model="monWorkingStartTime" dense :disable="isMonHoliday" class="q-mr-md" style="width: 100px" /> ~
+            <q-input v-model="monWorkingEndTime" dense :disable="isMonHoliday" class="q-ml-md" style="width: 100px" />
+            <q-checkbox v-model="isMonHoliday" :color="primaryColor" dense class="q-ml-md q-mr-sm" /> off
           </div>
 
-          <div class="text-weight-bold q-mb-md q-mt-md">화요일</div>
+          <div class="text-weight-bold q-mb-md q-mt-md">tuesday</div>
           <div class="row items-center">
-            <q-input v-model="tueWorkingStartTime" dense :disabled="isTueHoliday" class="q-mr-md" style="width: 100px" /> ~
-            <q-input v-model="tueWorkingEndTime" dense :disabled="isTueHoliday" class="q-ml-md" style="width: 100px" />
-            <q-checkbox v-model="isTueHoliday" dense class="q-ml-md q-mr-sm" /> 휴무일
+            <q-input v-model="tueWorkingStartTime" dense :disable="isTueHoliday" class="q-mr-md" style="width: 100px" /> ~
+            <q-input v-model="tueWorkingEndTime" dense :disable="isTueHoliday" class="q-ml-md" style="width: 100px" />
+            <q-checkbox v-model="isTueHoliday" :color="primaryColor" dense class="q-ml-md q-mr-sm" /> off
           </div>
 
-          <div class="text-weight-bold q-mb-md q-mt-md">수요일</div>
+          <div class="text-weight-bold q-mb-md q-mt-md">wednesday</div>
           <div class="row items-center">
-            <q-input v-model="wedWorkingStartTime" dense :disabled="isWedHoliday" class="q-mr-md" style="width: 100px" /> ~
-            <q-input v-model="wedWorkingEndTime" dense :disabled="isWedHoliday" class="q-ml-md" style="width: 100px" />
-            <q-checkbox v-model="isWedHoliday" dense class="q-ml-md q-mr-sm" /> 휴무일
+            <q-input v-model="wedWorkingStartTime" dense :disable="isWedHoliday" class="q-mr-md" style="width: 100px" /> ~
+            <q-input v-model="wedWorkingEndTime" dense :disable="isWedHoliday" class="q-ml-md" style="width: 100px" />
+            <q-checkbox v-model="isWedHoliday" :color="primaryColor" dense class="q-ml-md q-mr-sm" /> off
           </div>
 
-          <div class="text-weight-bold q-mb-md q-mt-md">목요일</div>
+          <div class="text-weight-bold q-mb-md q-mt-md">thursday</div>
           <div class="row items-center">
-            <q-input v-model="thuWorkingStartTime" dense :disabled="isThuHoliday" class="q-mr-md" style="width: 100px" /> ~
-            <q-input v-model="thuWorkingEndTime" dense :disabled="isThuHoliday" class="q-ml-md" style="width: 100px" />
-            <q-checkbox v-model="isThuHoliday" dense class="q-ml-md q-mr-sm" /> 휴무일
+            <q-input v-model="thuWorkingStartTime" dense :disable="isThuHoliday" class="q-mr-md" style="width: 100px" /> ~
+            <q-input v-model="thuWorkingEndTime" dense :disable="isThuHoliday" class="q-ml-md" style="width: 100px" />
+            <q-checkbox v-model="isThuHoliday" :color="primaryColor" dense class="q-ml-md q-mr-sm" /> off
           </div>
 
-          <div class="text-weight-bold q-mb-md q-mt-md">금요일</div>
+          <div class="text-weight-bold q-mb-md q-mt-md">friday</div>
           <div class="row items-center">
-            <q-input v-model="friWorkingStartTime" dense :disabled="isFriHoliday" class="q-mr-md" style="width: 100px" /> ~
-            <q-input v-model="friWorkingEndTime" dense :disabled="isFriHoliday" class="q-ml-md" style="width: 100px" />
-            <q-checkbox v-model="isFriHoliday" dense class="q-ml-md q-mr-sm" /> 휴무일
+            <q-input v-model="friWorkingStartTime" dense :disable="isFriHoliday" class="q-mr-md" style="width: 100px" /> ~
+            <q-input v-model="friWorkingEndTime" dense :disable="isFriHoliday" class="q-ml-md" style="width: 100px" />
+            <q-checkbox v-model="isFriHoliday" :color="primaryColor" dense class="q-ml-md q-mr-sm" /> off
           </div>
 
-          <div class="text-weight-bold q-mb-md q-mt-md">토요일</div>
+          <div class="text-weight-bold q-mb-md q-mt-md">saturday</div>
           <div class="row items-center">
-            <q-input v-model="satWorkingStartTime" dense :disabled="isSatHoliday" class="q-mr-md" style="width: 100px" /> ~
-            <q-input v-model="satWorkingEndTime" dense :disabled="isSatHoliday" class="q-ml-md" style="width: 100px" />
-            <q-checkbox v-model="isSatHoliday" dense class="q-ml-md q-mr-sm" /> 휴무일
+            <q-input v-model="satWorkingStartTime" dense :disable="isSatHoliday" class="q-mr-md" style="width: 100px" /> ~
+            <q-input v-model="satWorkingEndTime" dense :disable="isSatHoliday" class="q-ml-md" style="width: 100px" />
+            <q-checkbox v-model="isSatHoliday" :color="primaryColor" dense class="q-ml-md q-mr-sm" /> off
           </div>
 
-          <div class="text-weight-bold q-mb-md q-mt-md">일요일</div>
+          <div class="text-weight-bold q-mb-md q-mt-md">sunday</div>
           <div class="row items-center">
-            <q-input v-model="sunWorkingStartTime" dense :disabled="isSunHoliday" class="q-mr-md" style="width: 100px" /> ~
-            <q-input v-model="sunWorkingEndTime" dense :disabled="isSunHoliday" class="q-ml-md" style="width: 100px" />
-            <q-checkbox v-model="isSunHoliday" dense class="q-ml-md q-mr-sm" /> 휴무일
+            <q-input v-model="sunWorkingStartTime" dense :disable="isSunHoliday" class="q-mr-md" style="width: 100px" /> ~
+            <q-input v-model="sunWorkingEndTime" dense :disable="isSunHoliday" class="q-ml-md" style="width: 100px" />
+            <q-checkbox v-model="isSunHoliday" :color="primaryColor" dense class="q-ml-md q-mr-sm" /> off
           </div>
         </q-step>
 
-        <q-step :name="3" title="등록" icon="assignment" :done="step > 3">
-          지금까지 입력한 정보를 바탕으로 등록을 진행하겠습니다.
+        <q-step :name="3" title="registration" icon="assignment" :done="step > 3">
+          We will register based on the information you have entered so far.
         </q-step>
 
         <template v-slot:navigation>
@@ -114,7 +114,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { parseDate } from '../../assets/common';
+import { parseDate } from '../../util';
 
 const namespace = 'staff';
 
@@ -127,27 +127,27 @@ export default class TicketCard extends Vue {
       staffName: '',
       phone: '',
       introduce: '',
-      staffType: 'lecturer',
+      staffType: 'instructor',
       profileUrl: '',
       staffTypeOptions: [
         {
-          label: '강사',
-          value: 'lecturer',
+          label: 'instructor',
+          value: 'instructor',
         },
         {
-          label: '매니저',
+          label: 'manager',
           value: 'manager',
         },
         {
-          label: '스튜디오 오너',
+          label: 'owner',
           value: 'owner',
         },
       ],
       showCalendar: false,
-      regDate: parseDate(new Date(), 'yyyy/mm/dd'),
+      hiredAt: parseDate(new Date(), 'yyyy/mm/dd'),
 
       // Step 2
-      isMonHoliday: false,
+      isMonHoliday: true,
       monWorkingStartTime: '09:00',
       monWorkingEndTime: '18:00',
       isTueHoliday: false,

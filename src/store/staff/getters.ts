@@ -3,8 +3,8 @@ import { StaffState } from './types';
 import { RootState } from '../types';
 
 const getters: GetterTree<StaffState, RootState> = {
-  getStaffList(state): any {
-    return state.staffList;
+  getStaffs(state): any {
+    return state.staffs;
   },
 };
 

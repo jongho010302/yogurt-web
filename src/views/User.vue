@@ -2,7 +2,7 @@
   <div>
     <q-table
       title="회원"
-      :data="userList"
+      :data="users"
       :columns="columns"
       color="primary"
       row-key="username"
@@ -34,8 +34,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 
-import { ApiResponse } from '../types';
-
 const namespace = 'user';
 
 @Component
@@ -43,7 +41,6 @@ export default class User extends Vue {
   data() {
     return {
       selected: [],
-      userList: [],
       columns: [
         { name: 'username', required: true, label: '아이디', align: 'center', field: (row: any) => row.username, sortable: true },
         { name: 'email', align: 'center', label: '이메일', field: 'email' },
@@ -58,19 +55,22 @@ export default class User extends Vue {
     return this.$store.state.primaryColor;
   }
 
+  get users() {
+    return this.$store.getters[`${namespace}/getUsers`];
+  }
+
   // Life Cycle
-  created() {
-    this.loadUserList();
+  async created() {
+    await this.getUsers();
   }
 
   // Methods
   getSelectedString() {
-    return this.$data.selected.length === 0 ? '' : `${this.$data.selected.length} record${this.$data.selected.length > 1 ? 's' : ''} selected of ${this.$data.userList.length}`;
+    return this.$data.selected.length === 0 ? '' : `${this.$data.selected.length} record${this.$data.selected.length > 1 ? 's' : ''} selected of ${this.$data.users.length}`;
   }
 
-  async loadUserList() {
-    const result: ApiResponse = await this.$store.dispatch(`${namespace}/loadUserList`);
-    this.$data.userList = result.data;
+  async getUsers() {
+    await this.$store.dispatch(`${namespace}/loadUsers`);
   }
 }
 </script>

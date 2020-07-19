@@ -2,16 +2,16 @@ import { Module } from 'vuex';
 import getters from './getters';
 import actions from './actions';
 import mutations from './mutations';
-import { UserState } from './types';
+import { StudioState } from './types';
 import { RootState } from '../types';
 
-export const state: UserState = {
-  users: [],
+export const state: StudioState = {
+  studios: null
 };
 
 const namespaced = true;
 
-const lesson: Module<UserState, RootState> = {
+const studio: Module<StudioState, RootState> = {
   namespaced,
   state,
   getters,
@@ -19,4 +19,4 @@ const lesson: Module<UserState, RootState> = {
   mutations,
 };
 
-export default lesson;
+export default studio;

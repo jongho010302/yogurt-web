@@ -1,18 +1,17 @@
 import store from '../store';
-import { yogurtAlert } from '../assets/common';
+import { yogurtAlert } from '../util';
 
 const authNamespace = 'auth';
 
 export const isAuthenticated = ({ next, router, to }: any) => {
   const user = store.getters[`${authNamespace}/getUser`];
-  const isLogined = Object.keys(user).length;
   const toPath = to.path;
 
-  if(!isLogined && toPath !== '/login') {
+  if(!user && toPath !== '/login') {
     return router.push('/login');
   }
 
-  if(toPath === '/login' && isLogined) {
+  if(toPath === '/login' && user) {
     yogurtAlert('이미 로그인 되어있습니다.');
     router.push('/');
   }

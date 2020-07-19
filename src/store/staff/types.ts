@@ -1,8 +1,13 @@
+import { Studio } from '../studio/types';
+
 export interface Staff {
+  id: number;
+  studio: Studio;
+  phone: string;
   staffTypeId: string;
   name: string;
-  phone: string;
   introduce: string;
+  profileUrl: string;
   isMonHoliday: number;
   monWorkingStartTime: string;
   monWorkingEndTime: string;
@@ -27,5 +32,5 @@ export interface Staff {
 }
 
 export interface StaffState {
-  staffList: Staff[];
+  staffs: Staff[];
 }

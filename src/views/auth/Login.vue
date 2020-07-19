@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row q-mb-lg">
-      <img src="../../assets/logo.jpg" width="40" /> <span class="text-h5 text-weight-bold">서울숲 필라테스</span>
+      <img src="@/assets/logo.jpg" width="40" /> <span class="text-h5 text-weight-bold">서울숲 필라테스</span>
     </div>
     <q-input v-model="username" placeholder="아이디" outlined dense class="q-mb-sm" style="width: 500px;" />
     <q-input v-model="password" placeholder="비밀번호" outlined dense type="password" class="q-mb-md" style="width: 500px;" @keyup.enter="handleLogin" />
@@ -15,10 +15,10 @@
 </template>
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
-import { Methods } from '../../mixins';
-
-import { ApiResponse } from '../../types';
-import { yogurtAlert } from '../../assets/common';
+import { Methods } from '@/mixins';
+import { ApiResponse } from '@/types';
+import { yogurtAlert } from '@/util';
+import { roleType } from '@/constants';
 
 const namespace = 'auth';
 
@@ -27,7 +27,7 @@ export default class Login extends mixins(Methods) {
   data() {
     return {
       username: 'thekireii',
-      password: 'Whdghwhdgh0302!',
+      password: 'Wldms0302!',
     };
   }
 
@@ -36,17 +36,23 @@ export default class Login extends mixins(Methods) {
   }
 
   async handleLogin() {
-    const result: ApiResponse = await this.$store.dispatch(`${namespace}/handleLogin`, {
+    const res: ApiResponse = await this.$store.dispatch(`${namespace}/handleLogin`, {
       username: this.$data.username,
       password: this.$data.password,
     });
-    
-    yogurtAlert(result.message);
-    
-    if(!result.success) {
+
+    if(!res.success) {
+      yogurtAlert(res.message);
       return;
     }
 
+    const userRole = res.data.user.roles[0];
+    if(!(userRole === roleType.ROLE_DEVELOPER || userRole === roleType.ROLE_OWNER || userRole === roleType.ROLE_MANAGER)) {
+      yogurtAlert('You don\'t have permission to access.');
+      return;
+    }
+    
+    yogurtAlert(res.message);
     this.$router.push({ path: '/' });
   }
 
@@ -59,7 +65,7 @@ export default class Login extends mixins(Methods) {
 
 <style scoped>
   a:hover {
-    text-decoration:underline;
+    text-decoration: underline;
     cursor: pointer;
   }
 </style>

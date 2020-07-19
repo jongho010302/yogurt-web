@@ -6,12 +6,12 @@ import { StaffState } from './types';
 import { RootState } from '../types';
 
 export const state: StaffState = {
-  staffList: [],
+  staffs: [],
 };
 
 const namespaced = true;
 
-const lecture: Module<StaffState, RootState> = {
+const lesson: Module<StaffState, RootState> = {
   namespaced,
   state,
   getters,
@@ -19,4 +19,4 @@ const lecture: Module<StaffState, RootState> = {
   mutations,
 };
 
-export default lecture;
+export default lesson;

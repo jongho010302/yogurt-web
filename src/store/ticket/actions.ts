@@ -24,10 +24,10 @@ const actions: ActionTree<TicketState, RootState> = {
       console.error(err);
     }
   },
-  async saveTicket(none, { lectureType, lectureTitle, lectureCount, availablePeriod, maxTrainee, price }) {
+  async saveTicket(none, { lessonType, lessonTitle, lessonCount, availablePeriod, maxTrainee, price }) {
     try {
       await axios.post(`${VUE_APP_MY_BACK_URL}/api/ticket/save`, {
-        lectureType, lectureTitle, lectureCount, availablePeriod, maxTrainee, price 
+        lessonType, lessonTitle, lessonCount, availablePeriod, maxTrainee, price 
       });
     } catch (err) {
       console.error(err);

@@ -1,8 +1,8 @@
 import { GetterTree } from 'vuex';
-import { LoginState } from './types';
+import { AuthState } from './types';
 import { RootState } from '../types';
 
-const getters: GetterTree<LoginState, RootState> = {
+const getters: GetterTree<AuthState, RootState> = {
   getJwtToken(state): string {
     return state.jwtToken;
   },

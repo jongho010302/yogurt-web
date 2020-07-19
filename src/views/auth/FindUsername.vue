@@ -18,7 +18,7 @@ import Component, { mixins } from 'vue-class-component';
 import { Methods } from '../../mixins';
 
 import { ApiResponse } from '../../types';
-import { yogurtAlert } from '../../assets/common';
+import { yogurtAlert } from '../../util';
 
 const namespace = 'auth';
 

@@ -1,25 +1,24 @@
 <template>
   <div>
-    <q-layout v-if="Object.keys(user).length" view="lHh Lpr lff">
+    <q-layout v-if="user" view="lHh Lpr lff">
       <!-- Header -->
       <q-header bordered>
         <q-toolbar class="text-black shadow-0 bg-white">
-          <img src="./assets/logo.jpg" width="50" class="q-mr-md q-ml-md" style="border-radius: 50%" />
-
-          <q-tabs v-model="tab" active-color="black" stretch>
-            <q-route-tab to="/schedule" label="일정" class="router-tab text-black" />
-            <q-route-tab to="/lecture" label="수업" class="router-tab text-black" />
-            <q-route-tab to="/user" label="회원" class="router-tab text-black" />
-            <q-route-tab to="/staff" label="스태프" class="router-tab text-black" />
-            <q-route-tab to="/ticket" label="수강권" class="router-tab text-black" />
-            <q-route-tab to="/setting" label="설정" class="router-tab text-black" />
-            <q-route-tab to="/sales" label="매출" class="router-tab text-black" />
+          <img src="@/assets/logo.jpg" width="50" class="q-mr-md q-ml-md" style="border-radius: 50%" />
+          <q-tabs v-model="tab" active-color="black">
+            <q-route-tab to="/schedule" label="Scheudle" />
+            <q-route-tab to="/lesson" label="Lesson" />
+            <q-route-tab to="/user" label="User" />
+            <q-route-tab to="/staff" label="Staff" />
+            <q-route-tab to="/ticket" label="Ticket" />
+            <q-route-tab to="/setting" label="Setting" />
+            <q-route-tab to="/sales" label="Sales" />
           </q-tabs>
           <q-space />
 
           <q-btn round flat>
             <q-avatar size="42px" class="q-mb-sm float-right cursor-pointer" @click="menu != menu">
-              <img src="./assets/dummy_profile_90x90.ee6508f9.png" alt="default profile" style="border-radius: 50%">
+              <img src="@/assets/dummy_profile_90x90.ee6508f9.png" alt="default profile" style="border-radius: 50%">
             </q-avatar>
             <q-menu>
               <div class="row no-wrap q-pa-md">
@@ -43,7 +42,7 @@
               </div>
             </q-menu>
           </q-btn>
-          {{ user.name }}님
+          {{ user.name }}
         </q-toolbar>
       </q-header>
       
@@ -73,7 +72,7 @@
 
     <div v-else class="fit row justify-center items-center">
       <div class="q-mb-xl">
-        <img src="./assets/login.svg" alt="login_image">
+        <img src="@/assets/login.svg" alt="login_image">
       </div>
       <router-view></router-view>
     </div>
@@ -83,11 +82,11 @@
 
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
-import Login from './views/auth/Login.vue';
-import { Methods } from './mixins';
+import { Methods } from '@/mixins';
+import Login from '@/views/auth/Login.vue';
 
-import { ApiResponse } from './types';
-import { yogurtAlert } from './assets/common';
+import { ApiResponse } from '@/types';
+import { yogurtAlert } from '@/util';
 
 const authNamespace = 'auth';
 

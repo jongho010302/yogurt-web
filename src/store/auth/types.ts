@@ -1,4 +1,6 @@
-export interface LoginState {
+import { User } from '../user/types';
+
+export interface AuthState {
   jwtToken: string;
-  user: any;
+  user: User | null;
 }

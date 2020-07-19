@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 import { RootState } from './types';
-import lecture from './lecture';
+import lesson from './lesson';
 import user from './user';
 import ticket from './ticket';
 import staff from './staff';
@@ -12,11 +12,11 @@ Vue.use(Vuex);
 const store: StoreOptions<RootState> = {
   state: {
     version: '1.0.0',
-    primaryColor: 'primary',
+    primaryColor: 'black',
     ticketStyle: 'background-image: linear-gradient(#4485F7, #A7C5F9)',
   },
   modules: {
-    lecture,
+    lesson,
     user,
     ticket,
     staff,

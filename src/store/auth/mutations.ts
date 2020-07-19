@@ -1,13 +1,13 @@
 import { MutationTree } from 'vuex';
-import { LoginState } from './types';
+import { AuthState } from './types';
 
-const mutations: MutationTree<LoginState> = {
+const mutations: MutationTree<AuthState> = {
   handleLogin(state, payload: any) {
-    state.user = payload.data.user;
-    state.jwtToken = payload.data.jwtToken;
+    state.user = payload.user;
+    state.jwtToken = payload.jwtToken;
   },
   handleLogout(state) {
-    state.user = {};
+    state.user = null;
   },
 };
 

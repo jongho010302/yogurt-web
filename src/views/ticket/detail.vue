@@ -5,7 +5,7 @@
       <div v-if="ticketDetail.ticket" class="col-6">
         <div class="q-mb-lg q-mt-lg text-caption text-white">수강권 > 수강권 상세보기</div>
 
-        <div class="q-mb-lg q-mt-lg text-h4 text-weight-bold text-white">{{ ticketDetail.ticket.lectureTitle }}</div>
+        <div class="q-mb-lg q-mt-lg text-h4 text-weight-bold text-white">{{ ticketDetail.ticket.lessonTitle }}</div>
 
         <div class="q-mb-lg q-mt-lg q-gutter-x-md">
           <q-btn color="white" class="text-blue text-weight-bold" @click="edit">수정</q-btn>

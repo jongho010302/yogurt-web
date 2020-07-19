@@ -1,19 +1,19 @@
 import { ActionTree } from 'vuex';
 import axios from 'axios';
-import { makeRequest } from '@/util/common';
-import { AuthState } from './types';
+import { StudioState } from './types';
 
 const { VUE_APP_MY_BACK_URL } = process.env;
 
-const actions: ActionTree<AuthState, any> = {
-  async handleLogin({ commit }, { username, password }) {
+const actions: ActionTree<StudioState, any> = {
+  async saveStudio({ commit, rootState }, { username, password }) {
     try {
-      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/log-in`, {
+      const response = await axios.post(`${VUE_APP_MY_BACK_URL}/auth/log-in`, {
         username, password,
       });
-
-      commit('handleLogin', res.data);
-      return res;
+      
+      const payload = response && response.data;
+      commit('handleLogin', payload);
+      return payload;
     } catch (err) {
       console.error(err);
       return err.response.data;
