@@ -1,7 +1,7 @@
 <template>
   <q-card class="my-card q-pt-md">
-
-    <q-card-section class="text-center">
+    {{ staff }}
+    <!-- <q-card-section class="text-center">
       <q-avatar size="90px" class="q-mb-sm cursor-pointer" @click="navigateToStaffDetail(staff.id)">
         <img :src="staff.profileUrl" alt="default profile">
       </q-avatar>
@@ -18,7 +18,7 @@
       <q-space></q-space>
       <q-btn color="negative" flat>삭제</q-btn>
       <q-btn :color="primaryColor" flat>수정</q-btn>
-    </q-card-actions>
+    </q-card-actions> -->
 
   </q-card>
 </template>

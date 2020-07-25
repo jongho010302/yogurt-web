@@ -42,10 +42,10 @@ export default class User extends Vue {
     return {
       selected: [],
       columns: [
-        { name: 'username', required: true, label: '아이디', align: 'center', field: (row: any) => row.username, sortable: true },
-        { name: 'email', align: 'center', label: '이메일', field: 'email' },
-        { name: 'name', align: 'center', label: '이름', field: 'name' },
-        { name: 'phone', align: 'center', label: '전화번호', field: 'phone' },
+        { name: 'username', required: true, label: 'username', align: 'center', field: (row: any) => row.username, sortable: true },
+        { name: 'email', align: 'center', label: 'email', field: 'email' },
+        { name: 'name', align: 'center', label: 'name', field: 'name' },
+        { name: 'phone', align: 'center', label: 'phone', field: 'phone' },
       ],
       gridFilter: '',
     };

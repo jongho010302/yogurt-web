@@ -132,15 +132,15 @@ export default class TicketCard extends Vue {
       staffTypeOptions: [
         {
           label: 'instructor',
-          value: 'instructor',
+          value: 'ROLE_INSTRUCTOR',
         },
         {
           label: 'manager',
-          value: 'manager',
+          value: 'ROLE_MANAGER',
         },
         {
           label: 'owner',
-          value: 'owner',
+          value: 'ROLE_OWNER',
         },
       ],
       showCalendar: false,

@@ -26,7 +26,7 @@ const namespace = 'auth';
 export default class Login extends mixins(Methods) {
   data() {
     return {
-      username: 'thekireii',
+      username: 'jongho010302',
       password: 'Wldms0302!',
     };
   }
