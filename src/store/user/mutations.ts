@@ -1,9 +1,8 @@
 import { MutationTree } from 'vuex';
 import { UserState } from './types';
 
-
 const mutations: MutationTree<UserState> = {
-  loadUsers(state, payload) {
+  getUsers(state, payload) {
     state.users = payload;
   },
 };

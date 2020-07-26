@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex';
-import axios from 'axios';
-import { makeRequest } from '@/util/common';
+import { makeRequest, yogurtAlert } from '@/util/common';
+import { roleType } from '@/constants';
 import { AuthState } from './types';
 
 const { VUE_APP_MY_BACK_URL } = process.env;
@@ -12,57 +12,101 @@ const actions: ActionTree<AuthState, any> = {
         username, password,
       });
 
+      const userRole = res.data.user.roles[0];
+      if(!(userRole === roleType.ROLE_DEVELOPER || userRole === roleType.ROLE_OWNER || userRole === roleType.ROLE_MANAGER)) {
+        yogurtAlert('You don\'t have permission to access.');
+        throw new Error('You don\'t have permission to access.');
+      }
+
       commit('handleLogin', res.data);
       return res;
     } catch (err) {
-      console.error(err);
       return err.response.data;
     }
   },
   async handleLogout({ rootState, commit }) {
     try {
-      const response = await axios.post(`${VUE_APP_MY_BACK_URL}/user/log-out`, {}, {
+      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/user/log-out`, {}, {
         headers: {
           Authorization: rootState.auth.jwtToken
         }
       });
-      const payload = response && response.data;
+
       commit('handleLogout');
-      return payload;
+      return res;
     } catch (err) {
-      console.error(err);
       return err.response.data;
     }
   },
   async handleFindPassword({ rootState }, { username, email }) {
     try {
-      const response = await axios.post(`${VUE_APP_MY_BACK_URL}/auth/find-password`, {
+      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/find-password`, {
         username, email
       }, {
         headers: {
           Authorization: rootState.auth.jwtToken
         }
       });
-      const payload = response && response.data;
-      return payload;
+      return res;
     } catch (err) {
-      console.error(err);
       return err.response.data;
     }
   },
   async handleFindUsername({ rootState }, { email }) {
     try {
-      const response = await axios.post(`${VUE_APP_MY_BACK_URL}/auth/find-username`, {
+      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/find-username`, {
         email
       }, {
         headers: {
           Authorization: rootState.auth.jwtToken
         }
       });
-      const payload = response && response.data;
-      return payload;
+      return res;
     } catch (err) {
-      console.error(err);
+      return err.response.data;
+    }
+  },
+  async handleUsernameVerify(none, { username }) {
+    try {
+      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/verification/username-duplication`, {
+        username
+      });
+
+      return res;
+    } catch (err) {
+      return err.response.data;
+    }
+  },
+  async handleEmailDuppVerify(none, { email }) {
+    try {
+      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/verification/email-duplication`, {
+        email
+      });
+
+      return res;
+    } catch (err) {
+      return err.response.data;
+    }
+  },
+  async handleEmailVerficiationCodeSend(none, { email }) {
+    try {
+      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/verification/send-email-code`, {
+        email
+      });
+
+      return res;
+    } catch (err) {
+      return err.response.data;
+    }
+  },
+  async handleEmailVerificationCodeCheck(none, { email, verificationCode }) {
+    try {
+      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/verification/check-email-code`, {
+        email, verificationCode
+      });
+
+      return res;
+    } catch (err) {
       return err.response.data;
     }
   },

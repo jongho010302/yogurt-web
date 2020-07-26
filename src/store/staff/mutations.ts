@@ -2,7 +2,7 @@ import { MutationTree } from 'vuex';
 import { StaffState, Staff } from './types';
 
 const mutations: MutationTree<StaffState> = {
-  loadStaffs(state, payload: Staff[]) {
+  getStaffs(state, payload: Staff[]) {
     state.staffs = payload;
   },
 };

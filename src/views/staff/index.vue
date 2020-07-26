@@ -46,11 +46,11 @@ export default class Staff extends Vue {
   }
 
   async created() {
-    await this.loadStaffs();
+    await this.getStaffs();
   }
 
-  async loadStaffs() {
-    const result: ApiResponse = await this.$store.dispatch(`${namespace}/loadStaffs`);
+  async getStaffs() {
+    const result: ApiResponse = await this.$store.dispatch(`${namespace}/getStaffs`);
 
     if(!result.success) {
       yogurtAlert(result.message);

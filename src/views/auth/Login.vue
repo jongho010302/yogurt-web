@@ -18,7 +18,6 @@ import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
 import { ApiResponse } from '@/types';
 import { yogurtAlert } from '@/util';
-import { roleType } from '@/constants';
 
 const namespace = 'auth';
 
@@ -31,29 +30,23 @@ export default class Login extends mixins(Methods) {
     };
   }
 
-  get user() {
-    return this.$store.getters[`${namespace}/getUser`];
-  }
-
   async handleLogin() {
-    const res: ApiResponse = await this.$store.dispatch(`${namespace}/handleLogin`, {
-      username: this.$data.username,
-      password: this.$data.password,
-    });
+    try {
+      const res: ApiResponse = await this.$store.dispatch(`${namespace}/handleLogin`, {
+        username: this.$data.username,
+        password: this.$data.password,
+      });
 
-    if(!res.success) {
+      if(!res.success) {
+        yogurtAlert(res.message);
+        return;
+      }
+      
       yogurtAlert(res.message);
-      return;
+      this.$router.push({ path: '/' });
+    } catch (err) {
+      console.error(err);
     }
-
-    const userRole = res.data.user.roles[0];
-    if(!(userRole === roleType.ROLE_DEVELOPER || userRole === roleType.ROLE_OWNER || userRole === roleType.ROLE_MANAGER)) {
-      yogurtAlert('You don\'t have permission to access.');
-      return;
-    }
-    
-    yogurtAlert(res.message);
-    this.$router.push({ path: '/' });
   }
 
   routerTo(path: string) {

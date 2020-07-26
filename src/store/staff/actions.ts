@@ -1,31 +1,28 @@
 import { ActionTree } from 'vuex';
-import axios from 'axios';
+import { makeRequest } from '@/util';
 import { StaffState } from './types';
 
 const { VUE_APP_MY_BACK_URL } = process.env;
 
 const actions: ActionTree<StaffState, any> = {
-  async loadStaffs({ rootState }) {
+  async getStaffs({ rootState }) {
     try {
-      const response = await axios.get(`${VUE_APP_MY_BACK_URL}/admin/staff`, {
-        headers: {
-          Authorization: rootState.auth.jwtToken
-        }
+      const res = await makeRequest('get', `${VUE_APP_MY_BACK_URL}/admin/staff`, null, {
+        Authorization: rootState.auth.jwtToken
       });
-      const payload: StaffState = response && response.data;
-      return payload;
+      return res;
     } catch (err) {
-      console.error(err);
       return err.response.data;
     }
   },
-  async saveStaff(none, { staffType, name, phone, introduce, isMonHoliday, monWorkingStartTime, monWorkingEndTime, isTueHoliday, tueWorkingStartTime, tueWorkingEndTime, isWedHoliday, wedWorkingStartTime, wedWorkingEndTime, isThuHoliday, thuWorkingStartTime, thuWorkingEndTime, isFriHoliday, friWorkingStartTime, friWorkingEndTime, isSatHoliday, satWorkingStartTime, satWorkingEndTime, isSunHoliday, sunWorkingStartTime, sunWorkingEndTime }) {
+  async saveStaff({ rootState }, payload) {
     try {
-      await axios.post(`${VUE_APP_MY_BACK_URL}/admin/staff`, {
-        staffType, name, phone, introduce, isMonHoliday, monWorkingStartTime, monWorkingEndTime, isTueHoliday, tueWorkingStartTime, tueWorkingEndTime, isWedHoliday, wedWorkingStartTime, wedWorkingEndTime, isThuHoliday, thuWorkingStartTime, thuWorkingEndTime, isFriHoliday, friWorkingStartTime, friWorkingEndTime, isSatHoliday, satWorkingStartTime, satWorkingEndTime, isSunHoliday, sunWorkingStartTime, sunWorkingEndTime,
+      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/admin/staff`, payload, {
+        Authorization: rootState.auth.jwtToken
       });
+      return res;
     } catch (err) {
-      console.error(err);
+      return err.response.data;
     }
   },
 };

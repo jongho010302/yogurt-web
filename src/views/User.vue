@@ -70,7 +70,7 @@ export default class User extends Vue {
   }
 
   async getUsers() {
-    await this.$store.dispatch(`${namespace}/loadUsers`);
+    await this.$store.dispatch(`${namespace}/getUsers`);
   }
 }
 </script>
