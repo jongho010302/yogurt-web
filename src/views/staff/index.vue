@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-lg">
-    <div class="text-h5 text-weight-bolder q-mb-sm">Manage staff</div>
+    <div class="text-h5 text-weight-bolder q-mb-sm">Manage Staff</div>
 
     <div class="q-mb-xl text-weight-bold">Total: {{ staffs.length }}</div>
 
@@ -8,7 +8,7 @@
       <div v-if="!staffs.length">
         Please add staff.
       </div>
-      <div class="col-3" v-for="(staff, index) in staffs" :key="`xl-${index}`">
+      <div class="col-2" v-for="(staff, index) in staffs" :key="`xl-${index}`">
         <StaffCard :staff="staff" />
       </div>
     </div>
@@ -24,9 +24,6 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import StaffCard from '../../components/Staff/StaffCard.vue';
 
-import { ApiResponse } from '../../types';
-import { yogurtAlert } from '../../util';
-
 const namespace = 'staff';
 
 @Component({
@@ -35,14 +32,12 @@ const namespace = 'staff';
   },
 })
 export default class Staff extends Vue {
-  data() {
-    return {
-      staffs: [],
-    };
-  }
-
   get primaryColor() {
     return this.$store.state.primaryColor;
+  }
+
+  get staffs() {
+    return this.$store.getters[`${namespace}/getStaffs`];
   }
 
   async created() {
@@ -50,14 +45,7 @@ export default class Staff extends Vue {
   }
 
   async getStaffs() {
-    const result: ApiResponse = await this.$store.dispatch(`${namespace}/getStaffs`);
-
-    if(!result.success) {
-      yogurtAlert(result.message);
-      return;
-    }
-
-    this.$data.staffs = result.data;
+    await this.$store.dispatch(`${namespace}/getStaffs`);
   }
 }
 </script>

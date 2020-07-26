@@ -20,7 +20,7 @@
         />
       </template>
       <template v-slot:top-left>
-        <q-input borderless dense debounce="300" v-model="gridFilter" placeholder="Search" class="q-mr-md">
+        <q-input v-model="gridFilter" :color="primaryColor" placeholder="Search" debounce="300" dense class="q-mr-md">
           <template v-slot:append>
             <q-icon name="search" :color="primaryColor" />
           </template>

@@ -436,10 +436,10 @@ export default class StaffCreate extends Vue {
     return true;
   }
 
-  handleSubmit(stepper: any) {
-    // if (!this.handleBasicValidation()) {
-    //   return;
-    // }
+  async handleSubmit(stepper: any) {
+    if (!this.handleBasicValidation()) {
+      return;
+    }
 
     if (this.$data.step === 2) {
       if (!this.hadleWorkingTimeValidation()) {
@@ -448,7 +448,7 @@ export default class StaffCreate extends Vue {
     }
 
     if(this.$data.step === 3) {
-      this.$store.dispatch(`${namespace}/saveStaff`, {
+      const res: ApiResponse = await this.$store.dispatch(`${namespace}/saveStaff`, {
         studioId: this.user.studio.id,
         name: this.$data.name,
         username: this.$data.username,
@@ -483,6 +483,12 @@ export default class StaffCreate extends Vue {
         sunWorkingEndTime: this.$data.sunWorkingEndTime,
       });
       this.$router.push({ path: '/staff' });
+
+      if (!res.success) {
+        return;
+      }
+
+      yogurtAlert(res.message);
     }
     stepper.next();
   }

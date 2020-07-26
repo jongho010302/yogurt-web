@@ -1,9 +1,9 @@
 import { GetterTree } from 'vuex';
-import { UserState } from './types';
+import { UserState, User } from './types';
 import { RootState } from '../types';
 
 const getters: GetterTree<UserState, RootState> = {
-  getUsers(state): any {
+  getUsers(state): User[] {
     return state.users;
   }
 };

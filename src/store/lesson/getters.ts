@@ -13,7 +13,7 @@ const getters: GetterTree<LessonState, RootState> = {
       
       lessons.push({
         name: `${lesson.lessonDate} ${lessonDay} ${lesson.startTime}~${lesson.endTime}`,
-        instructor: lesson.staff.name,
+        instructor: lesson.staff.user.name,
         lessonType: lesson.lessonType.name,
         lessonName: lesson.lessonName,
         entry: `${lesson.attendedCount}/${lesson.totalCount}`,

@@ -1,32 +1,30 @@
 import { Studio } from '../studio/types';
+import { User } from '@/store/user/types';
 
 export interface Staff {
   id: number;
-  studio: Studio;
-  phone: string;
-  staffTypeId: string;
-  name: string;
+  user: User
+  hiredAt: string;
   introduce: string;
-  profileUrl: string;
-  isMonHoliday: number;
+  isMonDayOff: boolean;
   monWorkingStartTime: string;
   monWorkingEndTime: string;
-  isTueHoliday: number;
+  isTueDayOff: boolean;
   tueWorkingStartTime: string;
   tueWorkingEndTime: string;
-  isWedHoliday: number;
+  isWedDayOff: boolean;
   wedWorkingStartTime: string;
   wedWorkingEndTime: string;
-  isThuHoliday: number;
+  isThuDayOff: boolean;
   thuWorkingStartTime: string;
   thuWorkingEndTime: string;
-  isFriHoliday: number;
+  isFriDayOff: boolean;
   friWorkingStartTime: string;
   friWorkingEndTime: string;
-  isSatHoliday: number;
+  isSatDayOff: boolean;
   satWorkingStartTime: string;
   satWorkingEndTime: string;
-  isSunHoliday: number;
+  isSunDayOff: boolean;
   sunWorkingStartTime: string;
   sunWorkingEndTime: string;
 }

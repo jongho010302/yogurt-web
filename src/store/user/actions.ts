@@ -10,7 +10,7 @@ const actions: ActionTree<UserState, any> = {
       const res = await makeRequest('get', `${VUE_APP_MY_BACK_URL}/admin/user`, null, {
         Authorization: rootState.auth.jwtToken
       });
-      commit('getUsers', res.data);
+      commit('saveUsers', res.data);
     } catch (err) {
       console.error(err);
     }

@@ -2,8 +2,8 @@ import { Studio } from '../studio/types';
 import { Staff } from '../staff/types';
 
 export interface User {
+  id: number;
   studio: Studio;
-  staff: Staff;
   username: string;
   password: string;
   email: string;

@@ -18,7 +18,7 @@
 
           <q-btn round flat>
             <q-avatar size="42px" class="q-mb-sm float-right cursor-pointer" @click="menu != menu">
-              <img src="@/assets/dummy_profile_90x90.ee6508f9.png" alt="default profile" style="border-radius: 50%">
+              <img :src="user.profileUrl" alt="default profile" style="border-radius: 50%">
             </q-avatar>
             <q-menu>
               <div class="row no-wrap q-pa-md">
@@ -32,7 +32,7 @@
 
                 <div class="column items-center">
                   <q-avatar size="72px">
-                    <img src="https://cdn.quasar.dev/img/avatar4.jpg">
+                    <img :src="user.profileUrl">
                   </q-avatar>
 
                   <div class="text-subtitle1 q-mt-md q-mb-xs">{{ user.name }}</div>
@@ -84,7 +84,6 @@
 import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
 import Login from '@/views/auth/Login.vue';
-
 import { ApiResponse } from '@/types';
 import { yogurtAlert } from '@/util';
 

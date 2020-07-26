@@ -27,9 +27,7 @@ const actions: ActionTree<AuthState, any> = {
   async handleLogout({ rootState, commit }) {
     try {
       const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/user/log-out`, {}, {
-        headers: {
-          Authorization: rootState.auth.jwtToken
-        }
+        Authorization: rootState.auth.jwtToken
       });
 
       commit('handleLogout');
@@ -40,12 +38,8 @@ const actions: ActionTree<AuthState, any> = {
   },
   async handleFindPassword({ rootState }, { username, email }) {
     try {
-      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/find-password`, {
-        username, email
-      }, {
-        headers: {
-          Authorization: rootState.auth.jwtToken
-        }
+      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/find-password`, { username, email }, {
+        Authorization: rootState.auth.jwtToken
       });
       return res;
     } catch (err) {
@@ -54,12 +48,8 @@ const actions: ActionTree<AuthState, any> = {
   },
   async handleFindUsername({ rootState }, { email }) {
     try {
-      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/find-username`, {
-        email
-      }, {
-        headers: {
-          Authorization: rootState.auth.jwtToken
-        }
+      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/find-username`, { email }, {
+        Authorization: rootState.auth.jwtToken
       });
       return res;
     } catch (err) {
