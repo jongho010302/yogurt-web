@@ -30,6 +30,7 @@ module.exports = {
     "@typescript-eslint/camelcase": "off",
     "comma-dangle": "off",
     "import/prefer-default-export": "off",
-    "no-alert": "off"
+    "no-alert": "off",
+    "prefer-destructuring": "off"
   },
 };

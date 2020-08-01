@@ -8,7 +8,7 @@
       <div v-if="!staffs.length">
         Please add staff.
       </div>
-      <div class="col-2" v-for="(staff, index) in staffs" :key="`xl-${index}`">
+      <div class="col-3" v-for="(staff, index) in staffs" :key="`xl-${index}`">
         <StaffCard :staff="staff" />
       </div>
     </div>

@@ -297,12 +297,10 @@ export default class StaffCreate extends Vue {
   async handleUsernameVerifyClick() {
     const res: ApiResponse = await this.$store.dispatch(`${authNamespace}/handleUsernameVerify`, { username: this.$data.username });
     
-    if (res.success) {
+    if (!res.success) {
       this.$data.usernameVerified = true;
-    } else {
-      this.$data.usernameVerified = false;
+      return;
     }
-
     yogurtAlert(res.message);
   }
 

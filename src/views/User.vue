@@ -46,6 +46,7 @@ export default class User extends Vue {
         { name: 'email', align: 'center', label: 'email', field: 'email' },
         { name: 'name', align: 'center', label: 'name', field: 'name' },
         { name: 'phone', align: 'center', label: 'phone', field: 'phone' },
+        { name: 'role', align: 'center', label: 'role', field: 'role' },
       ],
       gridFilter: '',
     };
@@ -56,6 +57,7 @@ export default class User extends Vue {
   }
 
   get users() {
+    console.log(this.$store.getters[`${namespace}/getUsers`]);
     return this.$store.getters[`${namespace}/getUsers`];
   }
 
@@ -66,7 +68,7 @@ export default class User extends Vue {
 
   // Methods
   getSelectedString() {
-    return this.$data.selected.length === 0 ? '' : `${this.$data.selected.length} record${this.$data.selected.length > 1 ? 's' : ''} selected of ${this.$data.users.length}`;
+    return this.$data.selected.length === 0 ? '' : `${this.$data.selected.length} record${this.$data.selected.length > 1 ? 's' : ''} selected of ${this.users.length}`;
   }
 
   async getUsers() {

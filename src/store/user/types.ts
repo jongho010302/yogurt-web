@@ -12,9 +12,18 @@ export interface User {
   birth: string;
   phone: string;
   profileUrl: string;
-  roles: 'ROLE_DEVELOPER' | 'ROLE_OWNER' | 'ROLE_MANAGER' | 'ROLE_STAFF' | 'ROLE_STUDENT'
+  roles: Role[];
+  role: Role;
   createdAt: string;
   updatedAt: string;
+}
+
+export enum Role {
+  'ROLE_DEVELOPER'='ROLE_DEVELOPER',
+  'ROLE_OWNER' = 'ROLE_OWNER',
+  'ROLE_MANAGER' = 'ROLE_MANAGER',
+  'ROLE_STAFF' = 'ROLE_STAFF',
+  'ROLE_STUDENT' = 'ROLE_STUDENT'
 }
 
 export interface UserState {
