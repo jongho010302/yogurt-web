@@ -1,23 +1,28 @@
 <template>
   <q-card class="my-card q-pt-md">
     <q-card-section class="text-center">
-      <q-avatar size="90px" class="q-mb-sm cursor-pointer" @click="navigateToStaffDetail(staff.id)">
-        <img :src="staff.user.profileUrl" alt="default profile">
+      <q-avatar
+        size="90px"
+        class="q-mb-sm cursor-pointer"
+        @click="navigateToStaffDetail(staff.id)"
+      >
+        <img :src="staff.user.profileUrl" alt="default profile" />
       </q-avatar>
       <div class="q-mb-sm text-h6">{{ staff.user.name }}</div>
       <div class="q-mb-md">{{ staff.user.phone }}</div>
       <div class="q-mb-lg">아이디: jongjjang03</div>
-      <q-btn size="sm" :color="primaryColor" @click="resetPassword">비밀번호 재설정</q-btn>
+      <q-btn outline size="sm" :color="primaryColor" @click="resetPassword"
+        >비밀번호 재설정</q-btn
+      >
     </q-card-section>
 
     <q-separator />
 
     <q-card-actions>
       <q-space></q-space>
-      <q-btn color="negative" @click="handleDeleteStaff">삭제</q-btn>
-      <q-btn color="primary">수정</q-btn>
+      <q-btn color="red" size="sm" @click="handleDeleteStaff">삭제</q-btn>
+      <q-btn color="light-blue" size="sm">수정</q-btn>
     </q-card-actions>
-
   </q-card>
 </template>
 
@@ -33,8 +38,8 @@ const namespace = 'staff';
 
 @Component
 export default class TicketCard extends Vue {
-  @Prop() staff!: StaffType
-  
+  @Prop() staff!: StaffType;
+
   get primaryColor() {
     return this.$store.state.primaryColor;
   }
@@ -44,9 +49,12 @@ export default class TicketCard extends Vue {
   }
 
   async resetPassword() {
-    const res: ApiResponse = await this.$store.dispatch(`${namespace}/resetPassword`, {
-      userId: this.staff.user.id
-    });
+    const res: ApiResponse = await this.$store.dispatch(
+      `${namespace}/resetPassword`,
+      {
+        userId: this.staff.user.id,
+      },
+    );
 
     yogurtAlert(res.message);
   }
@@ -55,11 +63,14 @@ export default class TicketCard extends Vue {
     if (!yogurtConfirm('Are you sure want delete staff?')) {
       return;
     }
-    
-    const res: ApiResponse = await this.$store.dispatch(`${namespace}/deleteStaff`, {
-      staffId: this.staff.id,
-      userId: this.staff.user.id
-    });
+
+    const res: ApiResponse = await this.$store.dispatch(
+      `${namespace}/deleteStaff`,
+      {
+        staffId: this.staff.id,
+        userId: this.staff.user.id,
+      },
+    );
 
     if (!res.success) {
       return;

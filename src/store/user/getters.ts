@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex';
-import { UserState, User, Role } from './types';
+import { UserState, User } from './types';
 import { RootState } from '../types';
 
 const getters: GetterTree<UserState, RootState> = {
@@ -13,7 +13,7 @@ const getters: GetterTree<UserState, RootState> = {
     //   });
     // }
     return state.users;
-  }
+  },
 };
 
 export default getters;

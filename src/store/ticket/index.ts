@@ -6,8 +6,8 @@ import { TicketState } from './types';
 import { RootState } from '../types';
 
 export const state: TicketState = {
-  ticketList: [],
-  ticketDetail: {},
+  tickets: [],
+  ticket: null,
 };
 
 const namespaced = true;

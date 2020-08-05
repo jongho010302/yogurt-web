@@ -2,34 +2,35 @@
   <div>
     <div class="row" :style="ticketStyle">
       <div class="col-2"></div>
-      <div v-if="ticketDetail.ticket" class="col-6">
+      <div v-if="ticket" class="col-6">
         <div class="q-mb-lg q-mt-lg text-caption text-white">수강권 > 수강권 상세보기</div>
 
-        <div class="q-mb-lg q-mt-lg text-h4 text-weight-bold text-white">{{ ticketDetail.ticket.lessonTitle }}</div>
+        <div class="q-mb-lg q-mt-lg text-h4 text-weight-bold text-white">{{ ticket.title }}</div>
 
         <div class="q-mb-lg q-mt-lg q-gutter-x-md">
-          <q-btn color="white" class="text-blue text-weight-bold" @click="edit">수정</q-btn>
-          <q-btn color="white" class="text-blue text-weight-bold">판매 정지</q-btn>
-          <q-btn color="white" class="text-blue text-weight-bold">수강권 일괄 연장</q-btn>
+          <q-btn color="white" size="sm" class="text-blue text-weight-bold" @click="edit">수정</q-btn>
+          <q-btn color="white" size="sm" class="text-blue text-weight-bold">판매 정지</q-btn>
+          <q-btn color="white" size="sm" class="text-blue text-weight-bold">수강권 일괄 연장</q-btn>
         </div>
 
-        <div class="q-mb-lg q-mt-lg text-h6 text-white">판매가 {{ numberCommaFortmat(ticketDetail.ticket.price) }}원</div>
+        <div class="q-mb-lg q-mt-lg text-h6 text-white">판매가 {{ numberCommaFortmat(ticket.price) }}원</div>
       </div>
       <div class="col-2"></div>
     </div>
-      
+
     <div class="row">
       <div class="col-2"></div>
       <div class="col-6">
         <div style="max-width: 600px">
           <q-tabs
             v-model="tab"
+            active-color="primary"
             align="justify"
             narrow-indicator
             class="q-mb-lg"
           >
-            <q-tab class="text-primary" name="issuedTicket" label="발급된 수강권" />
-            <q-tab class="text-primary" name="availableClass" label="이 수강권으로 수강 가능한 클래스" />
+            <q-tab name="issuedTicket" label="발급된 수강권" />
+            <q-tab name="availableClass" label="이 수강권으로 수강 가능한 클래스" />
           </q-tabs>
 
           <div class="q-gutter-y-sm">
@@ -41,7 +42,7 @@
             >
               <q-tab-panel name="issuedTicket">
                 <q-table
-                  :data="ticketDetail"
+                  :data="ticket"
                   :columns="columns"
                   color="primary"
                   row-key="name"
@@ -58,7 +59,7 @@
       </div>
       <div class="col-2"></div>
     </div>
-    {{ ticketDetail }}
+    {{ ticket }}
   </div>
 </template>
 
@@ -91,16 +92,16 @@ export default class Ticket extends Vue {
     return this.$store.state.ticketStyle;
   }
 
-  get ticketDetail() {
-    return this.$store.getters[`${namespace}/getTicketDetail`];
+  get ticket(): Ticket {
+    return this.$store.getters[`${namespace}/getTicket`];
   }
 
   created() {
-    this.loadTicketDetail(this.$route.query.id.toString());
+    this.getTicket(this.$route.query.id.toString());
   }
 
-  loadTicketDetail(id: string) {
-    this.$store.dispatch(`${namespace}/loadTicketDetail`, {
+  getTicket(id: string) {
+    this.$store.dispatch(`${namespace}/getTicket`, {
       id,
     });
   }

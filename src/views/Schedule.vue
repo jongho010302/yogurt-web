@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div class="q-pa-lg">
+    <PageTitle :text="getTitle()" class="q-mb-xl" />
+
     <vue-cal
       :time-from="8 * 60"
       :time-to="20 * 60"
@@ -15,6 +17,8 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import VueCal from 'vue-cal';
+import PageTitle from '@/components/base/PageTitle.vue';
+import { parseDate, getWeek } from '@/util/date';
 import 'vue-cal/dist/i18n/zh-cn';
 import 'vue-cal/dist/vuecal.css';
 
@@ -24,6 +28,7 @@ const dailyHours = { from: 9 * 60, to: 18 * 60, class: 'business-hours' };
 @Component({
   components: {
     VueCal,
+    PageTitle
   },
 })
 export default class Schedule extends Vue {
@@ -59,12 +64,11 @@ export default class Schedule extends Vue {
     };
   }
 
-  // Life Cycle
-  created() {
-    console.log('created');
-  }
-
   // Methods
+  getTitle() {
+    const currentDate = new Date();
+    return `${parseDate(currentDate, 'yyyy월 mm월 dd일')} (${getWeek(currentDate)})`;
+  }
 }
 </script>
 

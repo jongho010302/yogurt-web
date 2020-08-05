@@ -12,15 +12,34 @@ Vue.use(Vuex);
 const store: StoreOptions<RootState> = {
   state: {
     version: '1.0.0',
-    primaryColor: 'black',
+    primaryColor: 'primary',
     ticketStyle: 'background-image: linear-gradient(#4485F7, #A7C5F9)',
+    // auth: {
+    //   jwtToken: null,
+    //   user: null
+    // },
+    // lesson: {
+    //   lessons:
+    // },
+    // staff: {
+    //
+    // },
+    // studio: {
+    //
+    // },
+    // ticket: {
+    //
+    // },
+    // user: {
+    //
+    // }
   },
   modules: {
     lesson,
     user,
     ticket,
     staff,
-    auth
+    auth,
   },
 };
 

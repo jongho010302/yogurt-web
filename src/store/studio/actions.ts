@@ -1,16 +1,17 @@
 import { ActionTree } from 'vuex';
-import axios from 'axios';
 import { StudioState } from './types';
+import {makeRequest} from "@/util";
+import {RootState} from "@/store/types";
 
 const { VUE_APP_MY_BACK_URL } = process.env;
 
 const actions: ActionTree<StudioState, any> = {
   async saveStudio({ commit, rootState }, { username, password }) {
     try {
-      const response = await axios.post(`${VUE_APP_MY_BACK_URL}/auth/log-in`, {
+      const response = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/log-in`, {
         username, password,
       });
-      
+
       const payload = response && response.data;
       commit('handleLogin', payload);
       return payload;
@@ -21,7 +22,7 @@ const actions: ActionTree<StudioState, any> = {
   },
   async handleLogout({ rootState, commit }) {
     try {
-      const response = await axios.post(`${VUE_APP_MY_BACK_URL}/user/log-out`, {}, {
+      const response = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/user/log-out`, {}, {
         headers: {
           Authorization: rootState.auth.jwtToken
         }
@@ -36,7 +37,7 @@ const actions: ActionTree<StudioState, any> = {
   },
   async handleFindPassword({ rootState }, { username, email }) {
     try {
-      const response = await axios.post(`${VUE_APP_MY_BACK_URL}/auth/find-password`, {
+      const response = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/find-password`, {
         username, email
       }, {
         headers: {
@@ -52,7 +53,7 @@ const actions: ActionTree<StudioState, any> = {
   },
   async handleFindUsername({ rootState }, { email }) {
     try {
-      const response = await axios.post(`${VUE_APP_MY_BACK_URL}/auth/find-username`, {
+      const response = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/find-username`, {
         email
       }, {
         headers: {

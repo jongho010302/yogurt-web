@@ -3,22 +3,42 @@
     <q-layout v-if="user" view="lHh Lpr lff">
       <!-- Header -->
       <q-header bordered>
-        <q-toolbar class="text-black shadow-0 bg-white">
-          <img src="@/assets/logo.jpg" width="50" class="q-mr-md q-ml-md" style="border-radius: 50%" />
-          <q-tabs v-model="tab" active-color="black">
-            <q-route-tab to="/schedule" label="Scheudle" />
-            <q-route-tab to="/lesson" label="Lesson" />
-            <q-route-tab to="/user" label="User" />
-            <q-route-tab to="/staff" label="Staff" />
-            <q-route-tab to="/ticket" label="Ticket" />
-            <q-route-tab to="/setting" label="Setting" />
-            <q-route-tab to="/sales" label="Sales" />
+        <q-toolbar class="text-dark shadow-1 bg-white">
+          <img
+            src="@/assets/logo.jpg"
+            width="50"
+            class="q-mr-md q-ml-md"
+            style="border-radius: 50%;"
+          />
+          <q-tabs
+            v-model="tab"
+            active-color="primary"
+            outside-arrows
+            mobile-arrows
+            :stretch="false"
+            shrink
+          >
+            <q-route-tab to="/schedule" label="일정" style="width: 70px;" />
+            <q-route-tab to="/lesson" label="수업" style="width: 70px;" />
+            <q-route-tab to="/user" label="회원" style="width: 70px;" />
+            <q-route-tab to="/staff" label="강사" style="width: 70px;" />
+            <q-route-tab to="/ticket" label="수강권" style="width: 70px;" />
+            <q-route-tab to="/setting" label="설정" style="width: 70px;" />
+            <q-route-tab to="/sales" label="매출" style="width: 70px;" />
           </q-tabs>
           <q-space />
 
           <q-btn round flat>
-            <q-avatar size="42px" class="q-mb-sm float-right cursor-pointer" @click="menu != menu">
-              <img :src="user.profileUrl" alt="default profile" style="border-radius: 50%">
+            <q-avatar
+              size="42px"
+              class="q-mb-sm float-right cursor-pointer"
+              @click="menu != menu"
+            >
+              <img
+                :src="user.profileUrl"
+                alt="default profile"
+                style="border-radius: 50%;"
+              />
             </q-avatar>
             <q-menu>
               <div class="row no-wrap q-pa-md">
@@ -32,12 +52,21 @@
 
                 <div class="column items-center">
                   <q-avatar size="72px">
-                    <img :src="user.profileUrl">
+                    <img :src="user.profileUrl" />
                   </q-avatar>
 
-                  <div class="text-subtitle1 q-mt-md q-mb-xs">{{ user.name }}</div>
+                  <div class="text-subtitle1 q-mt-md q-mb-xs">
+                    {{ user.name }}
+                  </div>
 
-                  <q-btn color="primary" label="Logout" push size="sm" v-close-popup @click="handleLogout" />
+                  <q-btn
+                    color="primary"
+                    label="Logout"
+                    push
+                    size="sm"
+                    v-close-popup
+                    @click="handleLogout"
+                  />
                 </div>
               </div>
             </q-menu>
@@ -45,14 +74,9 @@
           {{ user.name }}
         </q-toolbar>
       </q-header>
-      
+
       <!-- Left Sider -->
-      <q-drawer
-        v-model="drawer"
-        show-if-above
-        :width="60"
-        bordered
-      >
+      <q-drawer v-model="drawer" show-if-above :width="60" bordered>
         <q-list padding>
           <q-item clickable v-ripple>
             <q-item-section avatar>
@@ -64,7 +88,7 @@
 
       <!-- Content -->
       <q-page-container>
-        <q-page padding>
+        <q-page>
           <router-view></router-view>
         </q-page>
       </q-page-container>
@@ -72,12 +96,11 @@
 
     <div v-else class="fit row justify-center items-center">
       <div class="q-mb-xl">
-        <img src="@/assets/login.svg" alt="login_image">
+        <img src="@/assets/login.svg" alt="login_image" />
       </div>
       <router-view></router-view>
     </div>
   </div>
-
 </template>
 
 <script lang="ts">
@@ -100,10 +123,10 @@ export default class App extends mixins(Methods) {
       tab: 0,
       drawer: true,
       menu: false,
-      
-      // Menu 
+
+      // Menu
       mobileData: false,
-      bluetooth: true
+      bluetooth: true,
     };
   }
 
@@ -116,9 +139,11 @@ export default class App extends mixins(Methods) {
   }
 
   async handleLogout() {
-    const result: ApiResponse = await this.$store.dispatch(`${authNamespace}/handleLogout`);
+    const result: ApiResponse = await this.$store.dispatch(
+      `${authNamespace}/handleLogout`,
+    );
 
-    if(!result.success) {
+    if (!result.success) {
       yogurtAlert(result.message);
       return;
     }
@@ -130,7 +155,13 @@ export default class App extends mixins(Methods) {
 </script>
 
 <style scoped>
-  .q-layout__section--marginal {
-    background-color: aliceblue
-  }
+.q-layout__section--marginal {
+  background-color: aliceblue;
+}
+</style>
+
+<style>
+.q-tab__content {
+  min-width: 70px !important;
+}
 </style>

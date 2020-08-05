@@ -3,11 +3,11 @@ import { TicketState } from './types';
 import { RootState } from '../types';
 
 const getters: GetterTree<TicketState, RootState> = {
-  getTicketList(state): any {
-    return state.ticketList;
+  getTickets(state): any {
+    return state.tickets;
   },
-  getTicketDetail(state): any {
-    return state.ticketDetail;
+  getTicket(state): any {
+    return state.ticket;
   },
 };
 
