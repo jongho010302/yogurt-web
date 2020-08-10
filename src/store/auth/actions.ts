@@ -1,4 +1,6 @@
 import { ActionTree } from 'vuex';
+import { Notify } from 'quasar';
+import router from '@/router';
 import { makeRequest, yogurtAlert } from '@/util/common';
 import { roleType } from '@/constants';
 import { AuthState } from './types';
@@ -6,94 +8,154 @@ import { AuthState } from './types';
 const { VUE_APP_MY_BACK_URL } = process.env;
 
 const actions: ActionTree<AuthState, any> = {
-  async handleLogin({ commit }, { username, password }) {
-    try {
-      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/log-in`, {
-        username, password,
-      });
+  async logIn({ commit }, { username, password }) {
+    const res = await makeRequest(
+      'post',
+      `${VUE_APP_MY_BACK_URL}/auth/log-in`,
+      {
+        username,
+        password,
+      },
+    );
 
-      const userRole = res.data.user.roles[0];
-      if(!(userRole === roleType.ROLE_DEVELOPER || userRole === roleType.ROLE_OWNER || userRole === roleType.ROLE_MANAGER)) {
-        yogurtAlert('You don\'t have permission to access.');
-        throw new Error('You don\'t have permission to access.');
-      }
+    if (!res.success) {
+      Notify.create({
+        message: res.message,
+        position: 'top-right',
+        color: 'negative',
+        icon: 'warning',
+      });
+      return;
+    }
 
-      commit('handleLogin', res.data);
-      return res;
-    } catch (err) {
-      return err.response.data;
-    }
-  },
-  async handleLogout({ rootState, commit }) {
-    try {
-      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/user/log-out`, {}, {
-        Authorization: rootState.auth.jwtToken
+    const userRole = res.data.user.roles[0];
+    if (
+      !(
+        userRole === roleType.ROLE_DEVELOPER ||
+        userRole === roleType.ROLE_OWNER ||
+        userRole === roleType.ROLE_MANAGER
+      )
+    ) {
+      Notify.create({
+        message: "You don't have permission to access.",
+        position: 'top-right',
+        color: 'negative',
+        icon: 'warning',
       });
+    }
 
-      commit('handleLogout');
+    commit('saveUser', res.data.user);
+    commit('saveJwtToken', res.data.jwtToken);
+    await router.push('/');
+  },
+  async logOut({ rootState, commit }) {
+    try {
+      const res = await makeRequest(
+        'post',
+        `${VUE_APP_MY_BACK_URL}/user/log-out`,
+        {},
+        {
+          Authorization: rootState.auth.jwtToken,
+        },
+      );
+
+      commit('saveUser', null);
       return res;
     } catch (err) {
       return err.response.data;
     }
   },
-  async handleFindPassword({ rootState }, { username, email }) {
+  async findMaskingUsername(none, { name }) {
     try {
-      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/find-password`, { username, email }, {
-        Authorization: rootState.auth.jwtToken
-      });
+      const res = await makeRequest(
+        'get',
+        `${VUE_APP_MY_BACK_URL}/auth/find/masking-username?name=${name}`,
+      );
       return res;
     } catch (err) {
       return err.response.data;
     }
   },
-  async handleFindUsername({ rootState }, { email }) {
+  async findUsername(none, { email }) {
     try {
-      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/find-username`, { email }, {
-        Authorization: rootState.auth.jwtToken
-      });
+      const res = await makeRequest(
+        'get',
+        `${VUE_APP_MY_BACK_URL}/auth/find/username?email=${email}`,
+      );
       return res;
     } catch (err) {
       return err.response.data;
     }
   },
-  async handleUsernameVerify(none, { username }) {
+  async sendFindPasswordCode(none, { email }) {
     try {
-      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/verification/username-duplication`, {
-        username
-      });
+      const res = await makeRequest(
+        'get',
+        `${VUE_APP_MY_BACK_URL}/auth/find/password/verify?email=${email}`,
+      );
+      return res;
+    } catch (err) {
+      return err.response.data;
+    }
+  },
+  async verifyFindPasswordCode(none, { username, email }) {
+    try {
+      const res = await makeRequest(
+        'post',
+        `${VUE_APP_MY_BACK_URL}/auth/find/password/verify`,
+        { username, email },
+      );
+      return res;
+    } catch (err) {
+      return err.response.data;
+    }
+  },
+  async findPassword(none, { email, password, verifyCode }) {
+    try {
+      const res = await makeRequest(
+        'put',
+        `${VUE_APP_MY_BACK_URL}/auth/find/password`,
+        { email, password, verifyCode },
+      );
+      return res;
+    } catch (err) {
+      return err.response.data;
+    }
+  },
+  async verifyUsername(none, { username }) {
+    try {
+      const res = await makeRequest(
+        'get',
+        `${VUE_APP_MY_BACK_URL}/auth/sign-up/verify/username?username=${username}`,
+      );
 
       return res;
     } catch (err) {
       return err.response.data;
     }
   },
-  async handleEmailDuppVerify(none, { email }) {
+  async sendSignUpCode(none, { email }) {
     try {
-      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/verification/email-duplication`, {
-        email
-      });
+      const res = await makeRequest(
+        'post',
+        `${VUE_APP_MY_BACK_URL}/auth/sign-up/verify/email?email=${email}`,
+      );
 
       return res;
     } catch (err) {
       return err.response.data;
     }
   },
-  async handleEmailVerficiationCodeSend(none, { email }) {
+  async verifySignUpCode(none, { email, verifyCode }) {
     try {
-      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/verification/send-email-code`, {
-        email
-      });
-
-      return res;
-    } catch (err) {
-      return err.response.data;
-    }
-  },
-  async handleEmailVerificationCodeCheck(none, { email, verificationCode }) {
-    try {
-      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/verification/check-email-code`, {
-        email, verificationCode
-      });
+      const res = await makeRequest(
+        'post',
+        `${VUE_APP_MY_BACK_URL}/auth/sign-up/verify`,
+        {
+          email,
+          verifyCode,
+        },
+      );
 
       return res;
     } catch (err) {

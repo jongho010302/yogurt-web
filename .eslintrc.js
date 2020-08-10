@@ -32,5 +32,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-alert': 'off',
     'prefer-destructuring': 'off',
+    '@typescript-eslint/ban-ts-ignore': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
 };

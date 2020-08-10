@@ -7,8 +7,8 @@
     </q-card-section>
 
     <q-card-actions vertical align="left">
-      <div class="text-body2 text-weight-bold">판매 금액 {{  numberCommaFortmat(ticket.price) }}원</div>
-      <div class="text-caption">회당 가격 {{ numberCommaFortmat(ticket.price / ticket.maxCoupon) }}원</div>
+      <div class="text-body2 text-weight-bold">판매 금액 {{  numberCommaFormat(ticket.price) }}원</div>
+      <div class="text-caption">회당 가격 {{ numberCommaFormat(ticket.price / ticket.maxCoupon) }}원</div>
     </q-card-actions>
   </q-card>
 </template>

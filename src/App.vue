@@ -65,7 +65,7 @@
                     push
                     size="sm"
                     v-close-popup
-                    @click="handleLogout"
+                    @click="logOut"
                   />
                 </div>
               </div>
@@ -138,9 +138,9 @@ export default class App extends mixins(Methods) {
     return this.$store.state.primaryColor;
   }
 
-  async handleLogout() {
+  async logOut() {
     const result: ApiResponse = await this.$store.dispatch(
-      `${authNamespace}/handleLogout`,
+      `${authNamespace}/logOut`,
     );
 
     if (!result.success) {

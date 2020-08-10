@@ -13,7 +13,7 @@
           <q-btn color="white" size="sm" class="text-blue text-weight-bold">수강권 일괄 연장</q-btn>
         </div>
 
-        <div class="q-mb-lg q-mt-lg text-h6 text-white">판매가 {{ numberCommaFortmat(ticket.price) }}원</div>
+        <div class="q-mb-lg q-mt-lg text-h6 text-white">판매가 {{ numberCommaFormat(ticket.price) }}원</div>
       </div>
       <div class="col-2"></div>
     </div>

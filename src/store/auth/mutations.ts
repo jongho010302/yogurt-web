@@ -2,12 +2,11 @@ import { MutationTree } from 'vuex';
 import { AuthState } from './types';
 
 const mutations: MutationTree<AuthState> = {
-  handleLogin(state, payload: any) {
-    state.user = payload.user;
-    state.jwtToken = payload.jwtToken;
+  saveUser(state, payload: any) {
+    state.user = payload;
   },
-  handleLogout(state) {
-    state.user = null;
+  saveJwtToken(state, payload: string) {
+    state.jwtToken = payload;
   },
 };
 

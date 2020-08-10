@@ -6,13 +6,22 @@
 
     <div class="q-pl-xl q-pr-xl row q-col-gutter-lg">
       <div v-if="!staffs.length">Please add staff.</div>
-      <div class="col-12 col-md-3" v-for="(staff, index) in staffs" :key="`xl-${index}`">
+      <div
+        class="col-12 col-md-3"
+        v-for="(staff, index) in staffs"
+        :key="`xl-${index}`"
+      >
         <StaffCard :staff="staff" />
       </div>
     </div>
 
     <q-page-sticky position="bottom-right" :offset="[55, 55]">
-      <q-btn fab icon="edit" color="red" @click="routerTo('/staff/create')"></q-btn>
+      <q-btn
+        fab
+        icon="edit"
+        color="red"
+        @click="$router.push('/staff/create')"
+      ></q-btn>
     </q-page-sticky>
   </div>
 </template>
@@ -28,7 +37,7 @@ const namespace = 'staff';
 @Component({
   components: {
     StaffCard,
-    PageTitle
+    PageTitle,
   },
 })
 export default class Staff extends Vue {

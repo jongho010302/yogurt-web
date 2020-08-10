@@ -13,14 +13,14 @@ const actions: ActionTree<StudioState, any> = {
       });
 
       const payload = response && response.data;
-      commit('handleLogin', payload);
+      commit('logIn', payload);
       return payload;
     } catch (err) {
       console.error(err);
       return err.response.data;
     }
   },
-  async handleLogout({ rootState, commit }) {
+  async logOut({ rootState, commit }) {
     try {
       const response = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/user/log-out`, {}, {
         headers: {
@@ -28,14 +28,14 @@ const actions: ActionTree<StudioState, any> = {
         }
       });
       const payload = response && response.data;
-      commit('handleLogout');
+      commit('logOut');
       return payload;
     } catch (err) {
       console.error(err);
       return err.response.data;
     }
   },
-  async handleFindPassword({ rootState }, { username, email }) {
+  async findPassword({ rootState }, { username, email }) {
     try {
       const response = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/find-password`, {
         username, email
@@ -51,7 +51,7 @@ const actions: ActionTree<StudioState, any> = {
       return err.response.data;
     }
   },
-  async handleFindUsername({ rootState }, { email }) {
+  async findUsername({ rootState }, { email }) {
     try {
       const response = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/find-username`, {
         email

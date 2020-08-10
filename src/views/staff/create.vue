@@ -6,12 +6,17 @@
       <q-stepper
         v-model="step"
         ref="stepper"
-        active-color="black"
-        done-color="black"
+        active-color="primary"
+        done-color="primary"
         class="no-shadow"
         animated
       >
-        <q-step :name="1" title="기본 정보 기입" icon="assignment" :done="step > 1">
+        <q-step
+          :name="1"
+          title="기본 정보 기입"
+          icon="assignment"
+          :done="step > 1"
+        >
           <!-- 이름 -->
           <div class="text-weight-bold">이름</div>
           <q-input
@@ -19,7 +24,7 @@
             dense
             placeholder="이름을 입력해 주세요."
             :color="primaryColor"
-            style="width: 300px"
+            style="width: 300px;"
             class="q-mb-xl"
             @input="handleNameChange"
           >
@@ -38,7 +43,7 @@
               dense
               placeholder="아이디를 입력해 주세요."
               :color="primaryColor"
-              style="width: 300px"
+              style="width: 300px;"
               class="q-mr-sm"
               @input="handleUsernameChange"
             >
@@ -50,10 +55,11 @@
             </q-input>
             <q-btn
               v-if="usernameVerifyVisible"
-              color="black"
+              color="primary"
               rounded
-              @click="handleUsernameVerifyClick"
-            >Verify</q-btn>
+              label="Verify"
+              @click="verifyUsername"
+            />
           </div>
 
           <!-- 이메일 -->
@@ -64,8 +70,8 @@
               type="email"
               dense
               placeholder="이메일을 입력해 주세요."
-              :color="primaryColor"
-              style="width: 300px"
+              :color="primary"
+              style="width: 300px;"
               class="q-mr-sm"
               @input="handleEmailChange"
             >
@@ -79,9 +85,10 @@
               v-if="emailDuppVerificationVisible"
               class="q-mr-sm"
               color="black"
+              label="Verify"
               rounded
               @click="handleEmailDuppVerifyClick"
-            >Verify</q-btn>
+            />
           </div>
 
           <!-- 인증번호 -->
@@ -94,7 +101,7 @@
               dense
               placeholder="이메일 인증번호를 입력해 주세요."
               :color="primaryColor"
-              style="width: 300px"
+              style="width: 300px;"
               class="q-mr-sm"
             />
             <q-btn
@@ -103,13 +110,15 @@
               color="black"
               rounded
               @click="handleEmailSendCodeClick"
-            >Send Code</q-btn>
+              >Send Code</q-btn
+            >
             <q-btn
               v-if="emailDuppVerified"
               color="black"
               rounded
               @click="handleEmailVerificationCodeClick"
-            >Verify</q-btn>
+              >Verify</q-btn
+            >
           </div>
 
           <!-- 휴대폰 번호 -->
@@ -120,7 +129,7 @@
             placeholder="휴대폰 번호를 입력해 주세요."
             :color="primaryColor"
             mask="###-####-####"
-            style="width: 300px"
+            style="width: 300px;"
             class="q-mb-xl"
             @input="handlePhoneNumberChange"
           >
@@ -159,13 +168,13 @@
             mask="####-##-##"
             dense
             class="q-mb-xl"
-            style="width: 120px; height: 50px"
+            style="width: 120px; height: 50px;"
           >
             <template v-slot:prepend>
-              <q-icon name="event" style="cursor: pointer">
+              <q-icon name="event" style="cursor: pointer;">
                 <q-menu>
                   <q-list dense>
-                    <q-item style="padding: 0 0px">
+                    <q-item style="padding: 0 0px;">
                       <q-date v-model="birth" :color="primaryColor" minimal />
                     </q-item>
                   </q-list>
@@ -182,13 +191,13 @@
             mask="####-##-##"
             dense
             class="q-mb-xl"
-            style="width: 120px; height: 50px"
+            style="width: 120px; height: 50px;"
           >
             <template v-slot:prepend>
-              <q-icon name="event" style="cursor: pointer">
+              <q-icon name="event" style="cursor: pointer;">
                 <q-menu>
                   <q-list dense>
-                    <q-item style="padding: 0 0px">
+                    <q-item style="padding: 0 0px;">
                       <q-date v-model="hiredAt" :color="primaryColor" minimal />
                     </q-item>
                   </q-list>
@@ -208,7 +217,12 @@
           />
         </q-step>
 
-        <q-step :name="2" title="근무시간 입력" icon="assignment" :done="step > 2">
+        <q-step
+          :name="2"
+          title="근무시간 입력"
+          icon="assignment"
+          :done="step > 2"
+        >
           <div class="text-h5 text-weight-bold q-mb-lg">근무시</div>
 
           <div class="text-weight-bold q-mb-md q-mt-md">월요일</div>
@@ -218,16 +232,21 @@
               dense
               :disable="isMonDayOff"
               class="q-mr-md"
-              style="width: 100px"
+              style="width: 100px;"
             />~
             <q-input
               v-model="monWorkingEndTime"
               dense
               :disable="isMonDayOff"
               class="q-ml-md"
-              style="width: 100px"
+              style="width: 100px;"
             />
-            <q-checkbox v-model="isMonDayOff" :color="primaryColor" dense class="q-ml-md q-mr-sm" />off
+            <q-checkbox
+              v-model="isMonDayOff"
+              :color="primaryColor"
+              dense
+              class="q-ml-md q-mr-sm"
+            />off
           </div>
 
           <div class="text-weight-bold q-mb-md q-mt-md">화요</div>
@@ -237,16 +256,21 @@
               dense
               :disable="isTueDayOff"
               class="q-mr-md"
-              style="width: 100px"
+              style="width: 100px;"
             />~
             <q-input
               v-model="tueWorkingEndTime"
               dense
               :disable="isTueDayOff"
               class="q-ml-md"
-              style="width: 100px"
+              style="width: 100px;"
             />
-            <q-checkbox v-model="isTueDayOff" :color="primaryColor" dense class="q-ml-md q-mr-sm" />off
+            <q-checkbox
+              v-model="isTueDayOff"
+              :color="primaryColor"
+              dense
+              class="q-ml-md q-mr-sm"
+            />off
           </div>
 
           <div class="text-weight-bold q-mb-md q-mt-md">수요</div>
@@ -256,16 +280,21 @@
               dense
               :disable="isWedDayOff"
               class="q-mr-md"
-              style="width: 100px"
+              style="width: 100px;"
             />~
             <q-input
               v-model="wedWorkingEndTime"
               dense
               :disable="isWedDayOff"
               class="q-ml-md"
-              style="width: 100px"
+              style="width: 100px;"
             />
-            <q-checkbox v-model="isWedDayOff" :color="primaryColor" dense class="q-ml-md q-mr-sm" />off
+            <q-checkbox
+              v-model="isWedDayOff"
+              :color="primaryColor"
+              dense
+              class="q-ml-md q-mr-sm"
+            />off
           </div>
 
           <div class="text-weight-bold q-mb-md q-mt-md">목요</div>
@@ -275,16 +304,21 @@
               dense
               :disable="isThuDayOff"
               class="q-mr-md"
-              style="width: 100px"
+              style="width: 100px;"
             />~
             <q-input
               v-model="thuWorkingEndTime"
               dense
               :disable="isThuDayOff"
               class="q-ml-md"
-              style="width: 100px"
+              style="width: 100px;"
             />
-            <q-checkbox v-model="isThuDayOff" :color="primaryColor" dense class="q-ml-md q-mr-sm" />off
+            <q-checkbox
+              v-model="isThuDayOff"
+              :color="primaryColor"
+              dense
+              class="q-ml-md q-mr-sm"
+            />off
           </div>
 
           <div class="text-weight-bold q-mb-md q-mt-md">금요</div>
@@ -294,16 +328,21 @@
               dense
               :disable="isFriDayOff"
               class="q-mr-md"
-              style="width: 100px"
+              style="width: 100px;"
             />~
             <q-input
               v-model="friWorkingEndTime"
               dense
               :disable="isFriDayOff"
               class="q-ml-md"
-              style="width: 100px"
+              style="width: 100px;"
             />
-            <q-checkbox v-model="isFriDayOff" :color="primaryColor" dense class="q-ml-md q-mr-sm" />off
+            <q-checkbox
+              v-model="isFriDayOff"
+              :color="primaryColor"
+              dense
+              class="q-ml-md q-mr-sm"
+            />off
           </div>
 
           <div class="text-weight-bold q-mb-md q-mt-md">토요</div>
@@ -313,16 +352,21 @@
               dense
               :disable="isSatDayOff"
               class="q-mr-md"
-              style="width: 100px"
+              style="width: 100px;"
             />~
             <q-input
               v-model="satWorkingEndTime"
               dense
               :disable="isSatDayOff"
               class="q-ml-md"
-              style="width: 100px"
+              style="width: 100px;"
             />
-            <q-checkbox v-model="isSatDayOff" :color="primaryColor" dense class="q-ml-md q-mr-sm" />off
+            <q-checkbox
+              v-model="isSatDayOff"
+              :color="primaryColor"
+              dense
+              class="q-ml-md q-mr-sm"
+            />off
           </div>
 
           <div class="text-weight-bold q-mb-md q-mt-md">일요일</div>
@@ -332,30 +376,33 @@
               dense
               :disable="isSunDayOff"
               class="q-mr-md"
-              style="width: 100px"
+              style="width: 100px;"
             />~
             <q-input
               v-model="sunWorkingEndTime"
               dense
               :disable="isSunDayOff"
               class="q-ml-md"
-              style="width: 100px"
+              style="width: 100px;"
             />
-            <q-checkbox v-model="isSunDayOff" :color="primaryColor" dense class="q-ml-md q-mr-sm" />off
+            <q-checkbox
+              v-model="isSunDayOff"
+              :color="primaryColor"
+              dense
+              class="q-ml-md q-mr-sm"
+            />off
           </div>
         </q-step>
 
-        <q-step
-          :name="3"
-          title="등록"
-          icon="assignment"
-          :done="step > 3"
-        >We will register based on the information you have entered so far.</q-step>
+        <q-step :name="3" title="등록" icon="assignment" :done="step > 3"
+          >We will register based on the information you have entered so
+          far.</q-step
+        >
 
         <template v-slot:navigation>
           <q-stepper-navigation>
             <q-btn
-              @click="handleSubmit($refs.stepper);"
+              @click="handleSubmit($refs.stepper)"
               :color="primaryColor"
               :label="step === 3 ? 'Finish' : 'Continue'"
             />
@@ -491,9 +538,9 @@ export default class StaffCreate extends Vue {
     }
   }
 
-  async handleUsernameVerifyClick() {
+  async verifyUsername() {
     const res: ApiResponse = await this.$store.dispatch(
-      `${authNamespace}/handleUsernameVerify`,
+      `${authNamespace}/verifyUsername`,
       { username: this.$data.username },
     );
 
@@ -533,7 +580,7 @@ export default class StaffCreate extends Vue {
 
   async handleEmailSendCodeClick() {
     const res: ApiResponse = await this.$store.dispatch(
-      `${authNamespace}/handleEmailVerficiationCodeSend`,
+      `${authNamespace}/sendSignUpEmailCode`,
       { email: this.$data.email },
     );
 
@@ -546,7 +593,7 @@ export default class StaffCreate extends Vue {
 
   async handleEmailVerificationCodeClick() {
     const res: ApiResponse = await this.$store.dispatch(
-      `${authNamespace}/handleEmailVerificationCodeCheck`,
+      `${authNamespace}/verifySignUpEmail`,
       {
         verificationCode: this.$data.emailVerificationCode,
         email: this.$data.email,

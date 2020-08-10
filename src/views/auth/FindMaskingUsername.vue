@@ -4,11 +4,12 @@
       <span class="text-h5 text-weight-bold">아이디 찾기</span>
     </div>
 
-    <div class="q-mb-lg">이메일 입력 시 해당 이메일로 아이디가 전송됩니다.</div>
-    <div>
+    <div v-if="!usernames.length">
+      <div class="q-mb-lg">이름을 입력해 주세요.</div>
+
       <q-input
-        v-model="email"
-        placeholder="이메일"
+        v-model="name"
+        placeholder="이름"
         outlined
         dense
         class="q-mb-sm"
@@ -26,8 +27,16 @@
         color="primary"
         class="q-mb-lg"
         style="width: 250px; height: 40px"
-        @click="findUsername"
+        @click="findMaskingUsername"
       />
+    </div>
+
+    <div v-else>
+      <div>
+        '전다연'님의 이름으로 찾은 아이디이며, 동명이인의 아이디가 검색될 수
+        있습니다. 정확한 아이디가 기억나지 않으실 경우 '문자로 확인하기'를
+        클릭해주세요.
+      </div>
     </div>
   </div>
 </template>
@@ -40,27 +49,32 @@ import { yogurtAlert } from '@/util';
 const namespace = 'auth';
 
 @Component
-export default class FindUsername extends mixins(Methods) {
+export default class FindMaskingUsername extends mixins(Methods) {
   data() {
     return {
-      email: '',
+      name: '',
+      usernames: [],
     };
   }
 
-  async findUsername() {
-    const result: ApiResponse = await this.$store.dispatch(
-      `${namespace}/findUsername`,
-      {
-        email: this.$data.email,
-      },
-    );
-
-    if (!result.success) {
+  async findMaskingUsername() {
+    if (!this.$data.name) {
+      yogurtAlert('이름을 입력해 주세요.');
       return;
     }
 
-    yogurtAlert(result.message);
-    await this.routerTo('/login');
+    const res: ApiResponse = await this.$store.dispatch(
+      `${namespace}/findMaskingUsername`,
+      {
+        name: this.$data.name,
+      },
+    );
+
+    if (!res.success) {
+      return;
+    }
+
+    this.$data.usernames = res.data;
   }
 }
 </script>
