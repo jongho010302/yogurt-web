@@ -3,7 +3,6 @@ import { Studio } from '../studio/types';
 export interface Ticket {
   id: number;
   studio: Studio;
-  ticketType: TicketType;
   classType: ClassType;
   title: string;
   price: number;
@@ -13,14 +12,9 @@ export interface Ticket {
   updatedAt: Date;
 }
 
-export enum TicketType {
-  TIME = 'TIME',
-  CLASS_TYPE = 'PERIOD'
-}
-
 export enum ClassType {
   GROUP = 'GROUP',
-  PRIVATE = 'PRIVATE'
+  PRIVATE = 'PRIVATE',
 }
 
 export interface TicketState {

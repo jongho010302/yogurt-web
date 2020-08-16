@@ -18,14 +18,14 @@
         label="로그인 화면으로"
         color="grey-9"
         class="q-mb-lg q-mr-sm"
-        style="width: 250px; height: 40px"
+        style="width: 250px; height: 40px;"
         @click="routerTo('/login')"
       />
       <q-btn
         label="아이디 찾기"
         color="primary"
         class="q-mb-lg"
-        style="width: 250px; height: 40px"
+        style="width: 250px; height: 40px;"
         @click="findUsername"
       />
     </div>
@@ -34,8 +34,6 @@
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
-import { ApiResponse } from '@/types';
-import { yogurtAlert } from '@/util';
 
 const namespace = 'auth';
 
@@ -48,19 +46,9 @@ export default class FindUsername extends mixins(Methods) {
   }
 
   async findUsername() {
-    const result: ApiResponse = await this.$store.dispatch(
-      `${namespace}/findUsername`,
-      {
-        email: this.$data.email,
-      },
-    );
-
-    if (!result.success) {
-      return;
-    }
-
-    yogurtAlert(result.message);
-    await this.routerTo('/login');
+    await this.$store.dispatch(`${namespace}/findUsername`, {
+      email: this.$data.email,
+    });
   }
 }
 </script>

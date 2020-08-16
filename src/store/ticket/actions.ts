@@ -1,16 +1,20 @@
 import { ActionTree } from 'vuex';
 import { TicketState } from './types';
-// import { RootState } from '../types';
-import {makeRequest} from "@/util";
+import { makeRequest } from '@/util/common';
 
 const { VUE_APP_MY_BACK_URL } = process.env;
 
 const actions: ActionTree<TicketState, any> = {
   async getTickets({ commit, rootState }) {
     try {
-      const response = await makeRequest('get', `${VUE_APP_MY_BACK_URL}/admin/ticket`, {}, {
-        Authorization: rootState.auth.jwtToken
-      });
+      const response = await makeRequest(
+        'get',
+        `${VUE_APP_MY_BACK_URL}/admin/ticket`,
+        {},
+        {
+          Authorization: rootState.auth.jwtToken,
+        },
+      );
       const payload = response && response.data;
       commit('saveTickets', payload);
     } catch (err) {
@@ -19,9 +23,14 @@ const actions: ActionTree<TicketState, any> = {
   },
   async getTicket({ commit, rootState }, { id }) {
     try {
-      const response = await makeRequest('get', `${VUE_APP_MY_BACK_URL}/admin/ticket/${id}`, {}, {
-        Authorization: rootState.auth.jwtToken
-      });
+      const response = await makeRequest(
+        'get',
+        `${VUE_APP_MY_BACK_URL}/admin/ticket/${id}`,
+        {},
+        {
+          Authorization: rootState.auth.jwtToken,
+        },
+      );
       const payload = response && response.data;
       commit('saveTicket', payload);
     } catch (err) {
@@ -30,9 +39,14 @@ const actions: ActionTree<TicketState, any> = {
   },
   async saveTicket({ rootState }, payload) {
     try {
-      await makeRequest('post', `${VUE_APP_MY_BACK_URL}/api/ticket/save`, payload, {
-        Authorization: rootState.auth.jwtToken
-      });
+      await makeRequest(
+        'post',
+        `${VUE_APP_MY_BACK_URL}/api/ticket/save`,
+        payload,
+        {
+          Authorization: rootState.auth.jwtToken,
+        },
+      );
     } catch (err) {
       console.error(err);
     }

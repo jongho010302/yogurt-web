@@ -6,7 +6,6 @@ const mutations: MutationTree<UserState> = {
     payload.forEach((item) => {
       item.role = item.roles[0].replace('ROLE_', '') as Role;
     });
-    console.log(payload);
     state.users = payload;
   },
 };

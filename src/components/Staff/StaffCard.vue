@@ -30,9 +30,8 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
-import { ApiResponse } from '@/types';
 import { Staff as StaffType } from '@/store/staff/types';
-import { yogurtAlert, yogurtConfirm } from '@/util';
+import { yogurtConfirm } from '@/util/common';
 
 const namespace = 'staff';
 
@@ -49,14 +48,9 @@ export default class TicketCard extends Vue {
   }
 
   async resetPassword() {
-    const res: ApiResponse = await this.$store.dispatch(
-      `${namespace}/resetPassword`,
-      {
-        userId: this.staff.user.id,
-      },
-    );
-
-    yogurtAlert(res.message);
+    await this.$store.dispatch(`${namespace}/resetPassword`, {
+      userId: this.staff.user.id,
+    });
   }
 
   async handleDeleteStaff() {
@@ -64,19 +58,10 @@ export default class TicketCard extends Vue {
       return;
     }
 
-    const res: ApiResponse = await this.$store.dispatch(
-      `${namespace}/deleteStaff`,
-      {
-        staffId: this.staff.id,
-        userId: this.staff.user.id,
-      },
-    );
-
-    if (!res.success) {
-      return;
-    }
-
-    yogurtAlert(res.message);
+    await this.$store.dispatch(`${namespace}/deleteStaff`, {
+      staffId: this.staff.id,
+      userId: this.staff.user.id,
+    });
 
     // Staff reload
     await this.$store.dispatch(`${namespace}/getStaffs`);

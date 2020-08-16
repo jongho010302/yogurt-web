@@ -8,7 +8,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
-import { parseDate } from '../../util';
+import { parseDate } from '@/util/date';
 
 const namespace = 'staff';
 
@@ -79,7 +79,7 @@ export default class TicketCard extends Vue {
   }
 
   onSubmit(stepper: any) {
-    if(this.$data.step === 3) {
+    if (this.$data.step === 3) {
       this.$store.dispatch(`${namespace}/saveStaff`, {
         staffType: this.$data.staffType,
         name: this.$data.staffName,

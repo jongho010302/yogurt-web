@@ -29,8 +29,9 @@
             @input="handleNameChange"
           >
             <template v-slot:append>
-              <q-icon v-if="!nameVerified" name="warning">
-                <q-tooltip>Please format your name.</q-tooltip>
+              <q-icon v-if="nameVerified" name="done" color="black" />
+              <q-icon v-else name="warning" color="black">
+                <q-tooltip>이름의 형식을 맞춰주세요.</q-tooltip>
               </q-icon>
             </template>
           </q-input>
@@ -48,16 +49,32 @@
               @input="handleUsernameChange"
             >
               <template v-slot:append>
-                <q-icon v-if="!usernameVerifyVisible" name="warning">
-                  <q-tooltip>Username must be 8 to 20 length.</q-tooltip>
+                <q-icon v-if="usernameVerified" name="done" color="black" />
+                <q-icon
+                  v-if="!usernameVerified && !usernameVerifyVisible"
+                  name="warning"
+                  color="black"
+                >
+                  <q-tooltip>
+                    아이디는 8자에서 10자이어야 합니다.
+                  </q-tooltip>
+                </q-icon>
+                <q-icon
+                  v-if="!usernameVerified && usernameVerifyVisible"
+                  name="report"
+                  color="black"
+                >
+                  <q-tooltip>
+                    아이디 중복검사를 해주세요.
+                  </q-tooltip>
                 </q-icon>
               </template>
             </q-input>
             <q-btn
-              v-if="usernameVerifyVisible"
-              color="primary"
+              v-if="usernameVerifyVisible && !usernameVerified"
+              color="black"
               rounded
-              label="Verify"
+              label="중복검사"
               @click="verifyUsername"
             />
           </div>
@@ -70,24 +87,29 @@
               type="email"
               dense
               placeholder="이메일을 입력해 주세요."
-              :color="primary"
+              color="primary"
               style="width: 300px;"
               class="q-mr-sm"
-              @input="handleEmailChange"
+              @input="onEmailChange"
             >
               <template v-slot:append>
-                <q-icon v-if="!emailDuppVerificationVisible" name="warning">
-                  <q-tooltip>Please format your email.</q-tooltip>
+                <q-icon
+                  v-if="emailSendVerifyCodeVisible"
+                  name="done"
+                  color="black"
+                />
+                <q-icon v-else name="warning" color="black">
+                  <q-tooltip>이메일 형식을 맞춰 주세요.</q-tooltip>
                 </q-icon>
               </template>
             </q-input>
             <q-btn
-              v-if="emailDuppVerificationVisible"
+              v-if="emailSendVerifyCodeVisible"
               class="q-mr-sm"
-              color="black"
-              label="Verify"
-              rounded
-              @click="handleEmailDuppVerifyClick"
+              color="primary"
+              outline
+              :label="!isEmailVerifyCodeSend ? '인증번호 보내기' : '다시보내기'"
+              @click="sendVerifyCode"
             />
           </div>
 
@@ -95,30 +117,33 @@
           <div class="text-weight-bold">인증번호</div>
           <div class="q-mb-xl row">
             <q-input
-              v-model="emailVerificationCode"
+              v-model="emailVerifyCode"
               type="email"
-              :disable="!emailDuppVerified"
+              :disable="!isEmailVerifyCodeSend"
               dense
               placeholder="이메일 인증번호를 입력해 주세요."
               :color="primaryColor"
               style="width: 300px;"
               class="q-mr-sm"
+            >
+              <template v-slot:append>
+                <q-icon v-if="emailVerified" name="done" color="black" />
+                <q-icon
+                  v-if="!emailVerified && isEmailVerifyCodeSend"
+                  name="warning"
+                  color="black"
+                >
+                  <q-tooltip>인증해 주세요.</q-tooltip>
+                </q-icon>
+              </template>
+            </q-input>
+            <q-btn
+              v-if="isEmailVerifyCodeSend"
+              color="primary"
+              outline
+              label="인증"
+              @click="verifyCode"
             />
-            <q-btn
-              v-if="emailDuppVerified"
-              class="q-mr-sm"
-              color="black"
-              rounded
-              @click="handleEmailSendCodeClick"
-              >Send Code</q-btn
-            >
-            <q-btn
-              v-if="emailDuppVerified"
-              color="black"
-              rounded
-              @click="handleEmailVerificationCodeClick"
-              >Verify</q-btn
-            >
           </div>
 
           <!-- 휴대폰 번호 -->
@@ -134,8 +159,9 @@
             @input="handlePhoneNumberChange"
           >
             <template v-slot:append>
-              <q-icon v-if="!phoneNumberVerified" name="warning">
-                <q-tooltip>Please format your phone number.</q-tooltip>
+              <q-icon v-if="phoneNumberVerified" name="done" color="black" />
+              <q-icon v-else name="warning" color="black">
+                <q-tooltip>올바른 휴대폰 번호를 입력해 주세요.</q-tooltip>
               </q-icon>
             </template>
           </q-input>
@@ -223,7 +249,7 @@
           icon="assignment"
           :done="step > 2"
         >
-          <div class="text-h5 text-weight-bold q-mb-lg">근무시</div>
+          <div class="text-h5 text-weight-bold q-mb-lg">근무시간</div>
 
           <div class="text-weight-bold q-mb-md q-mt-md">월요일</div>
           <div class="row items-center">
@@ -249,7 +275,7 @@
             />off
           </div>
 
-          <div class="text-weight-bold q-mb-md q-mt-md">화요</div>
+          <div class="text-weight-bold q-mb-md q-mt-md">화요일</div>
           <div class="row items-center">
             <q-input
               v-model="tueWorkingStartTime"
@@ -273,7 +299,7 @@
             />off
           </div>
 
-          <div class="text-weight-bold q-mb-md q-mt-md">수요</div>
+          <div class="text-weight-bold q-mb-md q-mt-md">수요일</div>
           <div class="row items-center">
             <q-input
               v-model="wedWorkingStartTime"
@@ -297,7 +323,7 @@
             />off
           </div>
 
-          <div class="text-weight-bold q-mb-md q-mt-md">목요</div>
+          <div class="text-weight-bold q-mb-md q-mt-md">목요일</div>
           <div class="row items-center">
             <q-input
               v-model="thuWorkingStartTime"
@@ -321,7 +347,7 @@
             />off
           </div>
 
-          <div class="text-weight-bold q-mb-md q-mt-md">금요</div>
+          <div class="text-weight-bold q-mb-md q-mt-md">금요일</div>
           <div class="row items-center">
             <q-input
               v-model="friWorkingStartTime"
@@ -345,7 +371,7 @@
             />off
           </div>
 
-          <div class="text-weight-bold q-mb-md q-mt-md">토요</div>
+          <div class="text-weight-bold q-mb-md q-mt-md">토요일</div>
           <div class="row items-center">
             <q-input
               v-model="satWorkingStartTime"
@@ -404,14 +430,14 @@
             <q-btn
               @click="handleSubmit($refs.stepper)"
               :color="primaryColor"
-              :label="step === 3 ? 'Finish' : 'Continue'"
+              :label="step === 3 ? '저장' : '진행'"
             />
             <q-btn
               v-if="step > 1"
               flat
               :color="primaryColor"
               @click="$refs.stepper.previous()"
-              label="Back"
+              label="뒤로 가기"
               class="q-ml-sm"
             />
           </q-stepper-navigation>
@@ -424,8 +450,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { parseDate, yogurtAlert } from '@/util';
-import { ApiResponse } from '@/types';
+import { parseDate } from '@/util/date';
+import { warningAlert } from '@/util/alert';
 import {
   usernameRegex,
   nameRegex,
@@ -448,10 +474,10 @@ export default class StaffCreate extends Vue {
       usernameVerified: false,
       usernameVerifyVisible: false,
       email: '',
-      emailDuppVerificationVisible: false,
-      emailDuppVerified: false,
       emailVerified: false,
-      emailVerificationCode: '',
+      emailSendVerifyCodeVisible: false,
+      isEmailVerifyCodeSend: false,
+      emailVerifyCode: '',
       phoneNumber: '',
       phoneNumberVerified: false,
       gender: '',
@@ -539,74 +565,43 @@ export default class StaffCreate extends Vue {
   }
 
   async verifyUsername() {
-    const res: ApiResponse = await this.$store.dispatch(
-      `${authNamespace}/verifyUsername`,
-      { username: this.$data.username },
-    );
-
-    if (!res.success) {
-      return;
-    }
+    await this.$store.dispatch(`${authNamespace}/verifyUsername`, {
+      username: this.$data.username,
+    });
 
     this.$data.usernameVerified = true;
-    yogurtAlert(res.message);
   }
 
-  handleEmailChange(value: string) {
+  onEmailChange(value: string) {
     this.$data.emailVerified = false;
-    this.$data.emailDuppVerified = false;
-    this.$data.emailVerificationCode = '';
+    this.$data.isEmailVerifyCodeSend = false;
+    this.$data.emailVerifyCode = '';
     if (emailRegex.test(value)) {
-      this.$data.emailDuppVerificationVisible = true;
+      this.$data.emailSendVerifyCodeVisible = true;
     } else {
-      this.$data.emailDuppVerificationVisible = false;
+      this.$data.emailSendVerifyCodeVisible = false;
     }
   }
 
-  async handleEmailDuppVerifyClick() {
-    const res: ApiResponse = await this.$store.dispatch(
-      `${authNamespace}/handleEmailDuppVerify`,
-      { email: this.$data.email },
-    );
+  async sendVerifyCode() {
+    await this.$store.dispatch(`${authNamespace}/sendSignUpCode`, {
+      email: this.$data.email,
+    });
 
-    if (!res.success) {
-      this.$data.emailDuppVerified = false;
-      return;
-    }
-
-    this.$data.emailDuppVerified = true;
-    yogurtAlert(res.message);
+    this.$data.isEmailVerifyCodeSend = true;
   }
 
-  async handleEmailSendCodeClick() {
-    const res: ApiResponse = await this.$store.dispatch(
-      `${authNamespace}/sendSignUpEmailCode`,
-      { email: this.$data.email },
-    );
-
-    if (!res.success) {
-      return;
-    }
-
-    yogurtAlert(res.message);
-  }
-
-  async handleEmailVerificationCodeClick() {
-    const res: ApiResponse = await this.$store.dispatch(
-      `${authNamespace}/verifySignUpEmail`,
-      {
-        verificationCode: this.$data.emailVerificationCode,
+  async verifyCode() {
+    try {
+      await this.$store.dispatch(`${authNamespace}/verifySignUpCode`, {
         email: this.$data.email,
-      },
-    );
+        verifyCode: this.$data.emailVerifyCode,
+      });
 
-    if (!res.success) {
+      this.$data.emailVerified = true;
+    } catch (err) {
       this.$data.emailVerified = false;
-      return;
     }
-
-    this.$data.emailVerified = true;
-    yogurtAlert(res.message);
   }
 
   handlePhoneNumberChange(value: string) {
@@ -619,39 +614,39 @@ export default class StaffCreate extends Vue {
 
   handleBasicValidation(): boolean {
     if (!this.$data.nameVerified) {
-      yogurtAlert('Please verify your name.');
+      warningAlert('name을(를) 입력해 주세요.');
       return false;
     }
     if (!this.$data.usernameVerified) {
-      yogurtAlert('Please verify your username.');
+      warningAlert('username을(를) 입력해 주세요.');
       return false;
     }
     if (!this.$data.emailVerified) {
-      yogurtAlert('Please verify your email.');
+      warningAlert('email을(를) 입력해 주세요.');
       return false;
     }
     if (!this.$data.phoneNumberVerified) {
-      yogurtAlert('Please verify your phone number.');
+      warningAlert('phone을(를) 입력해 주세요.number.');
       return false;
     }
     if (!this.$data.gender) {
-      yogurtAlert('Please enter your gender.');
+      warningAlert('gender을(를) 입력해 주세요.');
       return false;
     }
     if (!this.$data.role) {
-      yogurtAlert('Please enter your role.');
+      warningAlert('role을(를) 입력해 주세요.');
       return false;
     }
     if (!this.$data.birth) {
-      yogurtAlert('Please enter your birth.');
+      warningAlert('birth을(를) 입력해 주세요.');
       return false;
     }
     if (!this.$data.hiredAt) {
-      yogurtAlert('Please enter your hiredAt.');
+      warningAlert('hiredAt을(를) 입력해 주세요.');
       return false;
     }
     if (!this.$data.introduce) {
-      yogurtAlert('Please enter your self-introduce.');
+      warningAlert('self을(를) 입력해 주세요.introduce.');
       return false;
     }
 
@@ -663,49 +658,49 @@ export default class StaffCreate extends Vue {
       !this.$data.isMonDayOff &&
       !(this.$data.monWorkingStartTime && this.$data.monWorkingEndTime)
     ) {
-      yogurtAlert('Please enter your monday.');
+      warningAlert('monday을(를) 입력해 주세요.');
       return false;
     }
     if (
       !this.$data.isTueDayOff &&
       !(this.$data.tueWorkingStartTime && this.$data.tueWorkingEndTime)
     ) {
-      yogurtAlert('Please enter your tuesday.');
+      warningAlert('tuesday을(를) 입력해 주세요.');
       return false;
     }
     if (
       !this.$data.isWedDayOff &&
       !(this.$data.wedWorkingStartTime && this.$data.wedWorkingEndTime)
     ) {
-      yogurtAlert('Please enter your wednesday.');
+      warningAlert('wednesday을(를) 입력해 주세요.');
       return false;
     }
     if (
       !this.$data.isThuDayOff &&
       !(this.$data.thuWorkingStartTime && this.$data.thuWorkingEndTime)
     ) {
-      yogurtAlert('Please enter your thursday.');
+      warningAlert('thursday을(를) 입력해 주세요.');
       return false;
     }
     if (
       !this.$data.isFriDayOff &&
       !(this.$data.friWorkingStartTime && this.$data.friWorkingEndTime)
     ) {
-      yogurtAlert('Please enter your friday.');
+      warningAlert('friday을(를) 입력해 주세요.');
       return false;
     }
     if (
       !this.$data.isSatDayOff &&
       !(this.$data.satWorkingStartTime && this.$data.satWorkingEndTime)
     ) {
-      yogurtAlert('Please enter your saturday.');
+      warningAlert('saturday을(를) 입력해 주세요.');
       return false;
     }
     if (
       !this.$data.isSunDayOff &&
       !(this.$data.sunWorkingStartTime && this.$data.sunWorkingEndTime)
     ) {
-      yogurtAlert('Please enter your sunday.');
+      warningAlert('sunday을(를) 입력해 주세요.');
       return false;
     }
 
@@ -724,50 +719,41 @@ export default class StaffCreate extends Vue {
     }
 
     if (this.$data.step === 3) {
-      const res: ApiResponse = await this.$store.dispatch(
-        `${namespace}/saveStaff`,
-        {
-          studioId: this.user.studio.id,
-          name: this.$data.name,
-          username: this.$data.username,
-          email: this.$data.email,
-          gender: this.$data.gender,
-          phone: this.$data.phoneNumber,
-          birth: this.$data.birth,
-          introduce: this.$data.introduce,
-          profileUrl: this.$data.profileUrl,
-          hiredAt: this.$data.hiredAt,
-          role: this.$data.role,
-          isMonDayOff: this.$data.isMonDayOff,
-          monWorkingStartTime: this.$data.monWorkingStartTime,
-          monWorkingEndTime: this.$data.monWorkingEndTime,
-          isTueDayOff: this.$data.isTueDayOff,
-          tueWorkingStartTime: this.$data.tueWorkingStartTime,
-          tueWorkingEndTime: this.$data.tueWorkingEndTime,
-          isWedDayOff: this.$data.isWedDayOff,
-          wedWorkingStartTime: this.$data.wedWorkingStartTime,
-          wedWorkingEndTime: this.$data.wedWorkingEndTime,
-          isThuDayOff: this.$data.isThuDayOff,
-          thuWorkingStartTime: this.$data.thuWorkingStartTime,
-          thuWorkingEndTime: this.$data.thuWorkingEndTime,
-          isFriDayOff: this.$data.isFriDayOff,
-          friWorkingStartTime: this.$data.friWorkingStartTime,
-          friWorkingEndTime: this.$data.friWorkingEndTime,
-          isSatDayOff: this.$data.isSatDayOff,
-          satWorkingStartTime: this.$data.satWorkingStartTime,
-          satWorkingEndTime: this.$data.satWorkingEndTime,
-          isSunDayOff: this.$data.isSunDayOff,
-          sunWorkingStartTime: this.$data.sunWorkingStartTime,
-          sunWorkingEndTime: this.$data.sunWorkingEndTime,
-        },
-      );
-      this.$router.push({ path: '/staff' });
-
-      if (!res.success) {
-        return;
-      }
-
-      yogurtAlert(res.message);
+      await this.$store.dispatch(`${namespace}/saveStaff`, {
+        studioId: this.user.studio.id,
+        name: this.$data.name,
+        username: this.$data.username,
+        email: this.$data.email,
+        gender: this.$data.gender,
+        phone: this.$data.phoneNumber,
+        birth: this.$data.birth,
+        introduce: this.$data.introduce,
+        profileUrl: this.$data.profileUrl,
+        hiredAt: this.$data.hiredAt,
+        role: this.$data.role,
+        isMonDayOff: this.$data.isMonDayOff,
+        monWorkingStartTime: this.$data.monWorkingStartTime,
+        monWorkingEndTime: this.$data.monWorkingEndTime,
+        isTueDayOff: this.$data.isTueDayOff,
+        tueWorkingStartTime: this.$data.tueWorkingStartTime,
+        tueWorkingEndTime: this.$data.tueWorkingEndTime,
+        isWedDayOff: this.$data.isWedDayOff,
+        wedWorkingStartTime: this.$data.wedWorkingStartTime,
+        wedWorkingEndTime: this.$data.wedWorkingEndTime,
+        isThuDayOff: this.$data.isThuDayOff,
+        thuWorkingStartTime: this.$data.thuWorkingStartTime,
+        thuWorkingEndTime: this.$data.thuWorkingEndTime,
+        isFriDayOff: this.$data.isFriDayOff,
+        friWorkingStartTime: this.$data.friWorkingStartTime,
+        friWorkingEndTime: this.$data.friWorkingEndTime,
+        isSatDayOff: this.$data.isSatDayOff,
+        satWorkingStartTime: this.$data.satWorkingStartTime,
+        satWorkingEndTime: this.$data.satWorkingEndTime,
+        isSunDayOff: this.$data.isSunDayOff,
+        sunWorkingStartTime: this.$data.sunWorkingStartTime,
+        sunWorkingEndTime: this.$data.sunWorkingEndTime,
+      });
+      await this.$router.push('/staff');
     }
     stepper.next();
   }

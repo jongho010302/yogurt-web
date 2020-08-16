@@ -8,6 +8,9 @@ const mutations: MutationTree<AuthState> = {
   saveJwtToken(state, payload: string) {
     state.jwtToken = payload;
   },
+  saveMaskingUsernames(state, payload: string[]) {
+    state.maskingUsernames = payload;
+  },
 };
 
 export default mutations;

@@ -3,12 +3,14 @@ import { AuthState } from './types';
 import { RootState } from '../types';
 
 const getters: GetterTree<AuthState, RootState> = {
-  getJwtToken(state): string {
+  getJwtToken(state) {
     return state.jwtToken;
   },
-  getUser(state): any {
+  getUser(state) {
     return state.user;
-  }
+  },
+  getMaskingUsernames(state) {
+    return state.maskingUsernames;
+  },
 };
-
 export default getters;

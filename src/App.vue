@@ -107,8 +107,6 @@
 import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
 import Login from '@/views/auth/Login.vue';
-import { ApiResponse } from '@/types';
-import { yogurtAlert } from '@/util';
 
 const authNamespace = 'auth';
 
@@ -139,17 +137,7 @@ export default class App extends mixins(Methods) {
   }
 
   async logOut() {
-    const result: ApiResponse = await this.$store.dispatch(
-      `${authNamespace}/logOut`,
-    );
-
-    if (!result.success) {
-      yogurtAlert(result.message);
-      return;
-    }
-
-    yogurtAlert(result.message);
-    this.$router.push({ path: '/login' });
+    await this.$store.dispatch(`${authNamespace}/logOut`);
   }
 }
 </script>

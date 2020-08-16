@@ -24,7 +24,7 @@
     />
     <q-btn
       label="로그인"
-      color="primary"
+      :color="primaryColor"
       class="q-mb-lg"
       style="width: 500px;"
       @click="logIn"
@@ -52,6 +52,10 @@ export default class Login extends mixins(Methods) {
       username: 'jongho010302',
       password: 'Wldms0302!',
     };
+  }
+
+  get primaryColor() {
+    return this.$store.state.primaryColor;
   }
 
   async logIn() {

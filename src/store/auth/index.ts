@@ -6,8 +6,9 @@ import { AuthState } from './types';
 import { RootState } from '../types';
 
 export const state: AuthState = {
-  jwtToken: '',
+  jwtToken: null,
   user: null,
+  maskingUsernames: null,
 };
 
 const namespaced = true;

@@ -48,8 +48,8 @@ const namespace = 'user';
 
 @Component({
   components: {
-    PageTitle
-  }
+    PageTitle,
+  },
 })
 export default class User extends Vue {
   data() {
@@ -78,7 +78,6 @@ export default class User extends Vue {
   }
 
   get users() {
-    console.log(this.$store.getters[`${namespace}/getUsers`]);
     return this.$store.getters[`${namespace}/getUsers`];
   }
 

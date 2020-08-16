@@ -1,5 +1,5 @@
 import { ActionTree } from 'vuex';
-import { makeRequest } from '@/util';
+import { makeRequest } from '@/util/common';
 import { StaffState } from './types';
 
 const { VUE_APP_MY_BACK_URL } = process.env;
@@ -7,43 +7,54 @@ const { VUE_APP_MY_BACK_URL } = process.env;
 const actions: ActionTree<StaffState, any> = {
   async getStaffs({ rootState, commit }) {
     try {
-      const res = await makeRequest('get', `${VUE_APP_MY_BACK_URL}/admin/staff`, null, {
-        Authorization: rootState.auth.jwtToken
-      });
+      const res = await makeRequest(
+        'get',
+        `${VUE_APP_MY_BACK_URL}/admin/staff`,
+        null,
+        {
+          Authorization: rootState.auth.jwtToken,
+        },
+      );
       commit('saveStaffs', res.data);
     } catch (err) {
-      console.error(err);
+      throw err;
     }
   },
   async saveStaff({ rootState }, payload) {
     try {
-      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/admin/staff`, payload, {
-        Authorization: rootState.auth.jwtToken
+      await makeRequest('post', `${VUE_APP_MY_BACK_URL}/admin/staff`, payload, {
+        Authorization: rootState.auth.jwtToken,
       });
-      return res;
     } catch (err) {
-      return err.response.data;
+      throw err;
     }
   },
   async deleteStaff({ rootState }, payload) {
     try {
-      const res = await makeRequest('delete', `${VUE_APP_MY_BACK_URL}/admin/staff`, payload, {
-        Authorization: rootState.auth.jwtToken
-      });
-      return res;
+      await makeRequest(
+        'delete',
+        `${VUE_APP_MY_BACK_URL}/admin/staff`,
+        payload,
+        {
+          Authorization: rootState.auth.jwtToken,
+        },
+      );
     } catch (err) {
-      return err.response.data;
+      throw err;
     }
   },
   async resetPassword({ rootState }, payload) {
     try {
-      const res = await makeRequest('post', `${VUE_APP_MY_BACK_URL}/admin/staff/reset-password`, payload, {
-        Authorization: rootState.auth.jwtToken
-      });
-      console.log(res);
-      return res;
+      await makeRequest(
+        'post',
+        `${VUE_APP_MY_BACK_URL}/admin/staff/reset-password`,
+        payload,
+        {
+          Authorization: rootState.auth.jwtToken,
+        },
+      );
     } catch (err) {
-      return err.response.data;
+      throw err;
     }
   },
 };
