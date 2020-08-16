@@ -15,7 +15,6 @@ const store: StoreOptions<RootState> = {
     primaryColor: 'primary',
     ticketStyle: 'background-image: linear-gradient(#4485F7, #A7C5F9)',
     // auth: {
-    //   jwtToken: null,
     //   user: null
     // },
     // lesson: {

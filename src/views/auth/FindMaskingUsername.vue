@@ -4,7 +4,7 @@
       <span class="text-h5 text-weight-bold">아이디 찾기</span>
     </div>
 
-    <div v-if="!maskingUsernames.length">
+    <div v-if="!maskingUsernames">
       <div class="q-mb-lg">이름을 입력해 주세요.</div>
 
       <q-input
@@ -38,7 +38,7 @@
         클릭해주세요.
       </div>
       <div>
-        <div v-for="(maskingUsername, index) in maskingUsername" :key="index">
+        <div v-for="(maskingUsername, index) in maskingUsernames" :key="index">
           {{ maskingUsername }}
         </div>
       </div>
@@ -48,7 +48,7 @@
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
-import { warningAlert } from '@/util/alert';
+import { warningAlert } from '@/util/ui';
 
 const namespace = 'auth';
 
@@ -65,14 +65,16 @@ export default class FindMaskingUsername extends mixins(Methods) {
   }
 
   async findMaskingUsername() {
-    if (!this.$data.name) {
-      warningAlert('이름을 입력해 주세요.');
-      return;
-    }
+    try {
+      if (!this.$data.name) {
+        warningAlert('이름을 입력해 주세요.');
+        return;
+      }
 
-    await this.$store.dispatch(`${namespace}/findMaskingUsername`, {
-      name: this.$data.name,
-    });
+      await this.$store.dispatch(`${namespace}/findMaskingUsername`, {
+        name: this.$data.name,
+      });
+    } catch (err) {}
   }
 }
 </script>

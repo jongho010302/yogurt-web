@@ -2,7 +2,7 @@ import Vue from 'vue';
 
 import './styles/quasar.sass';
 import '@quasar/extras/material-icons/material-icons.css';
-import { Notify, Quasar } from 'quasar';
+import { Quasar, Notify, Loading, QAjaxBar, LoadingBar } from 'quasar';
 
 Vue.use(Quasar, {
   config: {},
@@ -14,5 +14,14 @@ Vue.use(Quasar, {
   },
   plugins: {
     Notify,
+    Loading,
+    QAjaxBar,
+    LoadingBar,
   },
+});
+
+LoadingBar.setDefaults({
+  color: 'primary',
+  size: '7px',
+  position: 'top',
 });

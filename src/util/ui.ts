@@ -1,5 +1,7 @@
 import { Notify } from 'quasar';
 
+export const yogurtConfirm = (message: string) => window.confirm(message);
+
 export const positiveAlert = (message: string) =>
   Notify.create({
     type: 'positive',

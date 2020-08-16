@@ -61,7 +61,7 @@
 
                   <q-btn
                     color="primary"
-                    label="Logout"
+                    label="로그아웃"
                     push
                     size="sm"
                     v-close-popup
@@ -137,7 +137,10 @@ export default class App extends mixins(Methods) {
   }
 
   async logOut() {
-    await this.$store.dispatch(`${authNamespace}/logOut`);
+    try {
+      await this.$store.dispatch(`${authNamespace}/logOut`);
+      await this.$router.push('/login');
+    } catch (err) {}
   }
 }
 </script>

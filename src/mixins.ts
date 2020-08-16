@@ -4,7 +4,7 @@ import Component from 'vue-class-component';
 @Component
 export class Methods extends Vue {
   async routerTo(path: string) {
-    this.$router.push({ path });
+    await this.$router.push({ path });
   }
 
   numberCommaFormat(inputNumber: number) {
@@ -13,10 +13,5 @@ export class Methods extends Vue {
     }
 
     return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
-
-  notify(configuration: any) {
-    // @ts-ignore
-    this.$q.notify(configuration);
   }
 }

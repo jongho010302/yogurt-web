@@ -1,8 +1,11 @@
 import { ActionTree } from 'vuex';
-import { Notify } from 'quasar';
-import router from '@/router';
-import { makeRequest } from '@/util/common';
+import {
+  makeRequest,
+  makeRequestWithoutAlert,
+  setAxiosHeaders,
+} from '@/util/common';
 import { roleType } from '@/constants';
+import { errorAlert, positiveAlert } from '@/util/ui';
 import { AuthState } from './types';
 
 const { VUE_APP_MY_BACK_URL } = process.env;
@@ -10,7 +13,7 @@ const { VUE_APP_MY_BACK_URL } = process.env;
 const actions: ActionTree<AuthState, any> = {
   async logIn({ commit }, { username, password }) {
     try {
-      const res = await makeRequest(
+      const res = await makeRequestWithoutAlert(
         'post',
         `${VUE_APP_MY_BACK_URL}/auth/log-in`,
         {
@@ -27,33 +30,22 @@ const actions: ActionTree<AuthState, any> = {
           userRole === roleType.ROLE_MANAGER
         )
       ) {
-        Notify.create({
-          message: "You don't have permission to access.",
-          position: 'top-right',
-          color: 'negative',
-          icon: 'warning',
-        });
+        errorAlert('로그인 할 권한이 없습니다.');
+        return;
       }
 
+      positiveAlert(res.message);
       commit('saveUser', res.data.user);
-      commit('saveJwtToken', res.data.jwtToken);
-      await router.push('/');
+      setAxiosHeaders(res.data.jwtToken);
     } catch (err) {
+      errorAlert(err.message);
       throw err;
     }
   },
-  async logOut({ rootState, commit }) {
+  async logOut({ commit }) {
     try {
-      await makeRequest(
-        'post',
-        `${VUE_APP_MY_BACK_URL}/user/log-out`,
-        {},
-        {
-          Authorization: rootState.auth.jwtToken,
-        },
-      );
+      await makeRequest('post', `${VUE_APP_MY_BACK_URL}/user/log-out`);
       commit('saveUser', null);
-      await router.push({ path: '/login' });
     } catch (err) {
       throw err;
     }
@@ -75,8 +67,6 @@ const actions: ActionTree<AuthState, any> = {
         'get',
         `${VUE_APP_MY_BACK_URL}/auth/find/username?email=${email}`,
       );
-
-      await router.push('/login');
     } catch (err) {
       throw err;
     }
@@ -91,12 +81,12 @@ const actions: ActionTree<AuthState, any> = {
       throw err;
     }
   },
-  async verifyFindPasswordCode(none, { username, email }) {
+  async verifyFindPasswordCode(none, { email, verifyCode }) {
     try {
       await makeRequest(
         'post',
         `${VUE_APP_MY_BACK_URL}/auth/find/password/verify`,
-        { username, email },
+        { email, verifyCode },
       );
     } catch (err) {
       throw err;
@@ -109,8 +99,6 @@ const actions: ActionTree<AuthState, any> = {
         password,
         verifyCode,
       });
-
-      await router.push('/login');
     } catch (err) {
       throw err;
     }

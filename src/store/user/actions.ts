@@ -5,15 +5,12 @@ import { UserState } from './types';
 const { VUE_APP_MY_BACK_URL } = process.env;
 
 const actions: ActionTree<UserState, any> = {
-  async getUsers({ commit, rootState }) {
+  async getUsers({ commit }) {
     try {
       const res = await makeRequest(
         'get',
         `${VUE_APP_MY_BACK_URL}/admin/user`,
         null,
-        {
-          Authorization: rootState.auth.jwtToken,
-        },
       );
       commit('saveUsers', res.data);
     } catch (err) {

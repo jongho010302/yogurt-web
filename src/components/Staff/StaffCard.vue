@@ -31,7 +31,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { Staff as StaffType } from '@/store/staff/types';
-import { yogurtConfirm } from '@/util/common';
+import { yogurtConfirm } from '@/util/ui';
 
 const namespace = 'staff';
 

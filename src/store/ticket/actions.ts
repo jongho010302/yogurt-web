@@ -5,15 +5,11 @@ import { makeRequest } from '@/util/common';
 const { VUE_APP_MY_BACK_URL } = process.env;
 
 const actions: ActionTree<TicketState, any> = {
-  async getTickets({ commit, rootState }) {
+  async getTickets({ commit }) {
     try {
       const response = await makeRequest(
         'get',
         `${VUE_APP_MY_BACK_URL}/admin/ticket`,
-        {},
-        {
-          Authorization: rootState.auth.jwtToken,
-        },
       );
       const payload = response && response.data;
       commit('saveTickets', payload);
@@ -21,15 +17,11 @@ const actions: ActionTree<TicketState, any> = {
       console.error(err);
     }
   },
-  async getTicket({ commit, rootState }, { id }) {
+  async getTicket({ commit }, { id }) {
     try {
       const response = await makeRequest(
         'get',
         `${VUE_APP_MY_BACK_URL}/admin/ticket/${id}`,
-        {},
-        {
-          Authorization: rootState.auth.jwtToken,
-        },
       );
       const payload = response && response.data;
       commit('saveTicket', payload);
@@ -37,15 +29,12 @@ const actions: ActionTree<TicketState, any> = {
       console.error(err);
     }
   },
-  async saveTicket({ rootState }, payload) {
+  async saveTicket(none, payload) {
     try {
       await makeRequest(
         'post',
         `${VUE_APP_MY_BACK_URL}/api/ticket/save`,
         payload,
-        {
-          Authorization: rootState.auth.jwtToken,
-        },
       );
     } catch (err) {
       console.error(err);

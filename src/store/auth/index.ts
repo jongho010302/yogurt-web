@@ -6,7 +6,6 @@ import { AuthState } from './types';
 import { RootState } from '../types';
 
 export const state: AuthState = {
-  jwtToken: null,
   user: null,
   maskingUsernames: null,
 };

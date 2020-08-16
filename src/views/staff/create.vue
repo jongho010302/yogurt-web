@@ -451,7 +451,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { parseDate } from '@/util/date';
-import { warningAlert } from '@/util/alert';
+import { warningAlert } from '@/util/ui';
 import {
   usernameRegex,
   nameRegex,

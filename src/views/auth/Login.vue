@@ -37,6 +37,13 @@
         <a @click="routerTo('/find/masking-username')">아이디 찾기</a>
       </span>
     </div>
+    <q-ajax-bar
+      ref="bar"
+      position="bottom"
+      color="accent"
+      size="10px"
+      skip-hijack
+    />
   </div>
 </template>
 <script lang="ts">
@@ -59,10 +66,13 @@ export default class Login extends mixins(Methods) {
   }
 
   async logIn() {
-    await this.$store.dispatch(`${namespace}/logIn`, {
-      username: this.$data.username,
-      password: this.$data.password,
-    });
+    try {
+      await this.$store.dispatch(`${namespace}/logIn`, {
+        username: this.$data.username,
+        password: this.$data.password,
+      });
+      await this.$router.push('/schedule');
+    } catch (err) {}
   }
 }
 </script>
