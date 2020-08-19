@@ -1,6 +1,6 @@
 import axios, { Method } from 'axios';
 import { ApiResponse } from '@/types';
-import { errorAlert, positiveAlert } from '@/util/ui';
+import { errorAlert, positiveAlert, warningAlert } from '@/util/ui';
 import { LoadingBar } from 'quasar';
 
 export const makeRequest = async (
@@ -60,4 +60,11 @@ export const makeRequestWithoutAlert = async (
 
 export const setAxiosHeaders = (token: string) => {
   axios.defaults.headers.common.Authorization = token;
+};
+
+export const validateParam = (value: any, message: string) => {
+  if (!value) {
+    warningAlert(message);
+    throw new Error();
+  }
 };

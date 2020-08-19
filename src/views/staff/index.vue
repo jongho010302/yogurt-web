@@ -15,11 +15,13 @@
       </div>
     </div>
 
-    <q-page-sticky position="bottom-right" :offset="[55, 55]">
+    <q-page-sticky position="bottom-right" :offset="[45, 45]">
       <q-btn
         fab
-        icon="edit"
+        :icon="icon"
         color="red"
+        @mouseover="icon = 'edit'"
+        @mouseout="icon = 'add'"
         @click="$router.push('/staff/create')"
       ></q-btn>
     </q-page-sticky>
@@ -41,6 +43,12 @@ const namespace = 'staff';
   },
 })
 export default class Staff extends Vue {
+  data() {
+    return {
+      icon: 'add',
+    };
+  }
+
   get primaryColor() {
     return this.$store.state.primaryColor;
   }

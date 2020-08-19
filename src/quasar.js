@@ -22,6 +22,6 @@ Vue.use(Quasar, {
 
 LoadingBar.setDefaults({
   color: 'primary',
-  size: '7px',
+  size: '5px',
   position: 'top',
 });

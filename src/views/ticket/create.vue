@@ -1,61 +1,107 @@
 <template>
-  <div class="row">
-    <div class="col-2"></div>
-    <div class="col-8">
-      <div class="q-mb-md"></div>
-      <q-stepper v-model="step" ref="stepper" :active-color="primaryColor" :done-color="primaryColor" class="no-shadow" animated>
-        <q-step :name="1" title="기본 정보 기입" icon="assignment" :done="step > 1">
+  <div>
+    <div class="q-pa-lg q-pl-xl">
+      <div class="q-mb-xl text-weight-bold">수강권 > 수강권등록</div>
 
-          <!-- 수강권 종류 -->
-          <div class="text-weight-bold">수강권 종류</div>
-          <q-option-group v-model="lessonType" :options="lessonTypeOptions" :color="primaryColor" inline class="q-mb-xl" />
+      <!-- 수강권 종류 -->
+      <div class="text-weight-bold">수강권 종류</div>
+      <q-option-group
+        v-model="lessonType"
+        :options="lessonTypeOptions"
+        :color="primaryColor"
+        inline
+        class="q-mb-xl"
+      />
 
-          <!-- 수강권 명 -->
-          <div class="text-weight-bold">수강권 명</div>
-          <q-input v-model="lessonTitle" dense placeholder="수강권 명을 입력하세요." :color="primaryColor" class="q-mb-xl" />
+      <!-- 수강권 명 -->
+      <div class="text-weight-bold">수강권 명</div>
+      <q-input
+        v-model="lessonTitle"
+        dense
+        placeholder="수강권 명을 입력하세요."
+        :color="primaryColor"
+        class="q-mb-xl"
+      />
 
-           <!-- 이용 횟수 -->
-          <div class="text-weight-bold">이용 횟수</div>
-          <q-input v-model.number="lessonCount" type="number" dense placeholder="이용 횟수를 입력하세요" :color="primaryColor" class="q-mb-xl" style="max-width: 200px" />
+      <!-- 이용 횟수 -->
+      <div class="text-weight-bold">이용 횟수</div>
+      <q-input
+        v-model.number="lessonCount"
+        type="number"
+        dense
+        placeholder="이용 횟수를 입력하세요"
+        :color="primaryColor"
+        class="q-mb-xl"
+        style="max-width: 200px;"
+      />
 
-          <!-- 수강권 사용기한 -->
-          <div class="text-weight-bold">수강권 사용기한</div>
-          <q-option-group v-model="availablePeriod" :options="availablePeriodOptions" :color="primaryColor" inline class="q-mb-xl" />
+      <!-- 수강권 사용기한 -->
+      <div class="text-weight-bold">수강권 사용기한</div>
+      <q-option-group
+        v-model="availablePeriod"
+        :options="availablePeriodOptions"
+        :color="primaryColor"
+        inline
+        class="q-mb-xl"
+      />
 
-          <!-- 수강 인원 -->
-          <div class="text-weight-bold">수강 인원</div>
-          <q-input v-model.number="maxTrainee" type="number" dense placeholder="수강 인원을 입력하세요" :color="primaryColor" class="q-mb-xl" style="max-width: 200px" />
+      <!-- 수강 인원 -->
+      <div class="text-weight-bold">수강 인원</div>
+      <q-input
+        v-model.number="maxTrainee"
+        type="number"
+        dense
+        placeholder="수강 인원을 입력하세요"
+        :color="primaryColor"
+        class="q-mb-xl"
+        style="max-width: 200px;"
+      />
 
-          <!-- 수강권 판매가 -->
-          <div class="text-weight-bold">수강권 판매가</div>
-          <q-input v-model.number="price" dense :color="primaryColor" class="q-mb-xl" style="max-width: 200px" />
-
-        </q-step>
-
-        <q-step :name="2" title="냠" icon="assignment" :done="step > 2">
-          <div class="text-h5 text-weight-bold q-mb-lg">냠</div>
-        </q-step>
-
-        <q-step :name="3" title="등록" icon="assignment" :done="step > 3">
-          지금까지 입력한 정보를 바탕으로 등록을 진행하겠습니다.
-        </q-step>
-
-        <template v-slot:navigation>
-          <q-stepper-navigation>
-            <q-btn @click="onSubmit($refs.stepper);" :color="primaryColor" :label="step === 3 ? 'Finish' : 'Continue'" />
-            <q-btn v-if="step > 1" flat :color="primaryColor" @click="$refs.stepper.previous()" label="Back" class="q-ml-sm" />
-          </q-stepper-navigation>
-        </template>
-      </q-stepper>
+      <!-- 수강권 판매가 -->
+      <div class="text-weight-bold">수강권 판매가</div>
+      <q-input
+        v-model.number="price"
+        dense
+        :color="primaryColor"
+        class="q-mb-xl"
+        style="max-width: 200px;"
+      />
     </div>
 
+    <!-- Footer -->
+    <div
+      class="q-px-lg"
+      style="
+        position: fixed;
+        bottom: 0px;
+        left: 56px;
+        right: 0px;
+        background-color: #64aeff;
+        width: 97%;
+        height: 60px;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        color: white;
+      "
+    >
+      <span @click="$router.push('/ticket')" style="cursor: pointer;">
+        <q-icon name="keyboard_arrow_left" />뒤로가기
+      </span>
+      <q-space />
+      <q-btn
+        label="수강권 등록 완료"
+        color="white"
+        text-color="black"
+        @click="onSubmit"
+      ></q-btn>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Watch } from 'vue-property-decorator';
 
 const namespace = 'ticket';
 
@@ -74,7 +120,7 @@ export default class TicketCard extends Vue {
         {
           label: '프라이빗형 수업 전용',
           value: 'private',
-        }
+        },
       ],
       lessonTitle: '',
       lessonCount: 30,
@@ -94,7 +140,7 @@ export default class TicketCard extends Vue {
         },
       ],
       maxTrainee: 4,
-      price: 0
+      price: 0,
     };
   }
 
@@ -102,32 +148,18 @@ export default class TicketCard extends Vue {
     return this.$store.state.primaryColor;
   }
 
-  toggleCalendar() {
-    this.$data.showCalendar = !this.$data.showCalenda;
-  }
-
-  hideCalendar() {
-    this.$data.showCalendar = false;
-  }
-
-  onSubmit(stepper: any) {
-    if(this.$data.step === 3) {
+  onSubmit() {
+    try {
       this.$store.dispatch(`${namespace}/saveTicket`, {
         lessonType: this.$data.lessonType,
         lessonTitle: this.$data.lessonTitle,
         lessonCount: this.$data.lessonCount,
         availablePeriod: this.$data.availablePeriod,
         maxTrainee: this.$data.maxTrainee,
-        price: this.$data.price
+        price: this.$data.price,
       });
       this.$router.push({ path: '/ticket' });
-    }
-    stepper.next();
-  }
-
-  @Watch('calendarDate')
-  onDateFileterChanged() {
-    this.hideCalendar();
+    } catch (err) {}
   }
 }
 </script>

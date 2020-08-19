@@ -1,448 +1,439 @@
 <template>
-  <div class="row">
-    <div class="col-2"></div>
-    <div class="col-8">
-      <div class="q-mb-md"></div>
-      <q-stepper
-        v-model="step"
-        ref="stepper"
-        active-color="primary"
-        done-color="primary"
-        class="no-shadow"
-        animated
+  <div>
+    <div class="q-pa-lg q-pl-xl">
+      <div class="q-mb-xl text-weight-bold">강사 > 강사등록</div>
+
+      <!-- 이름 -->
+      <div class="text-weight-bold">이름</div>
+      <q-input
+        v-model="name"
+        dense
+        placeholder="이름을 입력해 주세요."
+        color="primary"
+        style="width: 300px;"
+        class="q-mb-xl row"
+        @input="onNameChange"
       >
-        <q-step
-          :name="1"
-          title="기본 정보 기입"
-          icon="assignment"
-          :done="step > 1"
-        >
-          <!-- 이름 -->
-          <div class="text-weight-bold">이름</div>
-          <q-input
-            v-model="name"
-            dense
-            placeholder="이름을 입력해 주세요."
-            :color="primaryColor"
-            style="width: 300px;"
-            class="q-mb-xl"
-            @input="handleNameChange"
-          >
-            <template v-slot:append>
-              <q-icon v-if="nameVerified" name="done" color="black" />
-              <q-icon v-else name="warning" color="black">
-                <q-tooltip>이름의 형식을 맞춰주세요.</q-tooltip>
-              </q-icon>
-            </template>
-          </q-input>
-
-          <!-- 아이디 -->
-          <div class="text-weight-bold">아이디</div>
-          <div class="q-mb-xl row">
-            <q-input
-              v-model="username"
-              dense
-              placeholder="아이디를 입력해 주세요."
-              :color="primaryColor"
-              style="width: 300px;"
-              class="q-mr-sm"
-              @input="handleUsernameChange"
-            >
-              <template v-slot:append>
-                <q-icon v-if="usernameVerified" name="done" color="black" />
-                <q-icon
-                  v-if="!usernameVerified && !usernameVerifyVisible"
-                  name="warning"
-                  color="black"
-                >
-                  <q-tooltip>
-                    아이디는 8자에서 10자이어야 합니다.
-                  </q-tooltip>
-                </q-icon>
-                <q-icon
-                  v-if="!usernameVerified && usernameVerifyVisible"
-                  name="report"
-                  color="black"
-                >
-                  <q-tooltip>
-                    아이디 중복검사를 해주세요.
-                  </q-tooltip>
-                </q-icon>
-              </template>
-            </q-input>
-            <q-btn
-              v-if="usernameVerifyVisible && !usernameVerified"
-              color="black"
-              rounded
-              label="중복검사"
-              @click="verifyUsername"
-            />
-          </div>
-
-          <!-- 이메일 -->
-          <div class="text-weight-bold">이메일</div>
-          <div class="q-mb-xl row">
-            <q-input
-              v-model="email"
-              type="email"
-              dense
-              placeholder="이메일을 입력해 주세요."
-              color="primary"
-              style="width: 300px;"
-              class="q-mr-sm"
-              @input="onEmailChange"
-            >
-              <template v-slot:append>
-                <q-icon
-                  v-if="emailSendVerifyCodeVisible"
-                  name="done"
-                  color="black"
-                />
-                <q-icon v-else name="warning" color="black">
-                  <q-tooltip>이메일 형식을 맞춰 주세요.</q-tooltip>
-                </q-icon>
-              </template>
-            </q-input>
-            <q-btn
-              v-if="emailSendVerifyCodeVisible"
-              class="q-mr-sm"
-              color="primary"
-              outline
-              :label="!isEmailVerifyCodeSend ? '인증번호 보내기' : '다시보내기'"
-              @click="sendVerifyCode"
-            />
-          </div>
-
-          <!-- 인증번호 -->
-          <div class="text-weight-bold">인증번호</div>
-          <div class="q-mb-xl row">
-            <q-input
-              v-model="emailVerifyCode"
-              type="email"
-              :disable="!isEmailVerifyCodeSend"
-              dense
-              placeholder="이메일 인증번호를 입력해 주세요."
-              :color="primaryColor"
-              style="width: 300px;"
-              class="q-mr-sm"
-            >
-              <template v-slot:append>
-                <q-icon v-if="emailVerified" name="done" color="black" />
-                <q-icon
-                  v-if="!emailVerified && isEmailVerifyCodeSend"
-                  name="warning"
-                  color="black"
-                >
-                  <q-tooltip>인증해 주세요.</q-tooltip>
-                </q-icon>
-              </template>
-            </q-input>
-            <q-btn
-              v-if="isEmailVerifyCodeSend"
-              color="primary"
-              outline
-              label="인증"
-              @click="verifyCode"
-            />
-          </div>
-
-          <!-- 휴대폰 번호 -->
-          <div class="text-weight-bold">휴대폰 번호</div>
-          <q-input
-            v-model="phoneNumber"
-            dense
-            placeholder="휴대폰 번호를 입력해 주세요."
-            :color="primaryColor"
-            mask="###-####-####"
-            style="width: 300px;"
-            class="q-mb-xl"
-            @input="handlePhoneNumberChange"
-          >
-            <template v-slot:append>
-              <q-icon v-if="phoneNumberVerified" name="done" color="black" />
-              <q-icon v-else name="warning" color="black">
-                <q-tooltip>올바른 휴대폰 번호를 입력해 주세요.</q-tooltip>
-              </q-icon>
-            </template>
-          </q-input>
-
-          <!-- 성별 -->
-          <div class="text-weight-bold">성별</div>
-          <q-option-group
-            v-model="gender"
-            :options="genderOptions"
-            :color="primaryColor"
-            inline
-            class="q-mb-xl"
-          />
-
-          <!-- 역할 -->
-          <div class="text-weight-bold">역할</div>
-          <q-option-group
-            v-model="role"
-            :options="roleOptions"
-            :color="primaryColor"
-            inline
-            class="q-mb-xl"
-          />
-
-          <!-- 생일 -->
-          <div class="text-weight-bold">생일</div>
-          <q-input
-            v-model="birth"
-            :color="primaryColor"
-            mask="####-##-##"
-            dense
-            class="q-mb-xl"
-            style="width: 120px; height: 50px;"
-          >
-            <template v-slot:prepend>
-              <q-icon name="event" style="cursor: pointer;">
-                <q-menu>
-                  <q-list dense>
-                    <q-item style="padding: 0 0px;">
-                      <q-date v-model="birth" :color="primaryColor" minimal />
-                    </q-item>
-                  </q-list>
-                </q-menu>
-              </q-icon>
-            </template>
-          </q-input>
-
-          <!-- 고용 날짜 -->
-          <div class="text-weight-bold">고용 날짜</div>
-          <q-input
-            v-model="hiredAt"
-            :color="primaryColor"
-            mask="####-##-##"
-            dense
-            class="q-mb-xl"
-            style="width: 120px; height: 50px;"
-          >
-            <template v-slot:prepend>
-              <q-icon name="event" style="cursor: pointer;">
-                <q-menu>
-                  <q-list dense>
-                    <q-item style="padding: 0 0px;">
-                      <q-date v-model="hiredAt" :color="primaryColor" minimal />
-                    </q-item>
-                  </q-list>
-                </q-menu>
-              </q-icon>
-            </template>
-          </q-input>
-
-          <!-- 자기 소개 -->
-          <div class="text-weight-bold">자기 소개</div>
-          <q-input
-            v-model="introduce"
-            dense
-            placeholder="자기 소개를 입력해주세요."
-            :color="primaryColor"
-            class="q-mb-xl"
-          />
-        </q-step>
-
-        <q-step
-          :name="2"
-          title="근무시간 입력"
-          icon="assignment"
-          :done="step > 2"
-        >
-          <div class="text-h5 text-weight-bold q-mb-lg">근무시간</div>
-
-          <div class="text-weight-bold q-mb-md q-mt-md">월요일</div>
-          <div class="row items-center">
-            <q-input
-              v-model="monWorkingStartTime"
-              dense
-              :disable="isMonDayOff"
-              class="q-mr-md"
-              style="width: 100px;"
-            />~
-            <q-input
-              v-model="monWorkingEndTime"
-              dense
-              :disable="isMonDayOff"
-              class="q-ml-md"
-              style="width: 100px;"
-            />
-            <q-checkbox
-              v-model="isMonDayOff"
-              :color="primaryColor"
-              dense
-              class="q-ml-md q-mr-sm"
-            />off
-          </div>
-
-          <div class="text-weight-bold q-mb-md q-mt-md">화요일</div>
-          <div class="row items-center">
-            <q-input
-              v-model="tueWorkingStartTime"
-              dense
-              :disable="isTueDayOff"
-              class="q-mr-md"
-              style="width: 100px;"
-            />~
-            <q-input
-              v-model="tueWorkingEndTime"
-              dense
-              :disable="isTueDayOff"
-              class="q-ml-md"
-              style="width: 100px;"
-            />
-            <q-checkbox
-              v-model="isTueDayOff"
-              :color="primaryColor"
-              dense
-              class="q-ml-md q-mr-sm"
-            />off
-          </div>
-
-          <div class="text-weight-bold q-mb-md q-mt-md">수요일</div>
-          <div class="row items-center">
-            <q-input
-              v-model="wedWorkingStartTime"
-              dense
-              :disable="isWedDayOff"
-              class="q-mr-md"
-              style="width: 100px;"
-            />~
-            <q-input
-              v-model="wedWorkingEndTime"
-              dense
-              :disable="isWedDayOff"
-              class="q-ml-md"
-              style="width: 100px;"
-            />
-            <q-checkbox
-              v-model="isWedDayOff"
-              :color="primaryColor"
-              dense
-              class="q-ml-md q-mr-sm"
-            />off
-          </div>
-
-          <div class="text-weight-bold q-mb-md q-mt-md">목요일</div>
-          <div class="row items-center">
-            <q-input
-              v-model="thuWorkingStartTime"
-              dense
-              :disable="isThuDayOff"
-              class="q-mr-md"
-              style="width: 100px;"
-            />~
-            <q-input
-              v-model="thuWorkingEndTime"
-              dense
-              :disable="isThuDayOff"
-              class="q-ml-md"
-              style="width: 100px;"
-            />
-            <q-checkbox
-              v-model="isThuDayOff"
-              :color="primaryColor"
-              dense
-              class="q-ml-md q-mr-sm"
-            />off
-          </div>
-
-          <div class="text-weight-bold q-mb-md q-mt-md">금요일</div>
-          <div class="row items-center">
-            <q-input
-              v-model="friWorkingStartTime"
-              dense
-              :disable="isFriDayOff"
-              class="q-mr-md"
-              style="width: 100px;"
-            />~
-            <q-input
-              v-model="friWorkingEndTime"
-              dense
-              :disable="isFriDayOff"
-              class="q-ml-md"
-              style="width: 100px;"
-            />
-            <q-checkbox
-              v-model="isFriDayOff"
-              :color="primaryColor"
-              dense
-              class="q-ml-md q-mr-sm"
-            />off
-          </div>
-
-          <div class="text-weight-bold q-mb-md q-mt-md">토요일</div>
-          <div class="row items-center">
-            <q-input
-              v-model="satWorkingStartTime"
-              dense
-              :disable="isSatDayOff"
-              class="q-mr-md"
-              style="width: 100px;"
-            />~
-            <q-input
-              v-model="satWorkingEndTime"
-              dense
-              :disable="isSatDayOff"
-              class="q-ml-md"
-              style="width: 100px;"
-            />
-            <q-checkbox
-              v-model="isSatDayOff"
-              :color="primaryColor"
-              dense
-              class="q-ml-md q-mr-sm"
-            />off
-          </div>
-
-          <div class="text-weight-bold q-mb-md q-mt-md">일요일</div>
-          <div class="row items-center">
-            <q-input
-              v-model="sunWorkingStartTime"
-              dense
-              :disable="isSunDayOff"
-              class="q-mr-md"
-              style="width: 100px;"
-            />~
-            <q-input
-              v-model="sunWorkingEndTime"
-              dense
-              :disable="isSunDayOff"
-              class="q-ml-md"
-              style="width: 100px;"
-            />
-            <q-checkbox
-              v-model="isSunDayOff"
-              :color="primaryColor"
-              dense
-              class="q-ml-md q-mr-sm"
-            />off
-          </div>
-        </q-step>
-
-        <q-step :name="3" title="등록" icon="assignment" :done="step > 3"
-          >We will register based on the information you have entered so
-          far.</q-step
-        >
-
-        <template v-slot:navigation>
-          <q-stepper-navigation>
-            <q-btn
-              @click="handleSubmit($refs.stepper)"
-              :color="primaryColor"
-              :label="step === 3 ? '저장' : '진행'"
-            />
-            <q-btn
-              v-if="step > 1"
-              flat
-              :color="primaryColor"
-              @click="$refs.stepper.previous()"
-              label="뒤로 가기"
-              class="q-ml-sm"
-            />
-          </q-stepper-navigation>
+        <template v-slot:append>
+          <q-icon v-if="nameVerified" name="done" color="primary" />
+          <q-icon v-else name="warning" color="black">
+            <q-tooltip>이름의 형식을 맞춰주세요.</q-tooltip>
+          </q-icon>
         </template>
-      </q-stepper>
+      </q-input>
+
+      <!-- 아이디 -->
+      <div class="text-weight-bold">아이디</div>
+      <div class="q-mb-xl row">
+        <q-input
+          v-model="username"
+          dense
+          placeholder="아이디를 입력해 주세요."
+          :color="primaryColor"
+          style="width: 300px;"
+          class="q-mr-sm"
+          @input="onUsernameChange"
+        >
+          <template v-slot:append>
+            <q-icon v-if="usernameVerified" name="done" color="primary" />
+            <q-icon
+              v-if="!usernameVerified && !usernameVerifyVisible"
+              name="warning"
+              color="black"
+            >
+              <q-tooltip>
+                아이디는 8자에서 10자이어야 합니다.
+              </q-tooltip>
+            </q-icon>
+            <q-icon
+              v-if="!usernameVerified && usernameVerifyVisible"
+              name="error"
+              color="warning"
+            >
+              <q-tooltip>
+                아이디 중복검사를 해주세요.
+              </q-tooltip>
+            </q-icon>
+          </template>
+        </q-input>
+        <q-btn
+          v-if="usernameVerifyVisible && !usernameVerified"
+          color="primary"
+          outline
+          label="중복검사"
+          @click="verifyUsername"
+        />
+      </div>
+
+      <!-- 이메일 -->
+      <div class="text-weight-bold">이메일</div>
+      <div class="q-mb-xl row">
+        <q-input
+          v-model="email"
+          type="email"
+          dense
+          placeholder="이메일을 입력해 주세요."
+          color="primary"
+          style="width: 300px;"
+          class="q-mr-sm"
+          @input="onEmailChange"
+        >
+          <template v-slot:append>
+            <q-icon v-if="isEmailVerifyCodeSend" name="done" color="primary" />
+            <q-icon
+              v-if="!emailSendVerifyCodeVisible"
+              name="warning"
+              color="black"
+            >
+              <q-tooltip>이메일 형식을 맞춰 주세요.</q-tooltip>
+            </q-icon>
+            <q-icon
+              v-if="emailSendVerifyCodeVisible && !isEmailVerifyCodeSend"
+              name="warning"
+              color="black"
+            >
+              <q-tooltip>인증번호를 발송해 주세요.</q-tooltip>
+            </q-icon>
+          </template>
+        </q-input>
+        <q-btn
+          v-if="emailSendVerifyCodeVisible"
+          class="q-mr-sm"
+          color="primary"
+          outline
+          :label="!isEmailVerifyCodeSend ? '인증번호 보내기' : '다시보내기'"
+          @click="sendVerifyCode"
+        />
+      </div>
+
+      <!-- 인증번호 -->
+      <div class="text-weight-bold">인증번호</div>
+      <div class="q-mb-xl row">
+        <q-input
+          v-model="emailVerifyCode"
+          type="email"
+          :disable="!isEmailVerifyCodeSend"
+          dense
+          placeholder="이메일 인증번호를 입력해 주세요."
+          :color="primaryColor"
+          style="width: 300px;"
+          class="q-mr-sm"
+        >
+          <template v-slot:append>
+            <q-icon v-if="emailVerified" name="done" color="primary" />
+            <q-icon
+              v-if="!emailVerified && isEmailVerifyCodeSend"
+              name="warning"
+              color="black"
+            >
+              <q-tooltip>인증해 주세요.</q-tooltip>
+            </q-icon>
+          </template>
+        </q-input>
+        <q-btn
+          v-if="isEmailVerifyCodeSend"
+          color="primary"
+          outline
+          label="인증"
+          @click="verifyCode"
+        />
+      </div>
+
+      <!-- 휴대폰 번호 -->
+      <div class="text-weight-bold">휴대폰 번호</div>
+      <q-input
+        v-model="phoneNumber"
+        dense
+        placeholder="휴대폰 번호를 입력해 주세요."
+        :color="primaryColor"
+        mask="###-####-####"
+        style="width: 300px;"
+        class="q-mb-xl row"
+        @input="onPhoneNumberChange"
+      >
+        <template v-slot:append>
+          <q-icon v-if="phoneNumberVerified" name="done" color="primary" />
+          <q-icon v-else name="warning" color="black">
+            <q-tooltip>올바른 휴대폰 번호를 입력해 주세요.</q-tooltip>
+          </q-icon>
+        </template>
+      </q-input>
+
+      <!-- 성별 -->
+      <div class="text-weight-bold">성별</div>
+      <q-option-group
+        v-model="gender"
+        :options="genderOptions"
+        :color="primaryColor"
+        inline
+        class="q-mb-xl row"
+      />
+
+      <!-- 역할 -->
+      <div class="text-weight-bold">역할</div>
+      <q-option-group
+        v-model="role"
+        :options="roleOptions"
+        :color="primaryColor"
+        inline
+        class="q-mb-xl row"
+      />
+
+      <!-- 생일 -->
+      <div class="text-weight-bold">생일</div>
+      <q-input
+        v-model="birth"
+        :color="primaryColor"
+        mask="####-##-##"
+        dense
+        class="q-mb-xl row"
+        style="width: 120px; height: 50px;"
+      >
+        <template v-slot:prepend>
+          <q-icon name="event" style="cursor: pointer;">
+            <q-menu>
+              <q-list dense>
+                <q-item style="padding: 0 0px;">
+                  <q-date v-model="birth" :color="primaryColor" minimal />
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-icon>
+        </template>
+      </q-input>
+
+      <!-- 고용 날짜 -->
+      <div class="text-weight-bold">고용 날짜</div>
+      <q-input
+        v-model="hiredAt"
+        :color="primaryColor"
+        mask="####-##-##"
+        dense
+        class="q-mb-xl row"
+        style="width: 120px; height: 50px;"
+      >
+        <template v-slot:prepend>
+          <q-icon name="event" style="cursor: pointer;">
+            <q-menu>
+              <q-list dense>
+                <q-item style="padding: 0 0px;">
+                  <q-date v-model="hiredAt" :color="primaryColor" minimal />
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-icon>
+        </template>
+      </q-input>
+
+      <!-- 자기 소개 -->
+      <div class="text-weight-bold">자기 소개</div>
+      <q-input
+        v-model="introduce"
+        dense
+        placeholder="자기 소개를 입력해주세요."
+        :color="primaryColor"
+        class="q-mb-xl row"
+        style="width: 80%; height: 50px;"
+      />
+
+      <div class="text-h5 text-weight-bold q-mb-lg">근무시간</div>
+
+      <div class="text-weight-bold q-mb-md q-mt-md">월요일</div>
+      <div class="row items-center">
+        <q-input
+          v-model="monWorkingStartTime"
+          dense
+          :disable="isMonDayOff"
+          class="q-mr-md"
+          style="width: 100px;"
+        />~
+        <q-input
+          v-model="monWorkingEndTime"
+          dense
+          :disable="isMonDayOff"
+          class="q-ml-md"
+          style="width: 100px;"
+        />
+        <q-checkbox
+          v-model="isMonDayOff"
+          :color="primaryColor"
+          dense
+          class="q-ml-md q-mr-sm"
+        />off
+      </div>
+
+      <div class="text-weight-bold q-mb-md q-mt-md">화요일</div>
+      <div class="row items-center">
+        <q-input
+          v-model="tueWorkingStartTime"
+          dense
+          :disable="isTueDayOff"
+          class="q-mr-md"
+          style="width: 100px;"
+        />~
+        <q-input
+          v-model="tueWorkingEndTime"
+          dense
+          :disable="isTueDayOff"
+          class="q-ml-md"
+          style="width: 100px;"
+        />
+        <q-checkbox
+          v-model="isTueDayOff"
+          :color="primaryColor"
+          dense
+          class="q-ml-md q-mr-sm"
+        />off
+      </div>
+
+      <div class="text-weight-bold q-mb-md q-mt-md">수요일</div>
+      <div class="row items-center">
+        <q-input
+          v-model="wedWorkingStartTime"
+          dense
+          :disable="isWedDayOff"
+          class="q-mr-md"
+          style="width: 100px;"
+        />~
+        <q-input
+          v-model="wedWorkingEndTime"
+          dense
+          :disable="isWedDayOff"
+          class="q-ml-md"
+          style="width: 100px;"
+        />
+        <q-checkbox
+          v-model="isWedDayOff"
+          :color="primaryColor"
+          dense
+          class="q-ml-md q-mr-sm"
+        />off
+      </div>
+
+      <div class="text-weight-bold q-mb-md q-mt-md">목요일</div>
+      <div class="row items-center">
+        <q-input
+          v-model="thuWorkingStartTime"
+          dense
+          :disable="isThuDayOff"
+          class="q-mr-md"
+          style="width: 100px;"
+        />~
+        <q-input
+          v-model="thuWorkingEndTime"
+          dense
+          :disable="isThuDayOff"
+          class="q-ml-md"
+          style="width: 100px;"
+        />
+        <q-checkbox
+          v-model="isThuDayOff"
+          :color="primaryColor"
+          dense
+          class="q-ml-md q-mr-sm"
+        />off
+      </div>
+
+      <div class="text-weight-bold q-mb-md q-mt-md">금요일</div>
+      <div class="row items-center">
+        <q-input
+          v-model="friWorkingStartTime"
+          dense
+          :disable="isFriDayOff"
+          class="q-mr-md"
+          style="width: 100px;"
+        />~
+        <q-input
+          v-model="friWorkingEndTime"
+          dense
+          :disable="isFriDayOff"
+          class="q-ml-md"
+          style="width: 100px;"
+        />
+        <q-checkbox
+          v-model="isFriDayOff"
+          :color="primaryColor"
+          dense
+          class="q-ml-md q-mr-sm"
+        />off
+      </div>
+
+      <div class="text-weight-bold q-mb-md q-mt-md">토요일</div>
+      <div class="row items-center">
+        <q-input
+          v-model="satWorkingStartTime"
+          dense
+          :disable="isSatDayOff"
+          class="q-mr-md"
+          style="width: 100px;"
+        />~
+        <q-input
+          v-model="satWorkingEndTime"
+          dense
+          :disable="isSatDayOff"
+          class="q-ml-md"
+          style="width: 100px;"
+        />
+        <q-checkbox
+          v-model="isSatDayOff"
+          :color="primaryColor"
+          dense
+          class="q-ml-md q-mr-sm"
+        />off
+      </div>
+
+      <div class="text-weight-bold q-mb-md q-mt-md">일요일</div>
+      <div class="row items-center" style="margin-bottom: 100px;">
+        <q-input
+          v-model="sunWorkingStartTime"
+          dense
+          :disable="isSunDayOff"
+          class="q-mr-md"
+          style="width: 100px;"
+        />~
+        <q-input
+          v-model="sunWorkingEndTime"
+          dense
+          :disable="isSunDayOff"
+          class="q-ml-md"
+          style="width: 100px;"
+        />
+        <q-checkbox
+          v-model="isSunDayOff"
+          :color="primaryColor"
+          dense
+          class="q-ml-md q-mr-sm"
+        />off
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div
+      class="q-px-lg"
+      style="
+        position: fixed;
+        bottom: 0px;
+        left: 56px;
+        right: 0px;
+        background-color: #64aeff;
+        width: 97%;
+        height: 60px;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        color: white;
+      "
+    >
+      <span @click="$router.push('/staff')" style="cursor: pointer;">
+        <q-icon name="keyboard_arrow_left" />뒤로가기
+      </span>
+      <q-space />
+      <q-btn
+        label="강사 등록 완료"
+        color="white"
+        text-color="black"
+        @click="onSubmit"
+      ></q-btn>
     </div>
   </div>
 </template>
@@ -451,13 +442,13 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { parseDate } from '@/util/date';
-import { warningAlert } from '@/util/ui';
 import {
   usernameRegex,
   nameRegex,
   emailRegex,
   phoneNumberRegex,
 } from '@/util/regex';
+import { validateParam } from '@/util/common';
 
 const namespace = 'staff';
 const authNamespace = 'auth';
@@ -466,8 +457,6 @@ const authNamespace = 'auth';
 export default class StaffCreate extends Vue {
   data() {
     return {
-      step: 1,
-      // Step 1
       name: '',
       nameVerified: false,
       username: '',
@@ -514,7 +503,6 @@ export default class StaffCreate extends Vue {
       showCalendar: false,
       hiredAt: parseDate(new Date(), 'yyyy-mm-dd'),
 
-      // Step 2
       isMonDayOff: false,
       monWorkingStartTime: '09:00',
       monWorkingEndTime: '18:00',
@@ -547,7 +535,7 @@ export default class StaffCreate extends Vue {
     return this.$store.getters[`${authNamespace}/getUser`];
   }
 
-  handleNameChange(value: string) {
+  onNameChange(value: string) {
     if (nameRegex.test(value)) {
       this.$data.nameVerified = true;
     } else {
@@ -555,21 +543,13 @@ export default class StaffCreate extends Vue {
     }
   }
 
-  handleUsernameChange(value: string) {
+  onUsernameChange(value: string) {
     this.$data.usernameVerified = false;
     if (usernameRegex.test(value)) {
       this.$data.usernameVerifyVisible = true;
     } else {
       this.$data.usernameVerifyVisible = false;
     }
-  }
-
-  async verifyUsername() {
-    await this.$store.dispatch(`${authNamespace}/verifyUsername`, {
-      username: this.$data.username,
-    });
-
-    this.$data.usernameVerified = true;
   }
 
   onEmailChange(value: string) {
@@ -583,16 +563,43 @@ export default class StaffCreate extends Vue {
     }
   }
 
-  async sendVerifyCode() {
-    await this.$store.dispatch(`${authNamespace}/sendSignUpCode`, {
-      email: this.$data.email,
-    });
+  onPhoneNumberChange(value: string) {
+    if (phoneNumberRegex.test(value)) {
+      this.$data.phoneNumberVerified = true;
+    } else {
+      this.$data.phoneNumberVerified = false;
+    }
+  }
 
-    this.$data.isEmailVerifyCodeSend = true;
+  async verifyUsername() {
+    try {
+      validateParam(this.$data.username, '아이디를 입력해 주세요.');
+
+      await this.$store.dispatch(`${authNamespace}/verifyUsername`, {
+        username: this.$data.username,
+      });
+
+      this.$data.usernameVerified = true;
+    } catch (err) {}
+  }
+
+  async sendVerifyCode() {
+    try {
+      validateParam(this.$data.email, '이메일을 입력해 주세요.');
+
+      await this.$store.dispatch(`${authNamespace}/sendSignUpCode`, {
+        email: this.$data.email,
+      });
+
+      this.$data.isEmailVerifyCodeSend = true;
+    } catch (err) {}
   }
 
   async verifyCode() {
     try {
+      validateParam(this.$data.email, '이메일을 입력해 주세요.');
+      validateParam(this.$data.emailVerifyCode, '인증번호를 입력해 주세요.');
+
       await this.$store.dispatch(`${authNamespace}/verifySignUpCode`, {
         email: this.$data.email,
         verifyCode: this.$data.emailVerifyCode,
@@ -604,121 +611,105 @@ export default class StaffCreate extends Vue {
     }
   }
 
-  handlePhoneNumberChange(value: string) {
-    if (phoneNumberRegex.test(value)) {
-      this.$data.phoneNumberVerified = true;
-    } else {
-      this.$data.phoneNumberVerified = false;
-    }
-  }
+  async onSubmit() {
+    try {
+      validateParam(this.$data.name, '이름을 입력해 주세요.');
+      validateParam(this.$data.nameVerified, '올바른 이름을 입력해 주세요.');
+      validateParam(this.$data.username, '아이디를 입력해 주세요.');
+      validateParam(
+        this.$data.usernameVerified,
+        '올바른 아이디를 입력해 주세요.',
+      );
+      validateParam(this.$data.email, '이메일을 입력해 주세요.');
+      validateParam(this.$data.emailVerified, '올바른 이메일릏 입력해 주세요.');
+      validateParam(this.$data.phoneNumber, '전화번호를 입력해 주세요.');
+      validateParam(
+        this.$data.phoneNumberVerified,
+        '올바른 전화번호를 입력해 주세요.',
+      );
+      validateParam(this.$data.gender, '성별을 입력해 주세요.');
+      validateParam(this.$data.role, '역할을 입력해 주세요.');
+      validateParam(this.$data.birth, '생일을 입력해 주세요.');
+      validateParam(this.$data.hiredAt, '고용 날짜를 입력해 주세요.');
+      validateParam(this.$data.introduce, '자기소개를 입력해 주세요.');
 
-  handleBasicValidation(): boolean {
-    if (!this.$data.nameVerified) {
-      warningAlert('name을(를) 입력해 주세요.');
-      return false;
-    }
-    if (!this.$data.usernameVerified) {
-      warningAlert('username을(를) 입력해 주세요.');
-      return false;
-    }
-    if (!this.$data.emailVerified) {
-      warningAlert('email을(를) 입력해 주세요.');
-      return false;
-    }
-    if (!this.$data.phoneNumberVerified) {
-      warningAlert('phone을(를) 입력해 주세요.number.');
-      return false;
-    }
-    if (!this.$data.gender) {
-      warningAlert('gender을(를) 입력해 주세요.');
-      return false;
-    }
-    if (!this.$data.role) {
-      warningAlert('role을(를) 입력해 주세요.');
-      return false;
-    }
-    if (!this.$data.birth) {
-      warningAlert('birth을(를) 입력해 주세요.');
-      return false;
-    }
-    if (!this.$data.hiredAt) {
-      warningAlert('hiredAt을(를) 입력해 주세요.');
-      return false;
-    }
-    if (!this.$data.introduce) {
-      warningAlert('self을(를) 입력해 주세요.introduce.');
-      return false;
-    }
-
-    return true;
-  }
-
-  handleWorkingTimeValidation(): boolean {
-    if (
-      !this.$data.isMonDayOff &&
-      !(this.$data.monWorkingStartTime && this.$data.monWorkingEndTime)
-    ) {
-      warningAlert('monday을(를) 입력해 주세요.');
-      return false;
-    }
-    if (
-      !this.$data.isTueDayOff &&
-      !(this.$data.tueWorkingStartTime && this.$data.tueWorkingEndTime)
-    ) {
-      warningAlert('tuesday을(를) 입력해 주세요.');
-      return false;
-    }
-    if (
-      !this.$data.isWedDayOff &&
-      !(this.$data.wedWorkingStartTime && this.$data.wedWorkingEndTime)
-    ) {
-      warningAlert('wednesday을(를) 입력해 주세요.');
-      return false;
-    }
-    if (
-      !this.$data.isThuDayOff &&
-      !(this.$data.thuWorkingStartTime && this.$data.thuWorkingEndTime)
-    ) {
-      warningAlert('thursday을(를) 입력해 주세요.');
-      return false;
-    }
-    if (
-      !this.$data.isFriDayOff &&
-      !(this.$data.friWorkingStartTime && this.$data.friWorkingEndTime)
-    ) {
-      warningAlert('friday을(를) 입력해 주세요.');
-      return false;
-    }
-    if (
-      !this.$data.isSatDayOff &&
-      !(this.$data.satWorkingStartTime && this.$data.satWorkingEndTime)
-    ) {
-      warningAlert('saturday을(를) 입력해 주세요.');
-      return false;
-    }
-    if (
-      !this.$data.isSunDayOff &&
-      !(this.$data.sunWorkingStartTime && this.$data.sunWorkingEndTime)
-    ) {
-      warningAlert('sunday을(를) 입력해 주세요.');
-      return false;
-    }
-
-    return true;
-  }
-
-  async handleSubmit(stepper: any) {
-    if (!this.handleBasicValidation()) {
-      return;
-    }
-
-    if (this.$data.step === 2) {
-      if (!this.handleWorkingTimeValidation()) {
-        return;
+      if (!this.$data.isMonDayOff) {
+        validateParam(
+          this.$data.monWorkingStartTime,
+          '월요일 근무 시작 시간을 입력해 주세요.',
+        );
+        validateParam(
+          this.$data.monWorkingEndTime,
+          '월요일 근무 종료 시간을 입력해 주세요.',
+        );
       }
-    }
 
-    if (this.$data.step === 3) {
+      if (!this.$data.isTueDayOff) {
+        validateParam(
+          this.$data.tueWorkingStartTime,
+          '화요일 근무 시작 시간을 입력해 주세요.',
+        );
+        validateParam(
+          this.$data.tueWorkingEndTime,
+          '화요일 근무 종료 시간을 입력해 주세요.',
+        );
+      }
+
+      if (!this.$data.isWedDayOff) {
+        validateParam(
+          this.$data.wedWorkingStartTime,
+          '수요일 근무 시작 시간을 입력해 주세요.',
+        );
+        validateParam(
+          this.$data.wedWorkingEndTime,
+          '수요일 근무 종료 시간을 입력해 주세요.',
+        );
+      }
+
+      if (!this.$data.isThuDayOff) {
+        validateParam(
+          this.$data.thuWorkingStartTime,
+          '목요일 근무 시작 시간을 입력해 주세요.',
+        );
+        validateParam(
+          this.$data.thuWorkingEndTime,
+          '목요일 근무 종료 시간을 입력해 주세요.',
+        );
+      }
+
+      if (!this.$data.isFriDayOff) {
+        validateParam(
+          this.$data.friWorkingStartTime,
+          '금요일 근무 시작 시간을 입력해 주세요.',
+        );
+        validateParam(
+          this.$data.friWorkingEndTime,
+          '금요일 근무 종료 시간을 입력해 주세요.',
+        );
+      }
+
+      if (!this.$data.isSatDayOff) {
+        validateParam(
+          this.$data.satWorkingStartTime,
+          '토요일 근무 시작 시간을 입력해 주세요.',
+        );
+        validateParam(
+          this.$data.satWorkingEndTime,
+          '토요일 근무 종료 시간을 입력해 주세요.',
+        );
+      }
+
+      if (!this.$data.isSunDayOff) {
+        validateParam(
+          this.$data.sunWorkingStartTime,
+          '일요일 근무 시작 시간을 입력해 주세요.',
+        );
+        validateParam(
+          this.$data.sunWorkingEndTime,
+          '일요일 근무 종료 시간을 입력해 주세요.',
+        );
+      }
+
       await this.$store.dispatch(`${namespace}/saveStaff`, {
         studioId: this.user.studio.id,
         name: this.$data.name,
@@ -754,8 +745,7 @@ export default class StaffCreate extends Vue {
         sunWorkingEndTime: this.$data.sunWorkingEndTime,
       });
       await this.$router.push('/staff');
-    }
-    stepper.next();
+    } catch (err) {}
   }
 }
 </script>

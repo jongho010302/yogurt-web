@@ -1,10 +1,8 @@
 <template>
   <div>
-    <div class="row q-mb-lg">
-      <span class="text-h5 text-weight-bold">아이디 찾기</span>
-    </div>
+    <p class="q-mb-lg text-h5 text-weight-bold">아이디 찾기</p>
 
-    <div class="q-mb-lg">이메일 입력 시 해당 이메일로 아이디가 전송됩니다.</div>
+    <p class="q-mb-lg">이메일 입력 시 해당 이메일로 아이디가 전송됩니다.</p>
     <div>
       <q-input
         v-model="email"

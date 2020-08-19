@@ -54,7 +54,7 @@ export default class TicketCard extends Vue {
   }
 
   async handleDeleteStaff() {
-    if (!yogurtConfirm('Are you sure want delete staff?')) {
+    if (!yogurtConfirm('정말 해당 스태프를 삭제하시겠습니까?')) {
       return;
     }
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-layout v-if="user" view="lHh Lpr lff">
+    <q-layout v-if="jwtToken" view="lHh Lpr lff">
       <!-- Header -->
       <q-header bordered>
         <q-toolbar class="text-dark shadow-1 bg-white">
@@ -29,13 +29,9 @@
           <q-space />
 
           <q-btn round flat>
-            <q-avatar
-              size="42px"
-              class="q-mb-sm float-right cursor-pointer"
-              @click="menu != menu"
-            >
+            <q-avatar size="42px" class="q-mb-sm float-right cursor-pointer" @click="menu != menu">
               <img
-                :src="user.profileUrl"
+                :src="user.profileUrl || 'https://seoulforest-image.s3.ap-northeast-2.amazonaws.com/default_profile.png'"
                 alt="default profile"
                 style="border-radius: 50%;"
               />
@@ -55,18 +51,9 @@
                     <img :src="user.profileUrl" />
                   </q-avatar>
 
-                  <div class="text-subtitle1 q-mt-md q-mb-xs">
-                    {{ user.name }}
-                  </div>
+                  <div class="text-subtitle1 q-mt-md q-mb-xs">{{ user.name }}</div>
 
-                  <q-btn
-                    color="primary"
-                    label="로그아웃"
-                    push
-                    size="sm"
-                    v-close-popup
-                    @click="logOut"
-                  />
+                  <q-btn color="primary" label="로그아웃" push size="sm" v-close-popup @click="logOut" />
                 </div>
               </div>
             </q-menu>
@@ -107,8 +94,9 @@
 import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
 import Login from '@/views/auth/Login.vue';
+import { setAxiosHeaders } from './util/common';
 
-const authNamespace = 'auth';
+const namespace = 'auth';
 
 @Component({
   components: {
@@ -128,17 +116,29 @@ export default class App extends mixins(Methods) {
     };
   }
 
+  get jwtToken() {
+    return this.$store.getters[`${namespace}/getJwtToken`];
+  }
+
   get user() {
-    return this.$store.getters[`${authNamespace}/getUser`];
+    return this.$store.getters[`${namespace}/getUser`];
   }
 
   get primaryColor() {
     return this.$store.state.primaryColor;
   }
 
+  async created() {
+    const jwtToken = localStorage.getItem('jwtToken');
+    if (jwtToken) {
+      setAxiosHeaders(jwtToken);
+      await this.$store.dispatch(`${namespace}/checkUser`);
+    }
+  }
+
   async logOut() {
     try {
-      await this.$store.dispatch(`${authNamespace}/logOut`);
+      await this.$store.dispatch(`${namespace}/logOut`);
       await this.$router.push('/login');
     } catch (err) {}
   }

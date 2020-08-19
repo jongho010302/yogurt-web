@@ -2,13 +2,24 @@
   <div class="q-pa-lg">
     <PageTitle :text="'총 ' + tickets.length + '개의 수강권'" class="q-mb-xl" />
     <div class="row q-col-gutter-lg">
-      <div class="col-3" v-for="(ticket, index) in tickets" :key="`xl-${index}`">
+      <div
+        class="col-3"
+        v-for="(ticket, index) in tickets"
+        :key="`xl-${index}`"
+      >
         <TicketCard :ticket="ticket" />
       </div>
     </div>
 
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="edit" color="red" @click="routerTo('/ticket/create')"></q-btn>
+    <q-page-sticky position="bottom-right" :offset="[45, 45]">
+      <q-btn
+        fab
+        :icon="icon"
+        color="red"
+        @mouseover="icon = 'edit'"
+        @mouseout="icon = 'add'"
+        @click="$router.push('/ticket/create')"
+      ></q-btn>
     </q-page-sticky>
   </div>
 </template>
@@ -24,12 +35,14 @@ const namespace = 'ticket';
 @Component({
   components: {
     TicketCard,
-    PageTitle
+    PageTitle,
   },
 })
 export default class Ticket extends Vue {
   data() {
-    return {};
+    return {
+      icon: 'add',
+    };
   }
 
   get primaryColor() {
@@ -50,5 +63,4 @@ export default class Ticket extends Vue {
 }
 </script>
 
-<style>
-</style>
+<style></style>

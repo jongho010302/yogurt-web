@@ -31,11 +31,7 @@ const actions: ActionTree<TicketState, any> = {
   },
   async saveTicket(none, payload) {
     try {
-      await makeRequest(
-        'post',
-        `${VUE_APP_MY_BACK_URL}/api/ticket/save`,
-        payload,
-      );
+      await makeRequest('post', `${VUE_APP_MY_BACK_URL}/admin/ticket`, payload);
     } catch (err) {
       console.error(err);
     }

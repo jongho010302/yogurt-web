@@ -4,9 +4,11 @@ import actions from './actions';
 import mutations from './mutations';
 import { AuthState } from './types';
 import { RootState } from '../types';
+import { User } from '../user/types';
 
 export const state: AuthState = {
-  user: null,
+  user: localStorage.getItem('user') as User | null,
+  jwtToken: localStorage.getItem('jwtToken'),
   maskingUsernames: null,
 };
 

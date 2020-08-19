@@ -1,26 +1,33 @@
 import { ActionTree } from 'vuex';
-import {
-  makeRequest,
-  makeRequestWithoutAlert,
-  setAxiosHeaders,
-} from '@/util/common';
+import { makeRequest, setAxiosHeaders } from '@/util/common';
 import { roleType } from '@/constants';
 import { errorAlert, positiveAlert } from '@/util/ui';
 import { AuthState } from './types';
+import { logInApi, checkUserApi } from '@/api/auth';
 
 const { VUE_APP_MY_BACK_URL } = process.env;
 
+const processLogOut = () => {
+  localStorage.removeItem('user');
+  localStorage.removeItem('jwtToken');
+  setAxiosHeaders('');
+};
+
 const actions: ActionTree<AuthState, any> = {
+  async checkUser({ commit }) {
+    try {
+      const res = await checkUserApi();
+
+      commit('saveUser', res.data);
+      localStorage.setItem('user', res.data);
+    } catch (err) {
+      processLogOut();
+      throw err;
+    }
+  },
   async logIn({ commit }, { username, password }) {
     try {
-      const res = await makeRequestWithoutAlert(
-        'post',
-        `${VUE_APP_MY_BACK_URL}/auth/log-in`,
-        {
-          username,
-          password,
-        },
-      );
+      const res = await logInApi(username, password);
 
       const userRole = res.data.user.roles[0];
       if (
@@ -34,9 +41,14 @@ const actions: ActionTree<AuthState, any> = {
         return;
       }
 
+      const { jwtToken, user } = res.data;
+
       positiveAlert(res.message);
-      commit('saveUser', res.data.user);
-      setAxiosHeaders(res.data.jwtToken);
+      commit('saveJwtToken', jwtToken);
+      commit('saveUser', user);
+      localStorage.setItem('user', user);
+      localStorage.setItem('jwtToken', jwtToken);
+      setAxiosHeaders(jwtToken);
     } catch (err) {
       errorAlert(err.message);
       throw err;
@@ -46,6 +58,8 @@ const actions: ActionTree<AuthState, any> = {
     try {
       await makeRequest('post', `${VUE_APP_MY_BACK_URL}/user/log-out`);
       commit('saveUser', null);
+      commit('saveJwtToken', null);
+      processLogOut();
     } catch (err) {
       throw err;
     }
