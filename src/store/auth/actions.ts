@@ -1,11 +1,21 @@
 import { ActionTree } from 'vuex';
-import { makeRequest, setAxiosHeaders } from '@/util/common';
+import { setAxiosHeaders } from '@/util/common';
 import { roleType } from '@/constants';
 import { errorAlert, positiveAlert } from '@/util/ui';
 import { AuthState } from './types';
-import { logInApi, checkUserApi } from '@/api/auth';
-
-const { VUE_APP_MY_BACK_URL } = process.env;
+import {
+  checkUserApi,
+  logInApi,
+  logOutApi,
+  findMaskingUsernameApi,
+  findUsernameApi,
+  sendFindPasswordCodeApi,
+  verifyFindPasswordCodeApi,
+  changePasswordApi,
+  verifyUsernameApi,
+  sendSignUpCodeApi,
+  verifySignUpCodeApi,
+} from '@/api/auth';
 
 const processLogOut = () => {
   localStorage.removeItem('user');
@@ -56,7 +66,7 @@ const actions: ActionTree<AuthState, any> = {
   },
   async logOut({ commit }) {
     try {
-      await makeRequest('post', `${VUE_APP_MY_BACK_URL}/user/log-out`);
+      await logOutApi();
       commit('saveUser', null);
       commit('saveJwtToken', null);
       processLogOut();
@@ -66,10 +76,7 @@ const actions: ActionTree<AuthState, any> = {
   },
   async findMaskingUsername({ commit }, { name }) {
     try {
-      const res = await makeRequest(
-        'get',
-        `${VUE_APP_MY_BACK_URL}/auth/find/masking-username?name=${name}`,
-      );
+      const res = await findMaskingUsernameApi(name);
       commit('saveMaskingUsernames', res.data);
     } catch (err) {
       throw err;
@@ -77,76 +84,49 @@ const actions: ActionTree<AuthState, any> = {
   },
   async findUsername(none, { email }) {
     try {
-      await makeRequest(
-        'get',
-        `${VUE_APP_MY_BACK_URL}/auth/find/username?email=${email}`,
-      );
+      await findUsernameApi(email);
     } catch (err) {
       throw err;
     }
   },
   async sendFindPasswordCode(none, { email }) {
     try {
-      await makeRequest(
-        'get',
-        `${VUE_APP_MY_BACK_URL}/auth/find/password/verify?email=${email}`,
-      );
+      await sendFindPasswordCodeApi(email);
     } catch (err) {
       throw err;
     }
   },
   async verifyFindPasswordCode(none, { email, verifyCode }) {
     try {
-      await makeRequest(
-        'post',
-        `${VUE_APP_MY_BACK_URL}/auth/find/password/verify`,
-        { email, verifyCode },
-      );
+      await verifyFindPasswordCodeApi(email, verifyCode);
     } catch (err) {
       throw err;
     }
   },
   async changePassword(none, { email, password, verifyCode }) {
     try {
-      await makeRequest('put', `${VUE_APP_MY_BACK_URL}/auth/find/password`, {
-        email,
-        password,
-        verifyCode,
-      });
+      await changePasswordApi(email, password, verifyCode);
     } catch (err) {
       throw err;
     }
   },
   async verifyUsername(none, { username }) {
     try {
-      await makeRequest(
-        'get',
-        `${VUE_APP_MY_BACK_URL}/auth/sign-up/verify/username?username=${username}`,
-      );
+      verifyUsernameApi(username);
     } catch (err) {
       throw err;
     }
   },
   async sendSignUpCode(none, { email }) {
     try {
-      await makeRequest(
-        'get',
-        `${VUE_APP_MY_BACK_URL}/auth/sign-up/verify/email?email=${email}`,
-      );
+      await sendSignUpCodeApi(email);
     } catch (err) {
       throw err;
     }
   },
   async verifySignUpCode(none, { email, verifyCode }) {
     try {
-      await makeRequest(
-        'post',
-        `${VUE_APP_MY_BACK_URL}/auth/sign-up/verify/email`,
-        {
-          email,
-          verifyCode,
-        },
-      );
+      await verifySignUpCodeApi(email, verifyCode);
     } catch (err) {
       throw err;
     }

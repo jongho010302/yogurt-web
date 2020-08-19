@@ -1,27 +1,22 @@
 import { ActionTree } from 'vuex';
 import { StudioState } from './types';
-import { makeRequest } from '@/util/common';
-
-const { VUE_APP_MY_BACK_URL } = process.env;
+import { getStudiosApi, saveStudioApi } from '@/api/studio';
 
 const actions: ActionTree<StudioState, any> = {
-  async saveStudio({ commit, rootState }, { username, password }) {
+  async getStudios({ commit }) {
     try {
-      const response = await makeRequest(
-        'post',
-        `${VUE_APP_MY_BACK_URL}/auth/log-in`,
-        {
-          username,
-          password,
-        },
-      );
+      const res = await getStudiosApi();
 
-      const payload = response && response.data;
-      commit('logIn', payload);
-      return payload;
+      commit('saveStudios', res.data);
     } catch (err) {
-      console.error(err);
-      return err.response.data;
+      throw err;
+    }
+  },
+  async saveStudio({ commit }, payload) {
+    try {
+      await saveStudioApi(payload);
+    } catch (err) {
+      throw err;
     }
   },
 };

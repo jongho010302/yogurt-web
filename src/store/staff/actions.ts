@@ -1,17 +1,16 @@
 import { ActionTree } from 'vuex';
-import { makeRequest } from '@/util/common';
+import {
+  getStaffsApi,
+  resetPasswordApi,
+  deleteStaffApi,
+  saveStaffApi,
+} from '@/api/staff';
 import { StaffState } from './types';
-
-const { VUE_APP_MY_BACK_URL } = process.env;
 
 const actions: ActionTree<StaffState, any> = {
   async getStaffs({ commit }) {
     try {
-      const res = await makeRequest(
-        'get',
-        `${VUE_APP_MY_BACK_URL}/admin/staff`,
-        null,
-      );
+      const res = await getStaffsApi();
       commit('saveStaffs', res.data);
     } catch (err) {
       throw err;
@@ -19,29 +18,21 @@ const actions: ActionTree<StaffState, any> = {
   },
   async saveStaff(none, payload) {
     try {
-      await makeRequest('post', `${VUE_APP_MY_BACK_URL}/admin/staff`, payload);
+      await saveStaffApi(payload);
     } catch (err) {
       throw err;
     }
   },
   async deleteStaff(none, payload) {
     try {
-      await makeRequest(
-        'delete',
-        `${VUE_APP_MY_BACK_URL}/admin/staff`,
-        payload,
-      );
+      await deleteStaffApi(payload);
     } catch (err) {
       throw err;
     }
   },
   async resetPassword(none, payload) {
     try {
-      await makeRequest(
-        'post',
-        `${VUE_APP_MY_BACK_URL}/admin/staff/reset-password`,
-        payload,
-      );
+      await resetPasswordApi(payload);
     } catch (err) {
       throw err;
     }
