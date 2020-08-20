@@ -34,24 +34,13 @@
           </q-tabs>
 
           <div class="q-gutter-y-sm">
-            <q-tab-panels
-              v-model="tab"
-              animated
-              transition-prev="scale"
-              transition-next="scale"
-            >
+            <q-tab-panels v-model="tab" animated transition-prev="scale" transition-next="scale">
               <q-tab-panel name="issuedTicket">
-                <q-table
-                  :data="ticket"
-                  :columns="columns"
-                  color="primary"
-                  row-key="name"
-                />
+                <q-table :data="ticket" :columns="columns" color="primary" row-key="name" />
               </q-tab-panel>
 
               <q-tab-panel name="availableClass">
-                <div class="text-h6">Alarms</div>
-                Ad molestiae non facere animi nobis, similique nemo velit reiciendis corporis impedit nam in.
+                <div class="text-h6">Alarms</div>Ad molestiae non facere animi nobis, similique nemo velit reiciendis corporis impedit nam in.
               </q-tab-panel>
             </q-tab-panels>
           </div>
@@ -64,21 +53,33 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import Component, { mixins } from 'vue-class-component';
+import { Methods } from '@/mixins';
 
 const namespace = 'ticket';
 
 @Component
-export default class Ticket extends Vue {
+export default class Ticket extends mixins(Methods) {
   data() {
     return {
       tab: 0,
       tabPannel: 0,
       columns: [
-        { name: 'name', required: true, label: '회원', align: 'center', field: (row: any) => row.name, sortable: true },
+        {
+          name: 'name',
+          required: true,
+          label: '회원',
+          align: 'center',
+          field: (row: any) => row.name,
+          sortable: true,
+        },
         { name: 'phone', align: 'center', label: '전화번호', field: 'phone' },
-        { name: 'lessonDate', align: 'center', label: '수업일시', field: 'lessonDate' },
+        {
+          name: 'lessonDate',
+          align: 'center',
+          label: '수업일시',
+          field: 'lessonDate',
+        },
         { name: 'entry', align: 'center', label: '잔여 횟수', field: 'entry' },
       ],
     };
@@ -113,5 +114,4 @@ export default class Ticket extends Vue {
 </script>
 
 <style>
-
 </style>
