@@ -55,11 +55,12 @@
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
+import { Ticket } from '@/store/ticket/types';
 
 const namespace = 'ticket';
 
 @Component
-export default class Ticket extends mixins(Methods) {
+export default class TicketDetail extends mixins(Methods) {
   data() {
     return {
       tab: 0,

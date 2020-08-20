@@ -16,8 +16,8 @@
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
-import { Ticket } from '../../store/ticket/types';
 import { Methods } from '@/mixins';
+import { Ticket } from '@/store/ticket/types';
 
 @Component
 export default class TicketCard extends mixins(Methods) {
