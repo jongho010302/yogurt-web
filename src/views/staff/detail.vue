@@ -1,7 +1,5 @@
 <template>
-  <div>
-    detail
-  </div>
+  <div>detail</div>
 </template>
 
 <script lang="ts">
@@ -21,11 +19,11 @@ export default class TicketCard extends Vue {
       staffName: '',
       phone: '',
       introduce: '',
-      staffType: 'lessonr',
+      staffType: 'lecturer',
       staffTypeOptions: [
         {
           label: '강사',
-          value: 'lessonr',
+          value: 'lecturer',
         },
         {
           label: '매니저',
@@ -64,8 +62,8 @@ export default class TicketCard extends Vue {
     };
   }
 
-  get primaryColor() {
-    return this.$store.state.primaryColor;
+  get primary() {
+    return this.$store.state.primary;
   }
 
   clickCalendarIcon() {

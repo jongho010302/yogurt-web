@@ -1,8 +1,9 @@
 import { ActionTree } from 'vuex';
 import { StudioState } from './types';
 import { getStudiosApi, saveStudioApi } from '@/api/studio';
+import { RootState } from '../types';
 
-const actions: ActionTree<StudioState, any> = {
+const actions: ActionTree<StudioState, RootState> = {
   async getStudios({ commit }) {
     try {
       const res = await getStudiosApi();

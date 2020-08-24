@@ -19,7 +19,7 @@
             shrink
           >
             <q-route-tab to="/schedule" label="일정" style="width: 70px;" />
-            <q-route-tab to="/lesson" label="수업" style="width: 70px;" />
+            <q-route-tab to="/lecture" label="수업" style="width: 70px;" />
             <q-route-tab to="/user" label="회원" style="width: 70px;" />
             <q-route-tab to="/staff" label="강사" style="width: 70px;" />
             <q-route-tab to="/ticket" label="수강권" style="width: 70px;" />
@@ -96,7 +96,7 @@ import { Methods } from '@/mixins';
 import Login from '@/views/auth/Login.vue';
 import { setAxiosHeaders } from './util/common';
 
-const namespace = 'auth';
+const namespace = 'user';
 
 @Component({
   components: {
@@ -124,8 +124,8 @@ export default class App extends mixins(Methods) {
     return this.$store.getters[`${namespace}/getUser`];
   }
 
-  get primaryColor() {
-    return this.$store.state.primaryColor;
+  get primary() {
+    return this.$store.state.primary;
   }
 
   async created() {
@@ -140,7 +140,9 @@ export default class App extends mixins(Methods) {
     try {
       await this.$store.dispatch(`${namespace}/logOut`);
       await this.$router.push('/login');
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 </script>

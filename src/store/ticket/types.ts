@@ -18,6 +18,6 @@ export enum ClassType {
 }
 
 export interface TicketState {
-  tickets: Ticket[];
+  tickets: Ticket[] | null;
   ticket: Ticket | null;
 }

@@ -1,19 +1,13 @@
 <template>
   <q-card class="my-card q-pt-md">
     <q-card-section class="text-center">
-      <q-avatar
-        size="90px"
-        class="q-mb-sm cursor-pointer"
-        @click="navigateToStaffDetail(staff.id)"
-      >
+      <q-avatar size="90px" class="q-mb-sm cursor-pointer" @click="navigateToStaffDetail(staff.id)">
         <img :src="staff.user.profileUrl" alt="default profile" />
       </q-avatar>
       <div class="q-mb-sm text-h6">{{ staff.user.name }}</div>
       <div class="q-mb-md">{{ staff.user.phone }}</div>
-      <div class="q-mb-lg">아이디: jongjjang03</div>
-      <q-btn outline size="sm" :color="primaryColor" @click="resetPassword"
-        >비밀번호 재설정</q-btn
-      >
+      <div class="q-mb-lg">아이디: {{ staff.user.username }}</div>
+      <q-btn outline size="sm" color="primary" @click="resetPassword">비밀번호 재설정</q-btn>
     </q-card-section>
 
     <q-separator />
@@ -39,8 +33,8 @@ const namespace = 'staff';
 export default class TicketCard extends Vue {
   @Prop() staff!: StaffType;
 
-  get primaryColor() {
-    return this.$store.state.primaryColor;
+  get primary() {
+    return this.$store.state.primary;
   }
 
   navigateToStaffDetail(id: number) {

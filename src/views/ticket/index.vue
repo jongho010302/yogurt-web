@@ -2,11 +2,7 @@
   <div class="q-pa-lg">
     <PageTitle :text="'총 ' + tickets.length + '개의 수강권'" class="q-mb-xl" />
     <div class="row q-col-gutter-lg">
-      <div
-        class="col-3"
-        v-for="(ticket, index) in tickets"
-        :key="`xl-${index}`"
-      >
+      <div class="col-3" v-for="(ticket, index) in tickets" :key="`xl-${index}`">
         <TicketCard :ticket="ticket" />
       </div>
     </div>
@@ -45,8 +41,8 @@ export default class Ticket extends Vue {
     };
   }
 
-  get primaryColor() {
-    return this.$store.state.primaryColor;
+  get primary() {
+    return this.$store.state.primary;
   }
 
   get tickets(): Ticket[] {

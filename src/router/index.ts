@@ -125,10 +125,10 @@ const routes = [
     },
   },
   {
-    path: '/lesson',
-    name: 'Lesson',
+    path: '/lecture',
+    name: 'Lecture',
     component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/Lesson.vue'),
+      import(/* webpackChunkName: "about" */ '@/views/Lecture.vue'),
     meta: {
       middleware: isAuthenticated,
     },

@@ -34,9 +34,7 @@
         '{{ name }}'님의 이름으로 찾은 아이디이며, 동명이인의 아이디가 검색될 수
         있습니다.
       </div>
-      <div>
-        정확한 아이디가 기억나지 않으실 경우 '이메일로 확인하기'를 클릭해주세요.
-      </div>
+      <div>정확한 아이디가 기억나지 않으실 경우 '이메일로 확인하기'를 클릭해주세요.</div>
 
       <hr />
 
@@ -66,7 +64,7 @@ import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
 import { warningAlert } from '@/util/ui';
 
-const namespace = 'auth';
+const namespace = 'user';
 
 @Component
 export default class FindMaskingUsername extends mixins(Methods) {
@@ -90,7 +88,9 @@ export default class FindMaskingUsername extends mixins(Methods) {
       await this.$store.dispatch(`${namespace}/findMaskingUsername`, {
         name: this.$data.name,
       });
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 </script>

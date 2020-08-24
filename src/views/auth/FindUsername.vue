@@ -34,7 +34,7 @@ import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
 import router from '@/router';
 
-const namespace = 'auth';
+const namespace = 'user';
 
 @Component
 export default class FindUsername extends mixins(Methods) {
@@ -50,7 +50,9 @@ export default class FindUsername extends mixins(Methods) {
         email: this.$data.email,
       });
       await router.push('/login');
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 </script>

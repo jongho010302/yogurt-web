@@ -2,16 +2,16 @@ import { Module } from 'vuex';
 import getters from './getters';
 import actions from './actions';
 import mutations from './mutations';
-import { LessonState } from './types';
+import { LectureState } from './types';
 import { RootState } from '../types';
 
-export const state: LessonState = {
-  lessons: [],
+export const state: LectureState = {
+  lectures: [],
 };
 
 const namespaced = true;
 
-const lesson: Module<LessonState, RootState> = {
+const lecture: Module<LectureState, RootState> = {
   namespaced,
   state,
   getters,
@@ -19,4 +19,4 @@ const lesson: Module<LessonState, RootState> = {
   mutations,
 };
 
-export default lesson;
+export default lecture;

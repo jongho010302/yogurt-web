@@ -3,7 +3,7 @@ import { User } from '@/store/user/types';
 
 export interface Staff {
   id: number;
-  user: User
+  user: User;
   hiredAt: string;
   introduce: string;
   isMonDayOff: boolean;
@@ -30,5 +30,5 @@ export interface Staff {
 }
 
 export interface StaffState {
-  staffs: Staff[];
+  staffs: Staff[] | null;
 }

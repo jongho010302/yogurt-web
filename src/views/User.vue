@@ -14,24 +14,19 @@
       :selected.sync="selected"
     >
       <template v-slot:top-right>
-        <q-btn
-          :color="primaryColor"
-          icon-right="archive"
-          label="엑셀다운로드"
-          no-caps
-        />
+        <q-btn color="primary" icon-right="archive" label="엑셀다운로드" no-caps />
       </template>
       <template v-slot:top-left>
         <q-input
           v-model="gridFilter"
-          :color="primaryColor"
+          color="primary"
           placeholder="검색"
           debounce="300"
           dense
           class="q-mr-md"
         >
           <template v-slot:append>
-            <q-icon name="search" :color="primaryColor" />
+            <q-icon name="search" color="primary" />
           </template>
         </q-input>
       </template>
@@ -73,20 +68,19 @@ export default class User extends Vue {
     };
   }
 
-  get primaryColor() {
-    return this.$store.state.primaryColor;
+  get primary() {
+    return this.$store.state.primary;
   }
 
   get users() {
-    return this.$store.getters[`${namespace}/getUsers`];
+    const users = this.$store.getters[`${namespace}/getUsers`] || [];
+    return users;
   }
 
-  // Life Cycle
   async created() {
     await this.getUsers();
   }
 
-  // Methods
   getSelectedString() {
     return this.$data.selected.length === 0
       ? ''

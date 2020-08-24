@@ -1,44 +1,42 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 import { RootState } from './types';
-import lesson from './lesson';
+import lecture from './lecture';
 import user from './user';
 import ticket from './ticket';
 import staff from './staff';
-import auth from './auth';
 
 Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
   state: {
     version: '1.0.0',
-    primaryColor: 'primary',
     ticketStyle: 'background-image: linear-gradient(#4485F7, #A7C5F9)',
-    // auth: {
-    //   user: null
-    // },
-    // lesson: {
-    //   lessons:
-    // },
-    // staff: {
-    //
-    // },
-    // studio: {
-    //
-    // },
-    // ticket: {
-    //
-    // },
-    // user: {
-    //
-    // }
+    lecture: {
+      lectures: null,
+    },
+    staff: {
+      staffs: null,
+    },
+    studio: {
+      studios: null,
+    },
+    ticket: {
+      ticket: null,
+      tickets: null,
+    },
+    user: {
+      jwtToken: null,
+      maskingUsernames: null,
+      user: null,
+      users: null,
+    },
   },
   modules: {
-    lesson,
+    lecture,
     user,
     ticket,
     staff,
-    auth,
   },
 };
 

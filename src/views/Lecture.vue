@@ -8,7 +8,7 @@
       <q-select
         v-model="periodFilter"
         :options="periodOptions"
-        :color="primaryColor"
+        color="primary"
         outlined
         style="width: 90px;"
       />
@@ -16,7 +16,7 @@
       <!-- 날짜 필터 -->
       <q-input
         v-model="dateFilter"
-        :color="primaryColor"
+        color="primary"
         mask="####-##-##"
         outlined
         style="width: 150px;"
@@ -26,7 +26,7 @@
             <q-menu>
               <q-list dense>
                 <q-item style="padding: 0 0px;">
-                  <q-date v-model="dateFilter" :color="primaryColor" minimal />
+                  <q-date v-model="dateFilter" color="primary" minimal />
                 </q-item>
               </q-list>
             </q-menu>
@@ -36,8 +36,8 @@
 
       <!-- 수업 타입 필터 -->
       <q-select
-        v-model="lessonTypeFilter"
-        :options="lessonTypeOptions"
+        v-model="lectureTypeFilter"
+        :options="lectureTypeOptions"
         outlined
         style="width: 130px;"
       />
@@ -45,7 +45,7 @@
 
     <!-- 테이블 -->
     <q-table
-      :data="lessons"
+      :data="lectures"
       :columns="columns"
       color="primary"
       row-key="name"
@@ -55,12 +55,7 @@
       :selected.sync="selected"
     >
       <template v-slot:top-right>
-        <q-btn
-          :color="primaryColor"
-          icon-right="archive"
-          label="Export to excel"
-          no-caps
-        />
+        <q-btn color="primary" icon-right="archive" label="Export to excel" no-caps />
       </template>
 
       <template v-slot:top-left>
@@ -87,14 +82,14 @@ import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import PageTitle from '@/components/base/PageTitle.vue';
 
-const namespace = 'lesson';
+const namespace = 'lecture';
 
 @Component({
   components: {
-    PageTitle
-  }
+    PageTitle,
+  },
 })
-export default class Lesson extends Vue {
+export default class Lecture extends Vue {
   data() {
     return {
       // Filter
@@ -112,11 +107,11 @@ export default class Lesson extends Vue {
           value: 'period',
         },
       ],
-      lessonTypeFilter: {
+      lectureTypeFilter: {
         label: '그룹',
         value: 'group',
       },
-      lessonTypeOptions: [
+      lectureTypeOptions: [
         {
           label: '그룹',
           value: 'group',
@@ -133,7 +128,7 @@ export default class Lesson extends Vue {
       selected: [],
       columns: [
         {
-          name: 'lessonDate',
+          name: 'lectureDate',
           required: true,
           label: '수업일시',
           align: 'center',
@@ -147,16 +142,16 @@ export default class Lesson extends Vue {
           field: 'instructor',
         },
         {
-          name: 'lessonType',
+          name: 'lectureType',
           align: 'center',
           label: '수업',
-          field: 'lessonType',
+          field: 'lectureType',
         },
         {
-          name: 'lessonName',
+          name: 'lectureName',
           align: 'center',
           label: '수업명',
-          field: 'lessonName',
+          field: 'lectureName',
         },
         {
           name: 'entry',
@@ -180,12 +175,12 @@ export default class Lesson extends Vue {
     };
   }
 
-  get primaryColor() {
-    return this.$store.state.primaryColor;
+  get primary() {
+    return this.$store.state.primary;
   }
 
-  get lessons() {
-    return this.$store.getters[`${namespace}/getLessons`];
+  get lectures() {
+    return this.$store.getters[`${namespace}/getLectures`];
   }
 
   // Life Cycle
@@ -212,29 +207,29 @@ export default class Lesson extends Vue {
       ? ''
       : `${this.$data.selected.length} record${
           this.$data.selected.length > 1 ? 's' : ''
-        } selected of ${this.lessons.length}`;
+        } selected of ${this.lectures.length}`;
   }
 
-  loadLessons() {
-    this.$store.dispatch(`${namespace}/loadLessons`, {
-      lessonDate: this.$data.dateFilter,
-      lessonType: this.$data.lessonTypeFilter.value,
+  loadLectures() {
+    this.$store.dispatch(`${namespace}/loadLectures`, {
+      lectureDate: this.$data.dateFilter,
+      lectureType: this.$data.lectureTypeFilter.value,
     });
   }
 
   @Watch('periodFilter')
   onPeriodFilterChanged() {
-    this.loadLessons();
+    this.loadLectures();
   }
 
-  @Watch('lessonTypeFilter')
-  onLessonTypeFilterChanged() {
-    this.loadLessons();
+  @Watch('lectureTypeFilter')
+  onLectureTypeFilterChanged() {
+    this.loadLectures();
   }
 
   @Watch('dateFilter')
   onDateFilterChanged() {
-    this.loadLessons();
+    this.loadLectures();
   }
 }
 </script>

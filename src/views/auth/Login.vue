@@ -22,35 +22,25 @@
       style="width: 500px;"
       @keyup.enter="logIn"
     />
-    <q-btn
-      label="로그인"
-      :color="primaryColor"
-      class="q-mb-lg"
-      style="width: 500px;"
-      @click="logIn"
-    />
+    <q-btn label="로그인" color="primary" class="q-mb-lg" style="width: 500px;" @click="logIn" />
     <q-separator class="q-mb-lg" />
     <div>
-      <span> <q-icon name="lock_open" size="sm" />계정을 잊으셨나요? </span>
+      <span>
+        <q-icon name="lock_open" size="sm" />계정을 잊으셨나요?
+      </span>
       <span class="float-right text-primary">
         <a @click="routerTo('/find/password')">비밀번호 재설정</a> ·
         <a @click="routerTo('/find/masking-username')">아이디 찾기</a>
       </span>
     </div>
-    <q-ajax-bar
-      ref="bar"
-      position="bottom"
-      color="accent"
-      size="10px"
-      skip-hijack
-    />
+    <q-ajax-bar ref="bar" position="bottom" color="accent" size="10px" skip-hijack />
   </div>
 </template>
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
 
-const namespace = 'auth';
+const namespace = 'user';
 
 @Component
 export default class Login extends mixins(Methods) {
@@ -61,8 +51,8 @@ export default class Login extends mixins(Methods) {
     };
   }
 
-  get primaryColor() {
-    return this.$store.state.primaryColor;
+  get primary() {
+    return this.$store.state.primary;
   }
 
   async logIn() {
@@ -72,7 +62,9 @@ export default class Login extends mixins(Methods) {
         password: this.$data.password,
       });
       await this.$router.push('/schedule');
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 </script>

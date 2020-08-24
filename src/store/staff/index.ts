@@ -11,7 +11,7 @@ export const state: StaffState = {
 
 const namespaced = true;
 
-const lesson: Module<StaffState, RootState> = {
+const lecture: Module<StaffState, RootState> = {
   namespaced,
   state,
   getters,
@@ -19,4 +19,4 @@ const lesson: Module<StaffState, RootState> = {
   mutations,
 };
 
-export default lesson;
+export default lecture;

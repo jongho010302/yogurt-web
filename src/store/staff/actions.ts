@@ -6,8 +6,9 @@ import {
   saveStaffApi,
 } from '@/api/staff';
 import { StaffState } from './types';
+import { RootState } from '../types';
 
-const actions: ActionTree<StaffState, any> = {
+const actions: ActionTree<StaffState, RootState> = {
   async getStaffs({ commit }) {
     try {
       const res = await getStaffsApi();

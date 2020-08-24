@@ -76,18 +76,18 @@ export default class TicketDetail extends mixins(Methods) {
         },
         { name: 'phone', align: 'center', label: '전화번호', field: 'phone' },
         {
-          name: 'lessonDate',
+          name: 'lectureDate',
           align: 'center',
           label: '수업일시',
-          field: 'lessonDate',
+          field: 'lectureDate',
         },
         { name: 'entry', align: 'center', label: '잔여 횟수', field: 'entry' },
       ],
     };
   }
 
-  get primaryColor() {
-    return this.$store.state.primaryColor;
+  get primary() {
+    return this.$store.state.primary;
   }
 
   get ticketStyle() {

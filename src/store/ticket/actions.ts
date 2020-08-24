@@ -1,14 +1,15 @@
 import { ActionTree } from 'vuex';
 import { TicketState } from './types';
 import { getTicketsApi, getTicketApi, saveTicketApi } from '@/api/ticket';
+import { RootState } from '../types';
 
-const actions: ActionTree<TicketState, any> = {
+const actions: ActionTree<TicketState, RootState> = {
   async getTickets({ commit }) {
     try {
       const res = await getTicketsApi();
       commit('saveTickets', res.data);
     } catch (err) {
-      console.error(err);
+      throw err;
     }
   },
   async getTicket({ commit }, { id }) {
@@ -16,14 +17,14 @@ const actions: ActionTree<TicketState, any> = {
       const res = await getTicketApi(id);
       commit('saveTicket', res.data);
     } catch (err) {
-      console.error(err);
+      throw err;
     }
   },
   async saveTicket(none, payload) {
     try {
       await saveTicketApi(payload);
     } catch (err) {
-      console.error(err);
+      throw err;
     }
   },
 };

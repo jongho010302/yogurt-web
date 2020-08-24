@@ -1,5 +1,4 @@
 import { Studio } from '../studio/types';
-import { Staff } from '../staff/types';
 
 export interface User {
   id: number;
@@ -19,13 +18,16 @@ export interface User {
 }
 
 export enum Role {
-  'ROLE_DEVELOPER'='ROLE_DEVELOPER',
+  'ROLE_DEVELOPER' = 'ROLE_DEVELOPER',
   'ROLE_OWNER' = 'ROLE_OWNER',
   'ROLE_MANAGER' = 'ROLE_MANAGER',
   'ROLE_STAFF' = 'ROLE_STAFF',
-  'ROLE_STUDENT' = 'ROLE_STUDENT'
+  'ROLE_STUDENT' = 'ROLE_STUDENT',
 }
 
 export interface UserState {
-  users: User[];
+  user: User | null;
+  jwtToken: string | null;
+  maskingUsernames: string[] | null;
+  users: User[] | null;
 }

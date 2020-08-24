@@ -100,7 +100,7 @@ import { Methods } from '../../mixins';
 import { warningAlert } from '@/util/ui';
 import router from '@/router';
 
-const namespace = 'auth';
+const namespace = 'user';
 
 @Component
 export default class Login extends mixins(Methods) {
@@ -158,7 +158,9 @@ export default class Login extends mixins(Methods) {
         verifyCode: this.$data.verifyCode,
       });
       await router.push('/login');
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 </script>

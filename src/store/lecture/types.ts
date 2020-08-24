@@ -1,6 +1,6 @@
 import { Staff } from '../staff/types';
 
-export interface LessonType {
+export interface LectureType {
   id: number;
   type: string;
   name: string;
@@ -8,20 +8,20 @@ export interface LessonType {
   updatedAt: string;
 }
 
-export interface Lesson {
+export interface Lecture {
   id: number;
-  lessonName: string;
-  lessonDate: string;
+  lectureName: string;
+  lectureDate: string;
   attendedCount: string;
   totalCount: string;
   startTime: string;
   endTime: string;
   createdAt: string;
   updatedAt: string;
-  lessonType: LessonType;
+  lectureType: LectureType;
   staff: Staff;
 }
 
-export interface LessonState {
-  lessons: Lesson[];
+export interface LectureState {
+  lectures: Lecture[] | null;
 }
