@@ -121,28 +121,9 @@
         </div>
       </div>
 
-      <!-- 수강 인원 -->
-      <div class="form-block">
-        <div class="form-block__index">06</div>
-        <div class="form-block__content">
-          <div class="form-block__label">
-            <div class="form-block__label__title">수강 인원</div>
-          </div>
-          <div class="form-block__input">
-            <q-input
-              v-model.number="maxTrainee"
-              type="number"
-              dense
-              color="primary"
-              style="max-width: 200px;"
-            />
-          </div>
-        </div>
-      </div>
-
       <!--수 강권 판매 정보 입력 -->
       <div class="form-block">
-        <div class="form-block__index">07</div>
+        <div class="form-block__index">06</div>
         <div class="form-block__content">
           <div class="form-block__label">
             <div class="form-block__label__title">판매가 입력</div>
@@ -162,7 +143,7 @@
 
       <!-- 주간/월간 이용 횟수 설정 -->
       <div class="form-block">
-        <div class="form-block__index">08</div>
+        <div class="form-block__index">07</div>
         <div class="form-block__content">
           <div class="form-block__label">
             <div class="form-block__label__title">주간/월간 이용 횟수 설정</div>
@@ -206,7 +187,7 @@
 
       <!-- 당일 예약 변경 -->
       <div class="form-block">
-        <div class="form-block__index">09</div>
+        <div class="form-block__index">08</div>
         <div class="form-block__content">
           <div class="form-block__label">
             <div class="form-block__label__title">당일 예약 변경</div>
@@ -228,7 +209,7 @@
 
       <!-- 예약 가능한 시간 설정 -->
       <div class="form-block">
-        <div class="form-block__index">10</div>
+        <div class="form-block__index">09</div>
         <div class="form-block__content">
           <div class="form-block__label">
             <div class="form-block__label__title">예약 가능한 시간 설정</div>
@@ -339,7 +320,6 @@ export default class TicketCard extends Vue {
         },
       ],
       isAvailableDaysSelf: false,
-      maxTrainee: 4,
       price: 0,
       bookingLimitCriteria: 'week',
       bookingLimit: 0,
@@ -421,7 +401,6 @@ export default class TicketCard extends Vue {
         maxCoupon: this.$data.maxCoupon,
         maxCancel: this.$data.maxCancel,
         availableDays,
-        maxTrainee: this.$data.maxTrainee,
         price: this.$data.price,
         bookingLimitPerWeek,
         bookingLimitPerMonth,

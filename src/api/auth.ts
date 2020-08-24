@@ -52,17 +52,17 @@ export const changePasswordApi = (
 export const verifyUsernameApi = (username: string) =>
   makeRequest(
     'get',
-    `${VUE_APP_MY_BACK_URL}/auth/sign-up/verify/username?username=${username}`,
+    `${VUE_APP_MY_BACK_URL}/auth/sign-up/verify?username=${username}`,
   );
 
 export const sendSignUpCodeApi = (email: string) =>
   makeRequest(
     'get',
-    `${VUE_APP_MY_BACK_URL}/auth/sign-up/verify/email?email=${email}`,
+    `${VUE_APP_MY_BACK_URL}/auth/sign-up/verify?email=${email}`,
   );
 
 export const verifySignUpCodeApi = (email: string, verifyCode: string) =>
-  makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/sign-up/verify/email`, {
+  makeRequest('post', `${VUE_APP_MY_BACK_URL}/auth/sign-up/verify`, {
     email,
     verifyCode,
   });
