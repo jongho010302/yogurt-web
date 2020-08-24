@@ -6,11 +6,7 @@
 
     <div class="q-pl-xl q-pr-xl row q-col-gutter-lg">
       <div v-if="!staffs.length">Please add staff.</div>
-      <div
-        class="col-12 col-md-3"
-        v-for="(staff, index) in staffs"
-        :key="`xl-${index}`"
-      >
+      <div class="col-12 col-md-3" v-for="(staff, index) in staffs" :key="`xl-${index}`">
         <StaffCard :staff="staff" />
       </div>
     </div>
@@ -27,7 +23,7 @@
     </q-page-sticky>
   </div>
 </template>
-
+ 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
