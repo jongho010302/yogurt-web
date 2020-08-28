@@ -89,6 +89,26 @@ const routes = [
     },
   },
   {
+    path: '/course/group/create',
+    name: 'CourseGroupCreate',
+    component: () =>
+      import(/* webpackChunkName: "about" */ '@/views/course/group/create.vue'),
+    meta: {
+      middleware: isAuthenticated,
+    },
+  },
+  {
+    path: '/course/private/create',
+    name: 'CoursePrivateCreate',
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ '@/views/course/private/create.vue'
+      ),
+    meta: {
+      middleware: isAuthenticated,
+    },
+  },
+  {
     path: '/setting',
     name: 'Setting',
     component: () =>

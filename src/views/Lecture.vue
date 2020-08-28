@@ -17,20 +17,20 @@
       <q-input
         v-model="dateFilter"
         color="primary"
-        mask="####-##-##"
+        mask="####/##/##"
         outlined
         style="width: 150px;"
       >
+        <q-popup-proxy transition-show="scale" transition-hide="scale">
+          <q-date v-model="dateFilter" color="primary">
+            <div class="row items-center justify-end q-gutter-sm">
+              <q-btn label="Cancel" color="primary" flat v-close-popup />
+              <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
+            </div>
+          </q-date>
+        </q-popup-proxy>
         <template v-slot:prepend>
-          <q-icon name="event" style="cursor: pointer;">
-            <q-menu>
-              <q-list dense>
-                <q-item style="padding: 0 0px;">
-                  <q-date v-model="dateFilter" color="primary" minimal />
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-icon>
+          <q-icon name="event" />
         </template>
       </q-input>
 
@@ -81,6 +81,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import PageTitle from '@/components/base/PageTitle.vue';
+import { parseDate } from '@/util/date';
 
 const namespace = 'lecture';
 
@@ -121,7 +122,7 @@ export default class Lecture extends Vue {
           value: 'private',
         },
       ],
-      dateFilter: '',
+      dateFilter: parseDate(new Date(), 'yyyy/mm/dd'),
       gridFilter: '',
 
       // Calendar
@@ -183,25 +184,6 @@ export default class Lecture extends Vue {
     return this.$store.getters[`${namespace}/getLectures`];
   }
 
-  // Life Cycle
-  created() {
-    this.loadTodayDate();
-  }
-
-  // Methods
-  loadTodayDate() {
-    // Date Picker
-    const currentDay = new Date();
-    const year = currentDay.getFullYear().toString();
-    let month = (currentDay.getMonth() + 1).toString();
-    let day = currentDay.getDate().toString();
-
-    if (month.length < 2) month = `0${month}`;
-    if (day.length < 2) day = `0${day}`;
-
-    this.$data.dateFilter = `${year}/${month}/${day}`;
-  }
-
   getSelectedString() {
     return this.$data.selected.length === 0
       ? ''
@@ -210,26 +192,27 @@ export default class Lecture extends Vue {
         } selected of ${this.lectures.length}`;
   }
 
-  loadLectures() {
-    this.$store.dispatch(`${namespace}/loadLectures`, {
-      lectureDate: this.$data.dateFilter,
+  getLectures() {
+    this.$store.dispatch(`${namespace}/getLectures`, {
+      // yyyy/mm/dd - yyyy-mm-dd
+      lectureDate: this.$data.dateFilter.replace(/\//gi, '-'),
       lectureType: this.$data.lectureTypeFilter.value,
     });
   }
 
   @Watch('periodFilter')
   onPeriodFilterChanged() {
-    this.loadLectures();
+    this.getLectures();
   }
 
   @Watch('lectureTypeFilter')
   onLectureTypeFilterChanged() {
-    this.loadLectures();
+    this.getLectures();
   }
 
   @Watch('dateFilter')
   onDateFilterChanged() {
-    this.loadLectures();
+    this.getLectures();
   }
 }
 </script>
