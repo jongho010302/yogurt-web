@@ -31,7 +31,12 @@
             <div class="form-block__label__title">수강권명 입력</div>
           </div>
           <div class="form-block__input">
-            <q-input v-model="title" dense color="primary" style="max-width: 300px;" />
+            <q-input
+              v-model="title"
+              dense
+              color="primary"
+              style="max-width: 300px;"
+            />
           </div>
         </div>
       </div>
@@ -44,7 +49,12 @@
             <div class="form-block__label__title">설명</div>
           </div>
           <div class="form-block__input">
-            <q-input v-model="description" dense color="primary" style="max-width: 400px;" />
+            <q-input
+              v-model="description"
+              dense
+              color="primary"
+              style="max-width: 400px;"
+            />
           </div>
         </div>
       </div>
@@ -153,11 +163,13 @@
               <label
                 :class="{ active: bookingLimitCriteria === 'week' }"
                 @click="bookingLimitCriteria = 'week'"
-              >주간 이용 횟수</label>
+                >주간 이용 횟수</label
+              >
               <label
                 :class="{ active: bookingLimitCriteria === 'month' }"
                 @click="bookingLimitCriteria = 'month'"
-              >월간 이용 횟수</label>
+                >월간 이용 횟수</label
+              >
             </div>
             <q-option-group
               v-model="bookingLimit"
@@ -192,7 +204,11 @@
           <div class="form-block__label">
             <div class="form-block__label__title">당일 예약 변경</div>
             <div class="form-block__label__check">
-              <q-checkbox v-model="isUseDailyBookingChangeLimit" color="primary" dense />
+              <q-checkbox
+                v-model="isUseDailyBookingChangeLimit"
+                color="primary"
+                dense
+              />
             </div>
           </div>
           <div class="form-block__input">
@@ -217,8 +233,18 @@
               <q-checkbox v-model="isUseBookingTime" color="primary" dense />
             </div>
           </div>
-          <div class="form-block__input" style="display: flex;">
-            <q-input
+          <div class="form-block__input hours-input" style="display: flex;">
+            <el-time-select
+              v-model="bookingStartTime"
+              align="center"
+              placeholder="시작시각"
+              autosize
+              :picker-options="{
+                start: '09:00',
+              }"
+            >
+            </el-time-select>
+            <!-- <q-input
               v-model.number="bookingStartTime"
               dense
               placeholder="시작시각"
@@ -234,7 +260,7 @@
               <template v-slot:prepend>
                 <q-icon name="schedule" />
               </template>
-            </q-input>
+            </q-input> -->
             <span
               style="
                 align-self: flex-end;
@@ -242,8 +268,9 @@
                 font-weight: 300;
                 margin: 0 12px;
               "
-            >~</span>
-            <q-input
+              >~</span
+            >
+            <!-- <q-input
               v-model.number="bookingEndTime"
               dense
               placeholder="종료시각"
@@ -254,13 +281,12 @@
               input-class="q-py-none"
             >
               <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <VueTimepicker />
-                <!-- <q-time v-model="bookingEndTime" /> -->
+                <q-time v-model="bookingEndTime" />
               </q-popup-proxy>
               <template v-slot:prepend>
                 <q-icon name="schedule" />
               </template>
-            </q-input>
+            </q-input> -->
           </div>
         </div>
       </div>
@@ -272,7 +298,12 @@
         <q-icon name="keyboard_arrow_left" />뒤로가기
       </span>
       <q-space />
-      <q-btn label="수강권 등록 완료" color="white" text-color="black" @click="onSubmit"></q-btn>
+      <q-btn
+        label="수강권 등록 완료"
+        color="white"
+        text-color="black"
+        @click="onSubmit"
+      ></q-btn>
     </div>
   </div>
 </template>

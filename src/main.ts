@@ -1,15 +1,17 @@
 import Vue from 'vue';
+import ElementUI from 'element-ui';
 import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
 import store from './store';
-import './quasar';
-import 'vue2-timepicker/dist/VueTimepicker.css';
+// import './quasar';
 
 Vue.config.productionTip = false;
+
+Vue.use(ElementUI);
 
 new Vue({
   router,
   store,
-  render: (h) => h(App),
+  render: h => h(App),
 }).$mount('#app');

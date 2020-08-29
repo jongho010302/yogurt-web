@@ -111,6 +111,7 @@ import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
 import Login from '@/views/auth/Login.vue';
 import { setAxiosHeaders } from './util/common';
+import 'element-ui/lib/theme-chalk/index.css';
 
 const namespace = 'user';
 
@@ -166,6 +167,20 @@ export default class App extends mixins(Methods) {
 <style scoped>
 .q-layout__section--marginal {
   background-color: aliceblue;
+}
+</style>
+
+<style scoped>
+.main {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 55px calc(100vw - 55px);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'notification header'
+    'notification contents';
 }
 </style>
 
@@ -371,3 +386,5 @@ export default class App extends mixins(Methods) {
   padding: 15px;
 }
 </style>
+
+<style global></style>
