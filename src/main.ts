@@ -4,6 +4,7 @@ import './registerServiceWorker';
 import router from './router';
 import store from './store';
 import './quasar';
+import 'vue2-timepicker/dist/VueTimepicker.css';
 
 Vue.config.productionTip = false;
 

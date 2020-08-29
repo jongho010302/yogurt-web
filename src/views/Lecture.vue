@@ -17,18 +17,13 @@
       <q-input
         v-model="dateFilter"
         color="primary"
-        mask="####/##/##"
+        mask="####-##-##"
         outlined
         style="width: 150px;"
       >
-        <q-popup-proxy transition-show="scale" transition-hide="scale">
-          <q-date v-model="dateFilter" color="primary">
-            <div class="row items-center justify-end q-gutter-sm">
-              <q-btn label="Cancel" color="primary" flat v-close-popup />
-              <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
-            </div>
-          </q-date>
-        </q-popup-proxy>
+        <q-menu :offset="[0, 10]" ref="lectureDatePicker">
+          <q-date v-model="dateFilter" color="primary" minimal class="q-pa-none" />
+        </q-menu>
         <template v-slot:prepend>
           <q-icon name="event" />
         </template>
@@ -122,7 +117,8 @@ export default class Lecture extends Vue {
           value: 'private',
         },
       ],
-      dateFilter: parseDate(new Date(), 'yyyy/mm/dd'),
+      showDate: false,
+      dateFilter: parseDate(new Date(), 'yyyy-mm-dd'),
       gridFilter: '',
 
       // Calendar
@@ -194,8 +190,7 @@ export default class Lecture extends Vue {
 
   getLectures() {
     this.$store.dispatch(`${namespace}/getLectures`, {
-      // yyyy/mm/dd - yyyy-mm-dd
-      lectureDate: this.$data.dateFilter.replace(/\//gi, '-'),
+      lectureDate: this.$data.dateFilter,
       lectureType: this.$data.lectureTypeFilter.value,
     });
   }
@@ -212,6 +207,9 @@ export default class Lecture extends Vue {
 
   @Watch('dateFilter')
   onDateFilterChanged() {
+    // @ts-ignore
+    this.$refs.lectureDatePicker.hide();
+    this.$data.showDate = false;
     this.getLectures();
   }
 }
