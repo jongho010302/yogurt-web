@@ -69,3 +69,6 @@ export const verifySignUpCodeApi = (email: string, verifyCode: string) =>
 
 export const getUsersApi = () =>
   makeRequest('get', `${VUE_APP_MY_BACK_URL}/admin/user`);
+
+export const getUserApi = (id: string | number) =>
+  makeRequest('get', `${VUE_APP_MY_BACK_URL}/admin/user/${id}`);

@@ -13,7 +13,7 @@ const actions: ActionTree<StudioState, RootState> = {
       throw err;
     }
   },
-  async saveStudio({ commit }, payload) {
+  async saveStudio(none, payload) {
     try {
       await saveStudioApi(payload);
     } catch (err) {

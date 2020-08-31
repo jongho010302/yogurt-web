@@ -66,6 +66,10 @@ export default class TicketCard extends Vue {
     return this.$store.state.primary;
   }
 
+  created() {
+    console.log(this.$route.params.id);
+  }
+
   clickCalendarIcon() {
     setTimeout(() => {
       this.$data.showCalendar = true;

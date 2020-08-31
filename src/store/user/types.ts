@@ -39,4 +39,5 @@ export interface UserState {
   jwtToken: string | null;
   maskingUsernames: string[] | null;
   users: User[] | null;
+  userDetail: User | null;
 }

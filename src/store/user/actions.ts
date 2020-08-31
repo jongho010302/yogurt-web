@@ -16,6 +16,7 @@ import {
   sendSignUpCodeApi,
   verifySignUpCodeApi,
   getUsersApi,
+  getUserApi,
 } from '@/api/user';
 import { RootState } from '../types';
 
@@ -138,6 +139,14 @@ const actions: ActionTree<UserState, RootState> = {
     try {
       const res = await getUsersApi();
       commit('saveUsers', res.data);
+    } catch (err) {
+      throw err;
+    }
+  },
+  async getUser({ commit }, { id }) {
+    try {
+      const res = await getUserApi(id);
+      commit('saveUserDetail', res.data);
     } catch (err) {
       throw err;
     }

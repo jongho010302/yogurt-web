@@ -1,5 +1,5 @@
 <template>
-  <q-card class="my-card cursor-pointer" @click="routerTo(`/ticket/detail?id=${ticket.id}`)">
+  <q-card class="my-card cursor-pointer" @click="routerTo(`/ticket/${ticket.id}`)">
     <q-card-section class="text-white" :style="ticketStyle">
       <div class="text-overline">{{ ticketClassType }} 수강권</div>
       <div class="text-h6 q-mb-lg">{{ ticket.title }}</div>
@@ -37,10 +37,6 @@ export default class TicketCard extends mixins(Methods) {
     } else if (this.ticket.classType === 'PRIVATE') {
       return '개인형';
     }
-  }
-
-  navigateToTicketDetail(id: number) {
-    this.$router.push({ path: `/ticket/detail?id=${id}` });
   }
 }
 </script>

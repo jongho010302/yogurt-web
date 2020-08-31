@@ -99,7 +99,7 @@ export default class TicketDetail extends mixins(Methods) {
   }
 
   created() {
-    this.getTicket(this.$route.query.id.toString());
+    this.getTicket(this.$route.params.id);
   }
 
   getTicket(id: string) {

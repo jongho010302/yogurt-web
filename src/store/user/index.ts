@@ -11,11 +11,12 @@ export const state: UserState = {
   jwtToken: localStorage.getItem('jwtToken'),
   maskingUsernames: null,
   users: null,
+  userDetail: null,
 };
 
 const namespaced = true;
 
-const lecture: Module<UserState, RootState> = {
+const user: Module<UserState, RootState> = {
   namespaced,
   state,
   getters,
@@ -23,4 +24,4 @@ const lecture: Module<UserState, RootState> = {
   mutations,
 };
 
-export default lecture;
+export default user;

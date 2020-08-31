@@ -24,7 +24,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import PageTitle from '@/components/base/PageTitle.vue';
-import TicketCard from '../../components/ticket/TicketCard.vue';
+import TicketCard from '@/components/ticket/TicketCard.vue';
 
 const namespace = 'ticket';
 

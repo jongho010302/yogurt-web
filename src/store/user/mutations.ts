@@ -14,6 +14,9 @@ const mutations: MutationTree<UserState> = {
   saveUsers(state, payload: User[]) {
     state.users = payload;
   },
+  saveUserDetail(state, payload: User) {
+    state.userDetail = payload;
+  },
 };
 
 export default mutations;

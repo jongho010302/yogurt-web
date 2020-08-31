@@ -53,7 +53,7 @@ const routes = [
     },
   },
   {
-    path: '/ticket/detail',
+    path: '/ticket/:id',
     name: 'TicketDetail',
     component: () =>
       import(/* webpackChunkName: "about" */ '@/views/ticket/detail.vue'),
@@ -136,7 +136,7 @@ const routes = [
     },
   },
   {
-    path: '/staff/detail',
+    path: '/staff/:id',
     name: 'StaffDetail',
     component: () =>
       import(/* webpackChunkName: "about" */ '@/views/staff/detail.vue'),
@@ -156,7 +156,17 @@ const routes = [
   {
     path: '/user',
     name: 'User',
-    component: () => import(/* webpackChunkName: "about" */ '@/views/User.vue'),
+    component: () =>
+      import(/* webpackChunkName: "about" */ '@/views/user/index.vue'),
+    meta: {
+      middleware: isAuthenticated,
+    },
+  },
+  {
+    path: '/user/:id',
+    name: 'UserDetail',
+    component: () =>
+      import(/* webpackChunkName: "about" */ '@/views/user/detail.vue'),
     meta: {
       middleware: isAuthenticated,
     },
