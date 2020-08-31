@@ -19,8 +19,42 @@
         @click="onCreateCourseButtonClick"
       ></q-btn>
     </q-page-sticky>
-    <button id="show-modal" @click="showModal = true">Show Modal</button>
-    <Modal v-if="showModal" @close="showModal = false" />
+    <button @click="showModal = true">Show Modal</button>
+    <el-dialog :visible.sync="showModal" width="30%">
+      <div class="el-dialog__header">
+        <div class="create-lesson-modal__title">
+          <h3>일정등록</h3>
+        </div>
+        <button type="button" aria-label="Close" class="el-dialog__headerbtn">
+          <i class="el-dialog__close el-icon el-icon-close"></i>
+        </button>
+      </div>
+      <div class="el-dialog__body">
+        <div class="create-lesson-modal__body">
+          <a class=""
+            ><div>
+              <h5>프라이빗 수업</h5>
+              <p>개인/듀엣/트리플 레슨 (예약 필수)</p>
+            </div></a
+          ><a class=""
+            ><div>
+              <h5>그룹 수업</h5>
+              <p>
+                고정된 스케쥴의 오픈형 수업 과정 (자유 수강형/예약 필수)
+              </p>
+            </div></a
+          >
+        </div>
+        <div class="create-lesson-modal__footer">
+          <p>
+            수업/클래스란?<br />
+            수업은 말 그대로 하루 한 회차의 수업을 의미하며, 그런 수업들이
+            모여<br />
+            이루어진 프로그램을 일컬어 클래스라 칭합니다.
+          </p>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -29,7 +63,6 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import VueCal from 'vue-cal';
 import PageTitle from '@/components/base/PageTitle.vue';
-import Modal from '@/components/schedule/Modal.vue';
 import { parseDate, getWeek } from '@/util/date';
 import 'vue-cal/dist/i18n/zh-cn';
 import 'vue-cal/dist/vuecal.css';
@@ -41,7 +74,6 @@ const dailyHours = { from: 9 * 60, to: 18 * 60, class: 'business-hours' };
   components: {
     VueCal,
     PageTitle,
-    Modal,
   },
 })
 export default class Schedule extends Vue {
@@ -124,67 +156,27 @@ export default class Schedule extends Vue {
 .sport {
   background-color: rgb(73, 166, 248);
 }
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  transition: opacity 0.3s ease;
-}
+</style>
 
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
+<style scoped>
+.create-lesson-modal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
-
-.modal-container {
-  width: 300px;
-  margin: 0px auto;
-  padding: 20px 30px;
-  background-color: #fff;
+.create-lesson-modal__title {
+  font-size: 36px;
+  padding-left: 30px;
+}
+.create-lesson-modal__body {
+  box-sizing: border-box;
+}
+.create-lesson-modal__footer {
+  background: rgba(250, 251, 251, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  transition: all 0.3s ease;
-  font-family: Helvetica, Arial, sans-serif;
-}
-
-.modal-header h3 {
-  margin-top: 0;
-  color: #42b983;
-}
-
-.modal-body {
-  margin: 20px 0;
-}
-
-.modal-default-button {
-  float: right;
-}
-
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-
-.modal-enter {
-  opacity: 0;
-}
-
-.modal-leave-active {
-  opacity: 0;
-}
-
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+  margin-top: 15px;
+  padding: 15px;
 }
 </style>

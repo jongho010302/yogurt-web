@@ -4,38 +4,83 @@
 
     <!-- 검색 조건 -->
     <div class="q-gutter-x-md q-mb-md row">
-      <!-- 날짜/기간 선택 필터 -->
-      <q-select
-        v-model="periodFilter"
-        :options="periodOptions"
-        color="primary"
-        outlined
-        style="width: 90px;"
-      />
+      <!-- 날짜/기간 -->
+      <el-select v-model="searchType" style="width: 90px;">
+        <el-option
+          v-for="item in searchTypeOptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
 
-      <!-- 날짜 필터 -->
-      <q-input
+      <!-- 날짜-->
+      <el-date-picker
+        v-if="searchType === 'date'"
         v-model="dateFilter"
-        color="primary"
-        mask="####-##-##"
-        outlined
-        style="width: 150px;"
+        type="date"
+        :clearable="false"
+        format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
+        style="width: 140px;"
+      ></el-date-picker>
+      <!-- 기간 날짜 -->
+      <el-date-picker
+        v-if="searchType === 'period'"
+        v-model="periodFilter"
+        type="daterange"
+        :clearable="false"
+        format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
       >
-        <q-menu :offset="[0, 10]" ref="lectureDatePicker">
-          <q-date v-model="dateFilter" color="primary" minimal class="q-pa-none" />
-        </q-menu>
-        <template v-slot:prepend>
-          <q-icon name="event" />
-        </template>
-      </q-input>
+      </el-date-picker>
 
-      <!-- 수업 타입 필터 -->
-      <q-select
-        v-model="lectureTypeFilter"
-        :options="lectureTypeOptions"
-        outlined
-        style="width: 130px;"
-      />
+      <!-- 요일 -->
+      <el-select
+        v-model="weekFilter"
+        placeholder="모든 요일"
+        style="width: 140px;"
+      >
+        <el-option
+          v-for="item in ['월', '화', '수', '목', '금', '토', '일']"
+          :key="item"
+          :label="item"
+          :value="item"
+        >
+        </el-option>
+      </el-select>
+
+      <!-- 강사 -->
+      <el-select
+        v-model="staffFilter"
+        placeholder="강사 전체"
+        style="width: 140px;"
+      >
+        <el-option
+          v-for="item in staffOptions"
+          :key="item"
+          :label="item"
+          :value="item"
+        >
+        </el-option>
+      </el-select>
+
+      <!-- 수업 타입 -->
+      <el-select
+        v-model="lectureType"
+        clearable
+        placeholder="수업 전체"
+        style="width: 140px;"
+      >
+        <el-option
+          v-for="item in lectureTypeOptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
     </div>
 
     <!-- 테이블 -->
@@ -50,7 +95,12 @@
       :selected.sync="selected"
     >
       <template v-slot:top-right>
-        <q-btn color="primary" icon-right="archive" label="Export to excel" no-caps />
+        <q-btn
+          color="primary"
+          icon-right="archive"
+          label="Export to excel"
+          no-caps
+        />
       </template>
 
       <template v-slot:top-left>
@@ -76,9 +126,11 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import PageTitle from '@/components/base/PageTitle.vue';
-import { parseDate } from '@/util/date';
+import { parseDate, getCurrentDate, getDateByCalculateDay } from '@/util/date';
+import { Staff } from '@/store/staff/types';
 
-const namespace = 'lecture';
+const lectureNamespace = 'lecture';
+const staffNamespace = 'staff';
 
 @Component({
   components: {
@@ -89,11 +141,8 @@ export default class Lecture extends Vue {
   data() {
     return {
       // Filter
-      periodFilter: {
-        label: '날짜',
-        value: 'date',
-      },
-      periodOptions: [
+      searchType: 'date',
+      searchTypeOptions: [
         {
           label: '날짜',
           value: 'date',
@@ -103,10 +152,9 @@ export default class Lecture extends Vue {
           value: 'period',
         },
       ],
-      lectureTypeFilter: {
-        label: '그룹',
-        value: 'group',
-      },
+      weekFilter: null,
+      lectureType: null,
+      staffFilter: null,
       lectureTypeOptions: [
         {
           label: '그룹',
@@ -117,8 +165,11 @@ export default class Lecture extends Vue {
           value: 'private',
         },
       ],
-      showDate: false,
-      dateFilter: parseDate(new Date(), 'yyyy-mm-dd'),
+      dateFilter: parseDate(getCurrentDate(), 'yyyy-mm-dd'),
+      periodFilter: [
+        parseDate(getDateByCalculateDay(-7), 'yyyy-mm-dd'),
+        parseDate(getCurrentDate(), 'yyyy-mm-dd'),
+      ],
       gridFilter: '',
 
       // Calendar
@@ -177,7 +228,20 @@ export default class Lecture extends Vue {
   }
 
   get lectures() {
-    return this.$store.getters[`${namespace}/getLectures`];
+    return this.$store.getters[`${lectureNamespace}/getLectures`];
+  }
+
+  get staffOptions() {
+    const staffs = this.$store.getters[`${staffNamespace}/getStaffs`];
+    return staffs.map((staff: Staff) => staff.user.name);
+  }
+
+  async created() {
+    await this.getStaffs();
+  }
+
+  async getStaffs() {
+    await this.$store.dispatch(`${staffNamespace}/getStaffs`);
   }
 
   getSelectedString() {
@@ -189,27 +253,27 @@ export default class Lecture extends Vue {
   }
 
   getLectures() {
-    this.$store.dispatch(`${namespace}/getLectures`, {
-      lectureDate: this.$data.dateFilter,
-      lectureType: this.$data.lectureTypeFilter.value,
-    });
+    // const searchType = this.$data.searchType;
+    // if (searchType === 'date') {
+    // }
+    // this.$store.dispatch(`${lectureNamespace}/getLectures`, {
+    //   lectureDate: this.$data.dateFilter,
+    //   lectureType: this.$data.lectureType,
+    // });
   }
 
-  @Watch('periodFilter')
+  @Watch('searchType')
   onPeriodFilterChanged() {
     this.getLectures();
   }
 
-  @Watch('lectureTypeFilter')
+  @Watch('lectureType')
   onLectureTypeFilterChanged() {
     this.getLectures();
   }
 
   @Watch('dateFilter')
   onDateFilterChanged() {
-    // @ts-ignore
-    this.$refs.lectureDatePicker.hide();
-    this.$data.showDate = false;
     this.getLectures();
   }
 }

@@ -1,4 +1,5 @@
 import { Staff } from '../staff/types';
+import { BaseEntity } from '../types';
 
 export interface LectureType {
   id: number;
@@ -8,8 +9,7 @@ export interface LectureType {
   updatedAt: string;
 }
 
-export interface Lecture {
-  id: number;
+export interface Lecture extends BaseEntity {
   lectureName: string;
   lectureDate: string;
   attendedCount: string;

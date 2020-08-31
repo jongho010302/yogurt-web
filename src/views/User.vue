@@ -2,35 +2,12 @@
   <div class="q-pa-lg">
     <PageTitle text="수업 목록" class="q-mb-xl" />
 
-    <q-table
-      title="회원"
-      :data="users"
-      :columns="columns"
-      color="primary"
-      row-key="username"
-      :filter="gridFilter"
-      selection="multiple"
-      :selected-rows-label="getSelectedString"
-      :selected.sync="selected"
-    >
-      <template v-slot:top-right>
-        <q-btn color="primary" icon-right="archive" label="엑셀다운로드" no-caps />
-      </template>
-      <template v-slot:top-left>
-        <q-input
-          v-model="gridFilter"
-          color="primary"
-          placeholder="검색"
-          debounce="300"
-          dense
-          class="q-mr-md"
-        >
-          <template v-slot:append>
-            <q-icon name="search" color="primary" />
-          </template>
-        </q-input>
-      </template>
-    </q-table>
+    <el-table :data="users" style="width: 100%;">
+      <el-table-column prop="name" label="이름" width="180"></el-table-column>
+      <el-table-column prop="phone" label="전화번호" width="180"></el-table-column>
+      <el-table-column prop="createdAt" label="등록일" width="180"></el-table-column>
+      <el-table-column prop="ticket" label="보유 수강권" width="180"></el-table-column>
+    </el-table>
   </div>
 </template>
 
@@ -38,6 +15,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import PageTitle from '@/components/base/PageTitle.vue';
+import { User as UserType } from '@/store/user/types';
 
 const namespace = 'user';
 
@@ -49,21 +27,6 @@ const namespace = 'user';
 export default class User extends Vue {
   data() {
     return {
-      selected: [],
-      columns: [
-        {
-          name: 'username',
-          required: true,
-          label: 'username',
-          align: 'center',
-          field: (row: any) => row.username,
-          sortable: true,
-        },
-        { name: 'email', align: 'center', label: 'email', field: 'email' },
-        { name: 'name', align: 'center', label: 'name', field: 'name' },
-        { name: 'phone', align: 'center', label: 'phone', field: 'phone' },
-        { name: 'role', align: 'center', label: 'role', field: 'role' },
-      ],
       gridFilter: '',
     };
   }
@@ -73,20 +36,25 @@ export default class User extends Vue {
   }
 
   get users() {
-    const users = this.$store.getters[`${namespace}/getUsers`] || [];
-    return users;
+    const users = this.$store.getters[`${namespace}/getUsers`];
+    if (users) {
+      return users.map((user: UserType) => {
+        const userColumn: any = {};
+        userColumn.name = user.name;
+        userColumn.phone = user.phone;
+        userColumn.createdAt = user.createdAt.substring(0, 10);
+        userColumn.ticket = user.userTickets.length
+          ? user.userTickets[0].ticket.title
+          : '';
+        return userColumn;
+      });
+    } else {
+      return [];
+    }
   }
 
   async created() {
     await this.getUsers();
-  }
-
-  getSelectedString() {
-    return this.$data.selected.length === 0
-      ? ''
-      : `${this.$data.selected.length} record${
-          this.$data.selected.length > 1 ? 's' : ''
-        } selected of ${this.users.length}`;
   }
 
   async getUsers() {

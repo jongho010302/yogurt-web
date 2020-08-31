@@ -1,27 +1,29 @@
-import { Notify } from 'quasar';
+import { Notification } from 'element-ui';
 
 export const yogurtConfirm = (message: string) => window.confirm(message);
 
 export const positiveAlert = (message: string) =>
-  Notify.create({
-    type: 'positive',
+  Notification({
+    title: '성공',
     message: message,
+    type: 'success',
   });
 
 export const infoAlert = (message: string) =>
-  Notify.create({
-    type: 'info',
+  Notification.info({
+    title: '정보',
     message: message,
   });
 
 export const warningAlert = (message: string) =>
-  Notify.create({
-    type: 'warning',
+  Notification({
+    title: '경고',
     message: message,
+    type: 'warning',
   });
 
 export const errorAlert = (message: string) =>
-  Notify.create({
-    type: 'negative',
+  Notification.error({
+    title: '에러',
     message: message,
   });

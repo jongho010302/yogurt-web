@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex';
-import { UserState, User, Role } from './types';
+import { UserState, User } from './types';
 
 const mutations: MutationTree<UserState> = {
   saveUser(state, payload: any) {
@@ -12,9 +12,6 @@ const mutations: MutationTree<UserState> = {
     state.maskingUsernames = payload;
   },
   saveUsers(state, payload: User[]) {
-    payload.forEach((item) => {
-      item.role = item.roles[0].replace('ROLE_', '') as Role;
-    });
     state.users = payload;
   },
 };

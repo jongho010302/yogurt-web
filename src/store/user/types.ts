@@ -1,7 +1,8 @@
 import { Studio } from '../studio/types';
+import { BaseEntity } from '../types';
+import { Ticket } from '../ticket/types';
 
-export interface User {
-  id: number;
+export interface User extends BaseEntity {
   studio: Studio;
   username: string;
   password: string;
@@ -12,9 +13,17 @@ export interface User {
   phone: string;
   profileUrl: string;
   roles: Role[];
-  role: Role;
-  createdAt: string;
-  updatedAt: string;
+  userTickets: UserTicket[];
+}
+
+export interface UserTicket extends BaseEntity {
+  maxCancel: number;
+  maxCoupon: number;
+  remainingCancel: number;
+  remainingCoupon: number;
+  startDate: string;
+  endDate: string;
+  ticket: Ticket;
 }
 
 export enum Role {

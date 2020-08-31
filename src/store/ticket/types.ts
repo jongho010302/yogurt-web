@@ -1,15 +1,13 @@
 import { Studio } from '../studio/types';
+import { BaseEntity } from '../types';
 
-export interface Ticket {
-  id: number;
+export interface Ticket extends BaseEntity {
   studio: Studio;
   classType: ClassType;
   title: string;
   price: number;
   availableDays: number;
   isSelling: boolean;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export enum ClassType {

@@ -1,8 +1,8 @@
 import { Studio } from '../studio/types';
 import { User } from '@/store/user/types';
+import { BaseEntity } from '../types';
 
-export interface Staff {
-  id: number;
+export interface Staff extends BaseEntity {
   user: User;
   hiredAt: string;
   introduce: string;

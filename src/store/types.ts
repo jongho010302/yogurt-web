@@ -13,3 +13,9 @@ export interface RootState {
   staff: StaffState;
   lecture: LectureState;
 }
+
+export interface BaseEntity {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}

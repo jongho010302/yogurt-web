@@ -15,8 +15,8 @@ import {
   verifyUsernameApi,
   sendSignUpCodeApi,
   verifySignUpCodeApi,
-} from '@/api/auth';
-import { getUsersApi } from '@/api/user';
+  getUsersApi,
+} from '@/api/user';
 import { RootState } from '../types';
 
 const processLogOut = () => {
@@ -68,10 +68,11 @@ const actions: ActionTree<UserState, RootState> = {
   },
   async logOut({ commit }) {
     try {
-      await logOutApi();
+      const res = await logOutApi();
       commit('saveUser', null);
       commit('saveJwtToken', null);
       processLogOut();
+      positiveAlert(res.message);
     } catch (err) {
       throw err;
     }

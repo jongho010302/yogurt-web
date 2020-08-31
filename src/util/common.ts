@@ -1,6 +1,6 @@
 import axios, { Method } from 'axios';
 import { ApiResponse } from '@/types';
-import { errorAlert, positiveAlert, warningAlert } from '@/util/ui';
+import { errorAlert, warningAlert } from '@/util/ui';
 import { LoadingBar } from 'quasar';
 
 export const makeRequest = async (
@@ -20,8 +20,6 @@ export const makeRequest = async (
     });
 
     LoadingBar.stop();
-
-    positiveAlert(res.data.message);
 
     return res.data;
   } catch (err) {

@@ -30,8 +30,8 @@
 
           <q-btn round flat>
             <q-avatar
-              size="42px"
-              class="q-mb-sm float-right cursor-pointer"
+              size="42"
+              class="float-right cursor-pointer"
               @click="menu != menu"
             >
               <img
@@ -74,7 +74,6 @@
               </div>
             </q-menu>
           </q-btn>
-          {{ user.name }}
         </q-toolbar>
       </q-header>
 
@@ -205,17 +204,12 @@ export default class App extends mixins(Methods) {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  align-items: center;
 }
 .content-title h3 {
   font-size: 28px;
   font-weight: 700;
   margin: 12px 8px;
-}
-.product-form {
-  display: grid;
-  grid-row-gap: 30px;
-  padding: 60px 80px 120px;
-  margin: auto;
 }
 .form-block {
   display: grid;
@@ -304,87 +298,7 @@ export default class App extends mixins(Methods) {
 </style>
 
 <style global>
-.v-modal {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.5;
-  background: #000;
-  z-index: 2023;
-}
-.el-dialog__wrapper {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  overflow: auto;
-  margin: 0;
-}
-.el-dialog__wrapper h3 {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-}
-.el-dialog__wrapper h5 {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 700;
-}
-.el-dialog__wrapper a {
-  color: #343a40;
-}
-.create-lesson-modal {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-.el-dialog {
-  width: 90%;
-  max-width: 368px;
-  position: relative;
-  margin: 0 auto 50px;
-  background: #fff;
-  border-radius: 2px;
-  box-sizing: border-box;
-}
-.el-dialog__header {
-  padding: 20px;
-  padding-bottom: 10px;
-}
-.create-lesson-modal__title {
-  font-size: 36px;
-  padding-left: 30px;
-}
-.el-dialog__headerbtn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  padding: 0;
-  background: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  font-size: 16px;
-}
-.el-dialog__body {
-  padding: 30px 20px;
-  color: #606266;
-  font-size: 14px;
-}
-.create-lesson-modal__body {
-  box-sizing: border-box;
-}
-.create-lesson-modal__footer {
-  background: rgba(250, 251, 251, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 2px;
-  margin-top: 15px;
-  padding: 15px;
+h2 {
+  line-height: 1 !important;
 }
 </style>
-
-<style global></style>
