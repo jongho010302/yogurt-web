@@ -29,11 +29,7 @@
           <q-space />
 
           <q-btn round flat>
-            <q-avatar
-              size="42"
-              class="float-right cursor-pointer"
-              @click="menu != menu"
-            >
+            <q-avatar size="42" class="float-right cursor-pointer" @click="menu != menu">
               <img
                 :src="
                   user.profileUrl ||
@@ -58,18 +54,9 @@
                     <img :src="user.profileUrl" />
                   </q-avatar>
 
-                  <div class="text-subtitle1 q-mt-md q-mb-xs">
-                    {{ user.name }}
-                  </div>
+                  <div class="text-subtitle1 q-mt-md q-mb-xs">{{ user.name }}</div>
 
-                  <q-btn
-                    color="primary"
-                    label="로그아웃"
-                    push
-                    size="sm"
-                    v-close-popup
-                    @click="logOut"
-                  />
+                  <q-btn color="primary" label="로그아웃" push size="sm" v-close-popup @click="logOut" />
                 </div>
               </div>
             </q-menu>
@@ -111,6 +98,8 @@ import { Methods } from '@/mixins';
 import Login from '@/views/auth/Login.vue';
 import { setAxiosHeaders } from './util/common';
 import 'element-ui/lib/theme-chalk/index.css';
+import './App.css';
+import './App.scss';
 
 const namespace = 'user';
 
@@ -186,119 +175,5 @@ export default class App extends mixins(Methods) {
 <style global>
 .q-tab__content {
   min-width: 70px !important;
-}
-.container {
-  padding: 60px 80px 120px;
-}
-.content-header {
-  background: rgba(248, 249, 250, 0.5);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-  width: 100%;
-}
-.content-header__inner {
-  padding: 72px;
-  padding-top: 50px;
-  padding-bottom: 30px;
-}
-.content-title {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-}
-.content-title h3 {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 12px 8px;
-}
-.form-block {
-  display: grid;
-  grid-template-columns: 60px 1fr;
-  color: #343a40;
-  font-size: 15px;
-  font-weight: 700;
-}
-.form-block__index {
-  width: 60px;
-}
-.form-block__content {
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  padding-bottom: 30px;
-}
-.form-block__label {
-  display: grid;
-  grid-template-columns: 1fr 210px;
-  grid-gap: 24px;
-  margin-bottom: 12px;
-}
-.form-block__label__title {
-  display: flex;
-  flex-direction: row;
-}
-.form-block__label__check {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-}
-.form-block__label {
-  display: grid;
-  grid-template-columns: 1fr 210px;
-  grid-gap: 24px;
-  margin-bottom: 12px;
-}
-.form-block__inputs {
-  display: flex;
-}
-.custom-radio-group {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  margin: 10px 0;
-}
-.custom-radio-group label:first-child {
-  border-width: 1px;
-  border-radius: 4px 0 0 4px;
-}
-.custom-radio-group label:last-child {
-  border-radius: 0 4px 4px 0;
-}
-.custom-radio-group label {
-  border: solid #64aeff;
-  border-width: 1px 1px 1px 0;
-  color: #64aeff;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-  padding: 7px;
-  text-align: center;
-  width: 100%;
-  margin: 0;
-  transition: background 0.2s;
-}
-.custom-radio-group label.active {
-  background: #64aeff;
-  color: #fff;
-}
-.bottom-action-bar {
-  position: fixed;
-  bottom: 0px;
-  left: 56px;
-  right: 0px;
-  padding-left: 24px;
-  padding-right: 24px;
-  background-color: #64aeff;
-  width: 97%;
-  height: 60px;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  color: white;
-}
-</style>
-
-<style global>
-h2 {
-  line-height: 1 !important;
 }
 </style>

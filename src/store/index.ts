@@ -17,7 +17,7 @@ Vue.use(Vuex);
 const store: StoreOptions<RootState> = {
   state: {
     version: '1.0.0',
-    ticketStyle: 'background-image: linear-gradient(#4485F7, #A7C5F9)',
+    ticketStyle: 'background-image: linear-gradient(#b7e9f7, #87cefa)',
     lecture: lecture.state as LectureState,
     staff: staff.state as StaffState,
     studio: studio.state as StudioState,

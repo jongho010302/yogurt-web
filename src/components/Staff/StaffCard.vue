@@ -38,7 +38,7 @@ export default class TicketCard extends Vue {
   }
 
   navigateToStaffDetail(id: number) {
-    this.$router.push({ path: `/staff/${id}` });
+    this.$router.push({ path: `/staff/detail/${id}` });
   }
 
   async resetPassword() {

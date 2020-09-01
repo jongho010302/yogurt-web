@@ -1,5 +1,5 @@
 <template>
-  <q-card class="my-card cursor-pointer" @click="routerTo(`/ticket/${ticket.id}`)">
+  <q-card class="my-card cursor-pointer" @click="routerTo(`/ticket/detail/${ticket.id}`)">
     <q-card-section class="text-white" :style="ticketStyle">
       <div class="text-overline">{{ ticketClassType }} 수강권</div>
       <div class="text-h6 q-mb-lg">{{ ticket.title }}</div>

@@ -53,7 +53,7 @@ const routes = [
     },
   },
   {
-    path: '/ticket/:id',
+    path: '/ticket/detail/:id',
     name: 'TicketDetail',
     component: () =>
       import(/* webpackChunkName: "about" */ '@/views/ticket/detail.vue'),
@@ -136,7 +136,7 @@ const routes = [
     },
   },
   {
-    path: '/staff/:id',
+    path: '/staff/detail/:id',
     name: 'StaffDetail',
     component: () =>
       import(/* webpackChunkName: "about" */ '@/views/staff/detail.vue'),
@@ -163,7 +163,7 @@ const routes = [
     },
   },
   {
-    path: '/user/:id',
+    path: '/user/detail/:id',
     name: 'UserDetail',
     component: () =>
       import(/* webpackChunkName: "about" */ '@/views/user/detail.vue'),

@@ -72,7 +72,7 @@ export default class User extends Vue {
   }
 
   onRowClick(row: Column) {
-    this.$router.push(`/user/${row.id}`);
+    this.$router.push(`/user/detail/${row.id}`);
   }
 }
 </script>
