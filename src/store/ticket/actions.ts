@@ -2,6 +2,7 @@ import { ActionTree } from 'vuex';
 import { TicketState } from './types';
 import { getTicketsApi, getTicketApi, saveTicketApi } from '@/api/ticket';
 import { RootState } from '../types';
+import { infoAlert } from '@/util/ui';
 
 const actions: ActionTree<TicketState, RootState> = {
   async getTickets({ commit }) {
@@ -20,9 +21,17 @@ const actions: ActionTree<TicketState, RootState> = {
       throw err;
     }
   },
-  async saveTicket(none, payload) {
+  async saveTicket({ commit, rootState }, payload) {
     try {
-      await saveTicketApi(payload);
+      const res = await saveTicketApi(payload);
+      infoAlert(res.message);
+      if (rootState.ticket.tickets) {
+        const tickets = rootState.ticket.tickets.map((el) => ({ ...el }));
+        tickets.push(res.data);
+        commit('saveTickets', tickets);
+      } else {
+        commit('saveTickets', [res.data]);
+      }
     } catch (err) {
       throw err;
     }

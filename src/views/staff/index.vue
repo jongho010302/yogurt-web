@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pa-lg">
-    <PageTitle text="강사 관리" />
+  <div class="padded">
+    <h3>강사 관리</h3>
 
     <div class="q-mb-xl text-weight-bold">총 {{ staffs.length }}명</div>
 
@@ -11,23 +11,15 @@
       </div>
     </div>
 
-    <q-page-sticky position="bottom-right" :offset="[45, 45]">
-      <q-btn
-        fab
-        :icon="icon"
-        color="red"
-        @mouseover="icon = 'edit'"
-        @mouseout="icon = 'add'"
-        @click="$router.push('/staff/create')"
-      ></q-btn>
-    </q-page-sticky>
+    <div class="floating-action-button">
+      <div class="plus" @click="$router.push('/staff/create')">+</div>
+    </div>
   </div>
 </template>
  
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import PageTitle from '@/components/base/PageTitle.vue';
 import StaffCard from '@/components/staff/StaffCard.vue';
 
 const namespace = 'staff';
@@ -35,7 +27,6 @@ const namespace = 'staff';
 @Component({
   components: {
     StaffCard,
-    PageTitle,
   },
 })
 export default class Staff extends Vue {

@@ -34,6 +34,7 @@ const actions: ActionTree<UserState, RootState> = {
       commit('saveUser', res.data);
       localStorage.setItem('user', res.data);
     } catch (err) {
+      commit('saveJwtToken', null);
       processLogOut();
       throw err;
     }

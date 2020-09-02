@@ -1,4 +1,71 @@
-/* Default Layout */
+/* Layout */
+.main {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 55px calc(100vw - 55px);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'sider header'
+    'sider contents';
+  font-family: Noto Sans KR, sans-serif;
+}
+.main__sider {
+  grid-area: sider;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #ebebeb;
+  width: 56px;
+  z-index: 101;
+}
+.notification__toggle {
+  margin: 20px 10px;
+}
+.notification__toggle i {
+  font-size: 18px;
+}
+.main__header {
+  grid-area: header;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #ebebed;
+  align-items: center;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
+  z-index: 99;
+  height: 60px;
+  padding: 0 12px;
+}
+.main__header .el-menu {
+  border-bottom: 0;
+}
+.main__header-logo {
+  margin: 5px 20px;
+  border-radius: 50%;
+}
+.main__header-profile {
+  display: flex;
+  align-items: center;
+}
+.main__contents {
+  grid-area: contents;
+  overflow-y: auto;
+}
+.padded {
+  padding: 30px;
+}
+.auth {
+  display: flex;
+}
+.auth__contents {
+  display: flex;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+/* Default */
 .container {
   padding: 60px 80px 120px;
 }
@@ -111,15 +178,89 @@
   align-items: center;
   color: white;
 }
+.floating-action-button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #f95454;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  cursor: pointer;
+  -webkit-box-shadow: 0 10px 20px -8px #f95454;
+  box-shadow: 0 10px 20px -8px #f95454;
+  z-index: 100;
+}
+.floating-action-button .plus {
+  position: absolute;
+  top: -2px;
+  display: block;
+  left: 2px;
+  right: 0;
+  padding: 0;
+  transition: all 0.3s;
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  line-height: 54px;
+  font-size: 40px;
+  font-weight: 200;
+  animation: plus-out-data-v-e41e3df0 0.3s;
+}
+.floating-action-button .edit {
+  left: 0;
+  opacity: 0;
+  margin: auto;
+  line-height: 65px;
+  -webkit-transform: rotate(-70deg);
+  transform: rotate(-70deg);
+  -webkit-animation: edit-out-data-v-7b4e3ea2 0.3s;
+  animation: edit-out-data-v-7b4e3ea2 0.3s;
+  position: absolute;
+  top: 0;
+  display: block;
+  bottom: 0;
+  right: 0;
+  padding: 0;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
 
 /* HTML Tags */
 h2 {
   line-height: 1 !important;
 }
+h3 {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  letter-spacing: normal !important;
+  margin: 0 !important;
+}
 label {
   font-size: 12px;
   font-weight: 400;
   padding-bottom: 5px;
+}
+button {
+  background: transparent;
+  outline: none;
+  border-style: none;
+  cursor: pointer;
+}
+button.medium {
+  width: 36px;
+  height: 36px;
+}
+
+/* Common */
+.space {
+  flex-grow: 1 !important;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.text-white {
+  color: #fff;
 }
 
 /* Custom Element UI */
@@ -132,6 +273,16 @@ label {
   border-right: 0;
   border-radius: 0;
   border-bottom: 2px solid #eee;
+}
+.el-custom-input .el-input__inner:hover,
+.el-input-number .el-input__inner:hover,
+.el-date-editor--time-select .el-input__inner:hover {
+  border-color: #c0c4cc;
+}
+.el-custom-input .el-input__inner:focus,
+.el-input-number .el-input__inner:focus,
+.el-date-editor--time-select .el-input__inner:focus {
+  border-color: #409eff;
 }
 .el-input__suffix {
   top: 1px;
@@ -189,22 +340,4 @@ label {
   height: 32px;
   -webkit-transition: background 0.15s;
   transition: background 0.15s;
-}
-
-/* Custom Input */
-.yogurt-input {
-  border-width: 0 0 2px 0;
-  border-radius: 0;
-  background-color: transparent;
-  padding: 5px;
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  line-height: 1.45;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  font-size: 14px;
-  -webkit-transition: border-color 0.15s;
-  transition: border-color 0.15s;
-  color: #343a40;
 }

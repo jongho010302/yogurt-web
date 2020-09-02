@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pa-lg">
-    <PageTitle text="수업 목록" class="q-mb-xl" />
+  <div class="padded">
+    <h3>회원</h3>
 
     <el-table :data="users" style="width: 100%;" @row-click="onRowClick">
       <el-table-column prop="name" label="이름" width="180"></el-table-column>
@@ -14,7 +14,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import PageTitle from '@/components/base/PageTitle.vue';
 import { User as UserType } from '@/store/user/types';
 
 const namespace = 'user';
@@ -27,11 +26,7 @@ interface Column {
   createdAt: string;
 }
 
-@Component({
-  components: {
-    PageTitle,
-  },
-})
+@Component
 export default class User extends Vue {
   data() {
     return {

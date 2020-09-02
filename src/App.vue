@@ -1,93 +1,62 @@
 <template>
   <div>
-    <q-layout v-if="jwtToken" view="lHh Lpr lff">
+    <div v-if="jwtToken" class="main">
+      <!-- Left -->
+      <aside class="main__sider">
+        <button class="notification__toggle medium">
+          <i class="el-icon-bell" />
+        </button>
+      </aside>
+
       <!-- Header -->
-      <q-header bordered>
-        <q-toolbar class="text-dark shadow-1 bg-white">
-          <img
-            src="@/assets/logo.jpg"
-            width="50"
-            class="q-mr-md q-ml-md"
-            style="border-radius: 50%;"
-          />
-          <q-tabs
-            v-model="tab"
-            active-color="primary"
-            outside-arrows
-            mobile-arrows
-            :stretch="false"
-            shrink
-          >
-            <q-route-tab to="/schedule" label="일정" style="width: 70px;" />
-            <q-route-tab to="/lecture" label="수업" style="width: 70px;" />
-            <q-route-tab to="/user" label="회원" style="width: 70px;" />
-            <q-route-tab to="/staff" label="강사" style="width: 70px;" />
-            <q-route-tab to="/ticket" label="수강권" style="width: 70px;" />
-            <q-route-tab to="/setting" label="설정" style="width: 70px;" />
-            <q-route-tab to="/sales" label="매출" style="width: 70px;" />
-          </q-tabs>
-          <q-space />
+      <header class="main__header">
+        <img
+          src="@/assets/logo.jpg"
+          width="50"
+          class="main__header-logo"
+          @click="$router.push('/schedule').catch(()=>{});"
+          style="cursor: pointer"
+        />
+        <el-menu :default-active="tab" class="el-menu-demo" mode="horizontal" router>
+          <el-menu-item index="/schedule">일정</el-menu-item>
+          <el-menu-item index="/lecture">수업</el-menu-item>
+          <el-menu-item index="/user">회원</el-menu-item>
+          <el-menu-item index="/staff">강사</el-menu-item>
+          <el-menu-item index="/ticket">수강권</el-menu-item>
+          <el-menu-item index="/setting">설정</el-menu-item>
+          <el-menu-item index="/sales">매출</el-menu-item>
+        </el-menu>
+        <div class="space"></div>
+        <el-dropdown trigger="click" @command="handleCommand">
+          <div class="main__header-profile">
+            <el-avatar
+              :src="user.profileUrl ||'https://seoulforest-image.s3.ap-northeast-2.amazonaws.com/default_profile.png'"
+              style="margin-right: 5px"
+            ></el-avatar>
+            <span style="margin-right: 2px">{{ user.name }}님 {{ user.role }}</span>
+            <i class="el-icon-arrow-down"></i>
+          </div>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="mypage">마이페이지</el-dropdown-item>
+            <el-dropdown-item command="logout">로그아웃</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </header>
 
-          <q-btn round flat>
-            <q-avatar size="42" class="float-right cursor-pointer" @click="menu != menu">
-              <img
-                :src="
-                  user.profileUrl ||
-                  'https://seoulforest-image.s3.ap-northeast-2.amazonaws.com/default_profile.png'
-                "
-                alt="default profile"
-                style="border-radius: 50%;"
-              />
-            </q-avatar>
-            <q-menu>
-              <div class="row no-wrap q-pa-md">
-                <div class="column">
-                  <div class="text-h6 q-mb-md">Settings</div>
-                  <q-toggle v-model="mobileData" label="Use Mobile Data" />
-                  <q-toggle v-model="bluetooth" label="Bluetooth" />
-                </div>
+      <!-- Contents -->
+      <section class="main__contents">
+        <router-view></router-view>
+      </section>
+    </div>
 
-                <q-separator vertical inset class="q-mx-lg" />
-
-                <div class="column items-center">
-                  <q-avatar size="72px">
-                    <img :src="user.profileUrl" />
-                  </q-avatar>
-
-                  <div class="text-subtitle1 q-mt-md q-mb-xs">{{ user.name }}</div>
-
-                  <q-btn color="primary" label="로그아웃" push size="sm" v-close-popup @click="logOut" />
-                </div>
-              </div>
-            </q-menu>
-          </q-btn>
-        </q-toolbar>
-      </q-header>
-
-      <!-- Left Sider -->
-      <q-drawer v-model="drawer" show-if-above :width="60" bordered>
-        <q-list padding>
-          <q-item clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="alarm" />
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-drawer>
-
-      <!-- Content -->
-      <q-page-container>
-        <q-page>
-          <router-view></router-view>
-        </q-page>
-      </q-page-container>
-    </q-layout>
-
-    <div v-else class="fit row justify-center items-center">
-      <div class="q-mb-xl">
-        <img src="@/assets/login.svg" alt="login_image" />
+    <!-- Login -->
+    <div v-else>
+      <div class="auth">
+        <img src="@/assets/login.svg" alt="login_image" style="width: 100%" />
       </div>
-      <router-view></router-view>
+      <div class="auth__contents">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
@@ -111,7 +80,7 @@ const namespace = 'user';
 export default class App extends mixins(Methods) {
   data() {
     return {
-      tab: 0,
+      tab: window.location.pathname,
       drawer: true,
       menu: false,
 
@@ -141,7 +110,8 @@ export default class App extends mixins(Methods) {
     }
   }
 
-  async logOut() {
+  async handleLogOut() {
+    console.log(1);
     try {
       await this.$store.dispatch(`${namespace}/logOut`);
       await this.$router.push('/login');
@@ -149,31 +119,13 @@ export default class App extends mixins(Methods) {
       console.error(err);
     }
   }
+
+  async handleCommand(command: string) {
+    if (command === 'mypage') {
+      this.$router.push('/staff/me');
+    } else if (command === 'logout') {
+      await this.handleLogOut();
+    }
+  }
 }
 </script>
-
-<style scoped>
-.q-layout__section--marginal {
-  background-color: aliceblue;
-}
-</style>
-
-<style scoped>
-.main {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 55px calc(100vw - 55px);
-  grid-template-rows: auto 1fr;
-  grid-template-areas:
-    'notification header'
-    'notification contents';
-}
-</style>
-
-<style global>
-.q-tab__content {
-  min-width: 70px !important;
-}
-</style>

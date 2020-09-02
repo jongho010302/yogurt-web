@@ -121,9 +121,22 @@
         </div>
       </div>
 
-      <!--수 강권 판매 정보 입력 -->
+      <!--수강 인원 정보 입력 -->
       <div class="form-block">
         <div class="form-block__index">05</div>
+        <div class="form-block__content">
+          <div class="form-block__label">
+            <div class="form-block__label__title">수강 인원 설정</div>
+          </div>
+          <div class="form-block__input">
+            <el-input-number v-model.number="maxTrainee" :min="1"></el-input-number>
+          </div>
+        </div>
+      </div>
+
+      <!--수강권 판매 정보 입력 -->
+      <div class="form-block">
+        <div class="form-block__index">06</div>
         <div class="form-block__content">
           <div class="form-block__label">
             <div class="form-block__label__title">판매가 입력</div>
@@ -140,7 +153,7 @@
 
       <!-- 주간/월간 이용 횟수 설정 -->
       <div class="form-block">
-        <div class="form-block__index">06</div>
+        <div class="form-block__index">07</div>
         <div class="form-block__content">
           <div class="form-block__label">
             <div class="form-block__label__title">주간/월간 이용 횟수 설정</div>
@@ -179,7 +192,7 @@
 
       <!-- 당일 예약 변경 -->
       <div class="form-block">
-        <div class="form-block__index">07</div>
+        <div class="form-block__index">08</div>
         <div class="form-block__content">
           <div class="form-block__label">
             <div class="form-block__label__title">당일 예약 변경</div>
@@ -202,7 +215,7 @@
 
       <!-- 예약 가능한 시간 설정 -->
       <div class="form-block">
-        <div class="form-block__index">08</div>
+        <div class="form-block__index">09</div>
         <div class="form-block__content">
           <div class="form-block__label">
             <div class="form-block__label__title">예약 가능한 시간 설정</div>
@@ -243,7 +256,7 @@
       <span @click="$router.push('/ticket')" style="cursor: pointer;">
         <i class="el-icon-arrow-left" style="font-size: 14px; margin-right: 8px" />뒤로가기
       </span>
-      <div style="flex-grow: 1 !important"></div>
+      <div class="space"></div>
       <el-button @click="onSubmit">수강권 등록 완료</el-button>
     </div>
   </div>
@@ -252,6 +265,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { warningAlert } from '@/util/ui';
 
 const userNamespace = 'user';
 const ticketNamespace = 'ticket';
@@ -260,8 +274,6 @@ const ticketNamespace = 'ticket';
 export default class TicketCard extends Vue {
   data() {
     return {
-      step: 1,
-      // Step 1
       classType: 'GROUP',
       classTypeOptions: [
         {
@@ -279,6 +291,7 @@ export default class TicketCard extends Vue {
       maxCancel: 10,
       availableDays: 30,
       isAvailableDaysSelf: false,
+      maxTrainee: 4,
       price: 0,
       bookingLimitCriteria: 'week',
       bookingLimit: 0,
@@ -324,15 +337,37 @@ export default class TicketCard extends Vue {
   }
 
   onSubmit() {
-    const bookingLimit = this.$data.bookingLimit;
+    if (!this.$data.title) {
+      warningAlert('01. 수강권 명을 입력해 주세요.');
+      return;
+    }
+    if (!this.$data.description) {
+      warningAlert('02. 설명을 입력해 주세요.');
+      return;
+    }
+    if (!this.$data.maxTrainee) {
+      warningAlert('05. 수강 인원을 입력해 주세요.');
+      return;
+    }
+    if (!this.$data.description) {
+      warningAlert('06. 판매가를 입력해 주세요.');
+      return;
+    }
+    if (
+      this.$data.isUseBookingTime &&
+      (!this.$data.bookingStartTime || !this.$data.bookingEndTime)
+    ) {
+      warningAlert('09. 예약 가능한 시간을 입력해 주세요.');
+      return;
+    }
 
     let bookingLimitPerWeek = 0;
     let bookingLimitPerMonth = 0;
 
     if (this.$data.bookingLimitCriteria === 'week') {
-      bookingLimitPerWeek = bookingLimit;
+      bookingLimitPerWeek = this.$data.bookingLimit;
     } else if (this.$data.bookingLimitCriteria === 'month') {
-      bookingLimitPerMonth = bookingLimit;
+      bookingLimitPerMonth = this.$data.bookingLimit;
     }
 
     let dailyBookingChangeLimit = 0;
@@ -353,10 +388,11 @@ export default class TicketCard extends Vue {
         classType: this.$data.classType,
         title: this.$data.title,
         description: this.$data.description,
+        price: this.$data.price,
+        maxTrainee: this.$data.maxTrainee,
         maxCoupon: this.$data.maxCoupon,
         maxCancel: this.$data.maxCancel,
         availableDays: this.$data.availableDays,
-        price: this.$data.price,
         bookingLimitPerWeek,
         bookingLimitPerMonth,
         dailyBookingChangeLimit,

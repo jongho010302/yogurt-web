@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pa-lg">
-    <PageTitle :text="getTitle()" class="q-mb-xl" />
+  <div class="padded">
+    <h3>{{ getTitle() }}</h3>
 
     <vue-cal
       :time-from="8 * 60"
@@ -9,50 +9,32 @@
       :disable-views="['years', 'year', 'month']"
       :events="events"
     />
-    <q-page-sticky position="bottom-right" :offset="[45, 45]">
-      <q-btn
-        fab
-        :icon="icon"
-        color="red"
-        @mouseover="icon = 'edit'"
-        @mouseout="icon = 'add'"
-        @click="onCreateCourseButtonClick"
-      ></q-btn>
-    </q-page-sticky>
-    <button @click="showModal = true">Show Modal</button>
+    <div class="floating-action-button">
+      <div class="plus" @click="showModal = true">+</div>
+    </div>
     <el-dialog :visible.sync="showModal" width="30%">
-      <div class="el-dialog__header">
-        <div class="create-lesson-modal__title">
-          <h3>일정등록</h3>
-        </div>
-        <button type="button" aria-label="Close" class="el-dialog__headerbtn">
-          <i class="el-dialog__close el-icon el-icon-close"></i>
-        </button>
+      <h3>일정등록</h3>
+      <div class="create-lesson-modal__body">
+        <a class>
+          <div>
+            <h5>프라이빗 수업</h5>
+            <p>개인/듀엣/트리플 레슨 (예약 필수)</p>
+          </div>
+        </a>
+        <a class>
+          <div>
+            <h5>그룹 수업</h5>
+            <p>고정된 스케쥴의 오픈형 수업 과정 (자유 수강형/예약 필수)</p>
+          </div>
+        </a>
       </div>
-      <div class="el-dialog__body">
-        <div class="create-lesson-modal__body">
-          <a class=""
-            ><div>
-              <h5>프라이빗 수업</h5>
-              <p>개인/듀엣/트리플 레슨 (예약 필수)</p>
-            </div></a
-          ><a class=""
-            ><div>
-              <h5>그룹 수업</h5>
-              <p>
-                고정된 스케쥴의 오픈형 수업 과정 (자유 수강형/예약 필수)
-              </p>
-            </div></a
-          >
-        </div>
-        <div class="create-lesson-modal__footer">
-          <p>
-            수업/클래스란?<br />
-            수업은 말 그대로 하루 한 회차의 수업을 의미하며, 그런 수업들이
-            모여<br />
-            이루어진 프로그램을 일컬어 클래스라 칭합니다.
-          </p>
-        </div>
+      <div class="create-lesson-modal__footer">
+        <p>
+          수업/클래스란?
+          <br />수업은 말 그대로 하루 한 회차의 수업을 의미하며, 그런 수업들이
+          모여
+          <br />이루어진 프로그램을 일컬어 클래스라 칭합니다.
+        </p>
       </div>
     </el-dialog>
   </div>
@@ -62,7 +44,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import VueCal from 'vue-cal';
-import PageTitle from '@/components/base/PageTitle.vue';
 import { parseDate, getWeek } from '@/util/date';
 import 'vue-cal/dist/i18n/zh-cn';
 import 'vue-cal/dist/vuecal.css';
@@ -73,14 +54,12 @@ const dailyHours = { from: 9 * 60, to: 18 * 60, class: 'business-hours' };
 @Component({
   components: {
     VueCal,
-    PageTitle,
   },
 })
 export default class Schedule extends Vue {
   data() {
     return {
       showModal: false,
-      icon: 'add',
       specialHours: {
         1: dailyHours,
         2: dailyHours,
@@ -118,8 +97,14 @@ export default class Schedule extends Vue {
     )})`;
   }
 
-  onCreateCourseButtonClick() {
-    // this.$router.push('/course/create');
+  handleClose(done: any) {
+    this.$confirm('Are you sure to close this dialog?')
+      .then(() => {
+        done();
+      })
+      .catch(() => {
+        console.log('hi');
+      });
   }
 }
 </script>

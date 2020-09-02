@@ -1,6 +1,5 @@
 <template>
-  <div>
-  </div>
+  <div></div>
 </template>
 
 <script lang="ts">
@@ -9,5 +8,8 @@ import Component from 'vue-class-component';
 
 @Component
 export default class Home extends Vue {
+  created() {
+    this.$router.push('/schedule');
+  }
 }
 </script>

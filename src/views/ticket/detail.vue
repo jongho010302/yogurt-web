@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row" :style="ticketStyle">
+    <div class="row" style="background-image: linear-gradient(#b7e9f7, #87cefa)">
       <div class="col-2"></div>
       <div v-if="ticket" class="col-6">
         <div class="q-mb-lg q-mt-lg text-caption text-white">수강권 > 수강권 상세보기</div>
