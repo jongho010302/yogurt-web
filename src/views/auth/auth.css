@@ -1,0 +1,27 @@
+.auth__header {
+  display: flex;
+  margin-bottom: 25px;
+}
+.auth__header h5 {
+  font-weight: 700;
+}
+.auth__form {
+  display: flex;
+  flex-direction: column;
+}
+.auth__seperator {
+  margin: 20px 0px;
+}
+.auth__form-description {
+  margin-bottom: 5px;
+}
+.auth__input-group {
+  width: 500px;
+  margin-bottom: 10px;
+}
+.auth__button-group {
+  width: 500px;
+}
+.auth__button-group .el-button {
+  width: 245px;
+}

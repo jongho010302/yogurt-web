@@ -1,7 +1,7 @@
 import { ActionTree } from 'vuex';
 import { setAxiosHeaders } from '@/util/common';
 import { roleType } from '@/constants';
-import { errorAlert, positiveAlert } from '@/util/ui';
+import { errorAlert, positiveAlert, infoAlert } from '@/util/ui';
 import { UserState } from './types';
 import {
   checkUserApi,
@@ -83,34 +83,39 @@ const actions: ActionTree<UserState, RootState> = {
     try {
       const res = await findMaskingUsernameApi(name);
       commit('saveMaskingUsernames', res.data);
+      positiveAlert(res.message);
     } catch (err) {
       throw err;
     }
   },
   async findUsername(none, { email }) {
     try {
-      await findUsernameApi(email);
+      const res = await findUsernameApi(email);
+      positiveAlert(res.message);
     } catch (err) {
       throw err;
     }
   },
   async sendFindPasswordCode(none, { email }) {
     try {
-      await sendFindPasswordCodeApi(email);
+      const res = await sendFindPasswordCodeApi(email);
+      infoAlert(res.message);
     } catch (err) {
       throw err;
     }
   },
   async verifyFindPasswordCode(none, { email, verifyCode }) {
     try {
-      await verifyFindPasswordCodeApi(email, verifyCode);
+      const res = await verifyFindPasswordCodeApi(email, verifyCode);
+      infoAlert(res.message);
     } catch (err) {
       throw err;
     }
   },
   async changePassword(none, { email, password, verifyCode }) {
     try {
-      await changePasswordApi(email, password, verifyCode);
+      const res = await changePasswordApi(email, password, verifyCode);
+      positiveAlert(res.message);
     } catch (err) {
       throw err;
     }

@@ -1,61 +1,43 @@
 <template>
   <div>
-    <p class="q-mb-lg text-h5 text-weight-bold">아이디 찾기</p>
-
-    <div v-if="!maskingUsernames">
-      <p class="q-mb-lg">이름을 입력해 주세요.</p>
-
-      <q-input
-        v-model="name"
-        placeholder="이름"
-        outlined
-        dense
-        class="q-mb-sm"
-        style="width: 500px;"
-      />
-      <q-btn
-        label="로그인 화면으로"
-        color="grey-9"
-        class="q-mb-lg q-mr-sm"
-        style="width: 250px; height: 40px;"
-        @click="routerTo('/login')"
-      />
-      <q-btn
-        label="아이디 찾기"
-        color="primary"
-        class="q-mb-lg"
-        style="width: 250px; height: 40px;"
-        @click="findMaskingUsername"
-      />
+    <div class="auth__header">
+      <h5>아이디 찾기</h5>
     </div>
 
-    <div v-else>
-      <div>
-        '{{ name }}'님의 이름으로 찾은 아이디이며, 동명이인의 아이디가 검색될 수
-        있습니다.
+    <div class="auth__form">
+      <div v-if="!maskingUsernames">
+        <div class="auth__form-description">
+          <p>이름을 입력해 주세요.</p>
+        </div>
+
+        <div class="auth__input-group">
+          <el-input v-model="name" placeholder="이름" />
+        </div>
+
+        <div class="auth__button-group">
+          <el-button type="info" @click="routerTo('/login')">로그인 화면으로</el-button>
+          <el-button type="primary" @click="findMaskingUsername">아이디 찾기</el-button>
+        </div>
       </div>
-      <div>정확한 아이디가 기억나지 않으실 경우 '이메일로 확인하기'를 클릭해주세요.</div>
 
-      <hr />
+      <div v-else>
+        <div>
+          '{{ name }}'님의 이름으로 찾은 아이디이며, 동명이인의 아이디가 검색될 수
+          있습니다.
+        </div>
+        <div>정확한 아이디가 기억나지 않으실 경우 '이메일로 확인하기'를 클릭해주세요.</div>
 
-      <div v-for="(maskingUsername, index) in maskingUsernames" :key="index">
-        <div>{{ maskingUsername }}</div>
+        <hr />
+
+        <div v-for="(maskingUsername, index) in maskingUsernames" :key="index">
+          <div>{{ maskingUsername }}</div>
+        </div>
+
+        <div class="auth__button-group" style="margin-top: 20px;">
+          <el-button type="info" @click="routerTo('/login')">로그인 화면으로</el-button>
+          <el-button type="primary" @click="routerTo('/find/username')">이메일로 확인하기</el-button>
+        </div>
       </div>
-
-      <q-btn
-        label="로그인 화면으로"
-        color="grey-9"
-        class="q-mt-lg q-mr-sm"
-        style="width: 250px; height: 40px;"
-        @click="routerTo('/login')"
-      />
-      <q-btn
-        label="이메일로 확인하기"
-        color="primary"
-        class="q-mt-lg"
-        style="width: 250px; height: 40px;"
-        @click="routerTo('/find/username')"
-      />
     </div>
   </div>
 </template>
@@ -63,6 +45,7 @@
 import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
 import { warningAlert } from '@/util/ui';
+import './auth.css';
 
 const namespace = 'user';
 
@@ -94,9 +77,3 @@ export default class FindMaskingUsername extends mixins(Methods) {
   }
 }
 </script>
-
-<style scoped>
-.p {
-  margin: 0;
-}
-</style>

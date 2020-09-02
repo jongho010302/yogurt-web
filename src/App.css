@@ -236,6 +236,12 @@ h3 {
   letter-spacing: normal !important;
   margin: 0 !important;
 }
+h5 {
+  margin: 0;
+}
+p {
+  margin: 0 !important;
+}
 label {
   font-size: 12px;
   font-weight: 400;

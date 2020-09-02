@@ -1,31 +1,20 @@
 <template>
   <div>
-    <p class="q-mb-lg text-h5 text-weight-bold">아이디 찾기</p>
+    <div class="auth__header">
+      <h5>아이디 찾기</h5>
+    </div>
 
-    <p class="q-mb-lg">이메일 입력 시 해당 이메일로 아이디가 전송됩니다.</p>
-    <div>
-      <q-input
-        v-model="email"
-        placeholder="이메일"
-        outlined
-        dense
-        class="q-mb-sm"
-        style="width: 500px;"
-      />
-      <q-btn
-        label="로그인 화면으로"
-        color="grey-9"
-        class="q-mb-lg q-mr-sm"
-        style="width: 250px; height: 40px;"
-        @click="routerTo('/login')"
-      />
-      <q-btn
-        label="아이디 찾기"
-        color="primary"
-        class="q-mb-lg"
-        style="width: 250px; height: 40px;"
-        @click="findUsername"
-      />
+    <div class="auth__form-description">
+      <p>이메일 입력 시 해당 이메일로 아이디가 전송됩니다.</p>
+    </div>
+
+    <div class="auth__input-group">
+      <el-input v-model="email" placeholder="이메일" />
+    </div>
+
+    <div class="auth__button-group">
+      <el-button type="info" @click="routerTo('/login')">로그인 화면으로</el-button>
+      <el-button type="primary" @click="findUsername">아이디 찾기</el-button>
     </div>
   </div>
 </template>
@@ -33,6 +22,7 @@
 import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
 import router from '@/router';
+import './auth.css';
 
 const namespace = 'user';
 
