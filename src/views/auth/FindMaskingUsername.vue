@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="auth__header">
-      <h5>아이디 찾기</h5>
+      <h2>아이디 찾기</h2>
     </div>
 
     <div class="auth__form">

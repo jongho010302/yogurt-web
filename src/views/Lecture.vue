@@ -130,10 +130,6 @@ export default class Lecture extends Vue {
     };
   }
 
-  get primary() {
-    return this.$store.state.primary;
-  }
-
   get lectures() {
     return this.$store.getters[`${lectureNamespace}/getLectures`];
   }

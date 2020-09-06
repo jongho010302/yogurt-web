@@ -1,0 +1,79 @@
+// $primary: #87cdfa;
+// $secondary: #87cdfa;
+// $white: #fff;
+// $black: #000;
+// $gray: #9b9b9b;
+
+/* Action Bar */
+.bottom-action-bar {
+  position: fixed;
+  bottom: 0px;
+  left: 56px;
+  right: 0px;
+  padding-left: 24px;
+  padding-right: 24px;
+  background-color: #64aeff;
+  height: 60px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  color: white;
+}
+.floating-action-button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #f95454;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  cursor: pointer;
+  -webkit-box-shadow: 0 10px 20px -8px #f95454;
+  box-shadow: 0 10px 20px -8px #f95454;
+  z-index: 100;
+}
+.floating-action-button .plus {
+  position: absolute;
+  top: -2px;
+  display: block;
+  left: 2px;
+  right: 0;
+  padding: 0;
+  transition: all 0.3s;
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  line-height: 54px;
+  font-size: 40px;
+  font-weight: 200;
+  animation: plus-out-data-v-e41e3df0 0.3s;
+}
+.floating-action-button .edit {
+  left: 0;
+  opacity: 0;
+  margin: auto;
+  line-height: 65px;
+  -webkit-transform: rotate(-70deg);
+  transform: rotate(-70deg);
+  -webkit-animation: edit-out-data-v-7b4e3ea2 0.3s;
+  animation: edit-out-data-v-7b4e3ea2 0.3s;
+  position: absolute;
+  top: 0;
+  display: block;
+  bottom: 0;
+  right: 0;
+  padding: 0;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+// Common
+.space {
+  flex-grow: 1 !important;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.text-white {
+  color: #fff;
+}

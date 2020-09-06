@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="auth__header">
-      <h5>비밀번호 재설정</h5>
+      <h2>비밀번호 재설정</h2>
     </div>
 
     <div v-if="status === 'init'" class="auth__form">

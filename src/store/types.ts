@@ -17,3 +17,10 @@ export interface BaseEntity {
   createdAt: string;
   updatedAt: string;
 }
+
+export enum AsyncStatus {
+  INIT = 'INIT',
+  WAITING = 'WAITING',
+  FAILURE = 'FAILURE',
+  SUCCESS = 'SUCCESS',
+}

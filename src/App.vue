@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="jwtToken" class="main">
+    <div v-if="user" class="main">
       <!-- Left -->
       <aside class="main__sider">
         <button class="notification__toggle medium">
@@ -14,14 +14,14 @@
           src="@/assets/logo.jpg"
           width="50"
           class="main__header-logo"
-          @click="$router.push('/schedule').catch(()=>{});"
-          style="cursor: pointer"
+          @click="$router.push('/schedule').catch(() => {})"
+          style="cursor: pointer;"
         />
         <el-menu :default-active="tab" class="el-menu-demo" mode="horizontal" router>
           <el-menu-item index="/schedule">일정</el-menu-item>
           <el-menu-item index="/lecture">수업</el-menu-item>
           <el-menu-item index="/user">회원</el-menu-item>
-          <el-menu-item index="/staff">강사</el-menu-item>
+          <el-menu-item index="/staff">직원</el-menu-item>
           <el-menu-item index="/ticket">수강권</el-menu-item>
           <el-menu-item index="/setting">설정</el-menu-item>
           <el-menu-item index="/sales">매출</el-menu-item>
@@ -30,10 +30,13 @@
         <el-dropdown trigger="click" @command="handleCommand">
           <div class="main__header-profile">
             <el-avatar
-              :src="user.profileUrl ||'https://seoulforest-image.s3.ap-northeast-2.amazonaws.com/default_profile.png'"
-              style="margin-right: 5px"
+              :src="
+                user.profileUrl ||
+                'https://seoulforest-image.s3.ap-northeast-2.amazonaws.com/default_profile.png'
+              "
+              style="margin-right: 5px;"
             ></el-avatar>
-            <span style="margin-right: 2px">{{ user.name }}님 {{ user.role }}</span>
+            <span style="margin-right: 2px;">{{ user.name }}님 {{ user.role }}</span>
             <i class="el-icon-arrow-down"></i>
           </div>
           <el-dropdown-menu slot="dropdown">
@@ -52,12 +55,15 @@
     <!-- Login -->
     <div v-else>
       <div class="auth">
-        <img src="@/assets/login.svg" alt="login_image" style="width: 100%" />
+        <img src="@/assets/login.svg" alt="login_image" style="width: 100%;" />
       </div>
       <div class="auth__contents">
         <router-view></router-view>
       </div>
     </div>
+
+    <!-- Async Loading: Progress Bar -->
+    <vue-progress-bar></vue-progress-bar>
   </div>
 </template>
 
@@ -65,10 +71,9 @@
 import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
 import Login from '@/views/auth/Login.vue';
-import { setAxiosHeaders } from './util/common';
-import 'element-ui/lib/theme-chalk/index.css';
-import './App.css';
-import './App.scss';
+import { getAccessToken } from '@/util/token';
+import './css/App.scss';
+import './css/CustomElementUI.scss';
 
 const namespace = 'user';
 
@@ -90,28 +95,18 @@ export default class App extends mixins(Methods) {
     };
   }
 
-  get jwtToken() {
-    return this.$store.getters[`${namespace}/getJwtToken`];
-  }
-
   get user() {
     return this.$store.getters[`${namespace}/getUser`];
   }
 
-  get primary() {
-    return this.$store.state.primary;
-  }
-
   async created() {
-    const jwtToken = localStorage.getItem('jwtToken');
+    const jwtToken = getAccessToken();
     if (jwtToken) {
-      setAxiosHeaders(jwtToken);
       await this.$store.dispatch(`${namespace}/checkUser`);
     }
   }
 
   async handleLogOut() {
-    console.log(1);
     try {
       await this.$store.dispatch(`${namespace}/logOut`);
       await this.$router.push('/login');
@@ -129,3 +124,72 @@ export default class App extends mixins(Methods) {
   }
 }
 </script>
+
+<style scoped>
+.main {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 55px calc(100vw - 55px);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'sider header'
+    'sider contents';
+  font-family: Noto Sans KR, sans-serif;
+}
+.main__sider {
+  grid-area: sider;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #ebebeb;
+  width: 56px;
+  z-index: 101;
+}
+.notification__toggle {
+  margin: 20px 10px;
+}
+.notification__toggle i {
+  font-size: 18px;
+}
+.main__header {
+  grid-area: header;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #ebebed;
+  align-items: center;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
+  z-index: 99;
+  height: 60px;
+  padding: 0 12px;
+}
+.main__header .el-menu {
+  border-bottom: 0;
+}
+.main__header-logo {
+  margin: 5px 20px;
+  border-radius: 50%;
+}
+.main__header-profile {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.main__contents {
+  grid-area: contents;
+  overflow-y: auto;
+}
+.padded {
+  padding: 30px;
+}
+.auth {
+  display: flex;
+}
+.auth__contents {
+  display: flex;
+  justify-content: center;
+  padding-top: 60px;
+}
+</style>

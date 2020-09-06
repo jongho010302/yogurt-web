@@ -1,8 +1,8 @@
 import { MutationTree } from 'vuex';
-import { StaffState, Staff } from './types';
+import { StaffState, StaffData } from './types';
 
 const mutations: MutationTree<StaffState> = {
-  saveStaffs(state, payload: Staff[]) {
+  saveStaffs(state, payload: StaffData) {
     state.staffs = payload;
   },
 };

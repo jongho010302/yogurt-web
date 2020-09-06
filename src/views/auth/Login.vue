@@ -2,7 +2,7 @@
   <div>
     <div class="auth__header">
       <img src="@/assets/logo.jpg" width="40" />
-      <h5>서울숲 필라테스</h5>
+      <h2>서울숲 필라테스</h2>
     </div>
 
     <div class="auth__form">
@@ -52,10 +52,6 @@ export default class Login extends mixins(Methods) {
       username: 'jongho010302',
       password: 'Wldms0302!',
     };
-  }
-
-  get primary() {
-    return this.$store.state.primary;
   }
 
   async handleLogin() {

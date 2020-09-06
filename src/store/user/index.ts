@@ -3,14 +3,16 @@ import getters from './getters';
 import actions from './actions';
 import mutations from './mutations';
 import { UserState } from './types';
-import { RootState } from '../types';
-import { User } from '../user/types';
+import { RootState, AsyncStatus } from '../types';
+import { getUser } from '@/util/token';
 
 export const state: UserState = {
-  user: localStorage.getItem('user') as User | null,
-  jwtToken: localStorage.getItem('jwtToken'),
+  user: getUser(),
   maskingUsernames: null,
-  users: null,
+  users: {
+    data: null,
+    status: AsyncStatus.INIT
+  },
   userDetail: null,
 };
 

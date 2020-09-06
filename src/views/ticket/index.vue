@@ -1,9 +1,26 @@
 <template>
   <div class="padded">
-    <h3>총 {{ tickets.length }}개의 수강권</h3>
-    <div class="product-list">
-      <div v-for="(ticket, index) in tickets" :key="index">
-        <TicketCard :ticket="ticket" />
+    <h2 v-if="tickets.data">총 {{ tickets.data.length }}개의 수강권</h2>
+
+    <!-- 수강권 로딩 후 : 데이터가 있을 경우 -->
+    <div v-if="ticketsSuccess && tickets.data.length" class="product-list">
+      <TicketCard
+        v-for="(ticket, index) in tickets.data"
+        :key="index"
+        :ticket="ticket"
+        :hideBottom="false"
+        style="width: 100%"
+      />
+    </div>
+
+    <!-- 수강권 로딩 후 : 데이터가 없을 경우 -->
+    <div v-if="ticketsSuccess && !tickets.data.length">수강권을 등록해주세요.</div>
+
+    <!-- 수강권 로딩 중 -->
+    <div v-if="ticketsWaiting" class="product-list">
+      <div v-for="(dummy, index) in (Array(20)).fill(1)" :key="index">
+        <Skeleton width="256px" height="170px" />
+        <Skeleton width="256px" height="60px" />
       </div>
     </div>
 
@@ -16,13 +33,17 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { Skeleton } from 'vue-loading-skeleton';
 import TicketCard from '@/components/ticket/TicketCard.vue';
+import { AsyncStatus } from '@/store/types';
 
 const namespace = 'ticket';
 
+// @ts-ignore
 @Component({
   components: {
     TicketCard,
+    Skeleton,
   },
 })
 export default class Ticket extends Vue {
@@ -32,12 +53,16 @@ export default class Ticket extends Vue {
     };
   }
 
-  get primary() {
-    return this.$store.state.primary;
+  get tickets() {
+    return this.$store.getters[`${namespace}/getTickets`];
   }
 
-  get tickets(): Ticket[] {
-    return this.$store.getters[`${namespace}/getTickets`];
+  get ticketsWaiting() {
+    return this.tickets.status === AsyncStatus.WAITING;
+  }
+
+  get ticketsSuccess() {
+    return this.tickets.status === AsyncStatus.SUCCESS;
   }
 
   created() {
@@ -56,12 +81,10 @@ export default class Ticket extends Vue {
   grid-template-columns: 256px;
   grid-gap: 10px;
   place-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
   justify-content: center;
 }
 @media only screen and (min-width: 572px) {
-  .product-list[data-v-e56f1a3a] {
+  .product-list {
     grid-template-columns: repeat(2, 256px);
     grid-gap: 20px;
   }
@@ -72,9 +95,21 @@ export default class Ticket extends Vue {
     grid-gap: 20px;
   }
 }
-@media only screen and (min-width: 1164px) {
+@media only screen and (min-width: 1160px) {
   .product-list {
     grid-template-columns: repeat(4, 256px);
+    grid-gap: 20px;
+  }
+}
+@media only screen and (min-width: 1400px) {
+  .product-list {
+    grid-template-columns: repeat(5, 256px);
+    grid-gap: 20px;
+  }
+}
+@media only screen and (min-width: 1680px) {
+  .product-list {
+    grid-template-columns: repeat(6, 256px);
     grid-gap: 20px;
   }
 }

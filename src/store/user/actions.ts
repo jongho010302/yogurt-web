@@ -1,7 +1,5 @@
 import { ActionTree } from 'vuex';
-import { setAxiosHeaders } from '@/util/common';
 import { roleType } from '@/constants';
-import { errorAlert, positiveAlert, infoAlert } from '@/util/ui';
 import { UserState } from './types';
 import {
   checkUserApi,
@@ -18,32 +16,33 @@ import {
   getUsersApi,
   getUserApi,
 } from '@/api/user';
-import { RootState } from '../types';
-
-const processLogOut = () => {
-  localStorage.removeItem('user');
-  localStorage.removeItem('jwtToken');
-  setAxiosHeaders('');
-};
+import { RootState, AsyncStatus } from '../types';
+import { errorAlert, positiveAlert, infoAlert } from '@/util/ui';
+import {
+  setUser,
+  removeUser,
+  removeAccessToken,
+  setAccessToken,
+} from '@/util/token';
 
 const actions: ActionTree<UserState, RootState> = {
   async checkUser({ commit }) {
     try {
-      const res = await checkUserApi();
+      const { data } = await checkUserApi();
 
-      commit('saveUser', res.data);
-      localStorage.setItem('user', res.data);
+      commit('saveUser', data.data);
+      setUser(data.data);
     } catch (err) {
-      commit('saveJwtToken', null);
-      processLogOut();
+      commit('saveUser', null);
+      removeAccessToken();
+      removeUser();
       throw err;
     }
   },
   async logIn({ commit }, { username, password }) {
     try {
-      const res = await logInApi(username, password);
-
-      const userRole = res.data.user.roles[0];
+      const { data } = await logInApi(username, password);
+      const userRole = data.data.user.roles[0];
       if (
         !(
           userRole === roleType.ROLE_DEVELOPER ||
@@ -55,104 +54,112 @@ const actions: ActionTree<UserState, RootState> = {
         return;
       }
 
-      const { jwtToken, user } = res.data;
+      const { accessToken, user } = data.data;
 
-      positiveAlert(res.message);
-      commit('saveJwtToken', jwtToken);
+      positiveAlert(data.message);
       commit('saveUser', user);
-      localStorage.setItem('user', user);
-      localStorage.setItem('jwtToken', jwtToken);
-      setAxiosHeaders(jwtToken);
+      setUser(user);
+      setAccessToken(accessToken);
     } catch (err) {
-      errorAlert(err.message);
       throw err;
     }
   },
   async logOut({ commit }) {
     try {
-      const res = await logOutApi();
+      const { data } = await logOutApi();
       commit('saveUser', null);
-      commit('saveJwtToken', null);
-      processLogOut();
-      positiveAlert(res.message);
+      removeAccessToken();
+      removeUser();
+      positiveAlert(data.message);
     } catch (err) {
       throw err;
     }
   },
   async findMaskingUsername({ commit }, { name }) {
     try {
-      const res = await findMaskingUsernameApi(name);
-      commit('saveMaskingUsernames', res.data);
-      positiveAlert(res.message);
+      const { data } = await findMaskingUsernameApi(name);
+      commit('saveMaskingUsernames', data.data);
+      positiveAlert(data.message);
     } catch (err) {
       throw err;
     }
   },
   async findUsername(none, { email }) {
     try {
-      const res = await findUsernameApi(email);
-      positiveAlert(res.message);
+      const { data } = await findUsernameApi(email);
+      positiveAlert(data.message);
     } catch (err) {
       throw err;
     }
   },
   async sendFindPasswordCode(none, { email }) {
     try {
-      const res = await sendFindPasswordCodeApi(email);
-      infoAlert(res.message);
+      const { data } = await sendFindPasswordCodeApi(email);
+      infoAlert(data.message);
     } catch (err) {
       throw err;
     }
   },
   async verifyFindPasswordCode(none, { email, verifyCode }) {
     try {
-      const res = await verifyFindPasswordCodeApi(email, verifyCode);
-      infoAlert(res.message);
+      const { data } = await verifyFindPasswordCodeApi(email, verifyCode);
+      infoAlert(data.message);
     } catch (err) {
       throw err;
     }
   },
   async changePassword(none, { email, password, verifyCode }) {
     try {
-      const res = await changePasswordApi(email, password, verifyCode);
-      positiveAlert(res.message);
+      const { data } = await changePasswordApi(email, password, verifyCode);
+      positiveAlert(data.message);
     } catch (err) {
       throw err;
     }
   },
   async verifyUsername(none, { username }) {
     try {
-      verifyUsernameApi(username);
+      const { data } = await verifyUsernameApi(username);
+      infoAlert(data.message);
     } catch (err) {
       throw err;
     }
   },
   async sendSignUpCode(none, { email }) {
     try {
-      await sendSignUpCodeApi(email);
+      const { data } = await sendSignUpCodeApi(email);
+      infoAlert(data.message);
     } catch (err) {
       throw err;
     }
   },
   async verifySignUpCode(none, { email, verifyCode }) {
     try {
-      await verifySignUpCodeApi(email, verifyCode);
+      const { data } = await verifySignUpCodeApi(email, verifyCode);
+      infoAlert(data.message);
     } catch (err) {
       throw err;
     }
   },
-  async getUsers({ commit }) {
+  async getUsers({ commit, rootState }) {
     try {
-      const res = await getUsersApi();
-      commit('saveUsers', res.data);
+      commit('saveUsers', {
+        ...rootState.user.users,
+        status: AsyncStatus.WAITING,
+      });
+      const { data } = await getUsersApi();
+      commit('saveUsers', {
+        ...rootState.user.users,
+        status: AsyncStatus.SUCCESS,
+        data: data.data,
+      });
     } catch (err) {
       throw err;
     }
   },
   async getUser({ commit }, { id }) {
     try {
-      const res = await getUserApi(id);
-      commit('saveUserDetail', res.data);
+      const { data } = await getUserApi(id);
+      commit('saveUserDetail', data.data);
     } catch (err) {
       throw err;
     }

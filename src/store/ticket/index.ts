@@ -3,11 +3,17 @@ import getters from './getters';
 import actions from './actions';
 import mutations from './mutations';
 import { TicketState } from './types';
-import { RootState } from '../types';
+import { RootState, AsyncStatus } from '../types';
 
 export const state: TicketState = {
-  tickets: [],
-  ticket: null,
+  tickets: {
+    data: null,
+    status: AsyncStatus.INIT,
+  },
+  ticket: {
+    data: null,
+    status: AsyncStatus.INIT,
+  },
 };
 
 const namespaced = true;

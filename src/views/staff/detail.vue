@@ -62,10 +62,6 @@ export default class TicketCard extends Vue {
     };
   }
 
-  get primary() {
-    return this.$store.state.primary;
-  }
-
   created() {
     console.log(this.$route.params.id);
   }

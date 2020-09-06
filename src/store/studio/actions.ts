@@ -6,9 +6,9 @@ import { RootState } from '../types';
 const actions: ActionTree<StudioState, RootState> = {
   async getStudios({ commit }) {
     try {
-      const res = await getStudiosApi();
+      const { data } = await getStudiosApi();
 
-      commit('saveStudios', res.data);
+      commit('saveStudios', data.data);
     } catch (err) {
       throw err;
     }

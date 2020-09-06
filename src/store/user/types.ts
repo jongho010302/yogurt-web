@@ -1,5 +1,5 @@
 import { Studio } from '../studio/types';
-import { BaseEntity } from '../types';
+import { BaseEntity, AsyncStatus } from '../types';
 import { Ticket } from '../ticket/types';
 
 export interface User extends BaseEntity {
@@ -14,6 +14,11 @@ export interface User extends BaseEntity {
   profileUrl: string;
   roles: Role[];
   userTickets: UserTicket[];
+}
+
+export interface UsersData {
+  data: User[] | null;
+  status: AsyncStatus;
 }
 
 export interface UserTicket extends BaseEntity {
@@ -36,8 +41,7 @@ export enum Role {
 
 export interface UserState {
   user: User | null;
-  jwtToken: string | null;
   maskingUsernames: string[] | null;
-  users: User[] | null;
+  users: UsersData
   userDetail: User | null;
 }

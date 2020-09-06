@@ -1,0 +1,35 @@
+h1 {
+  margin: 0;
+}
+h2 {
+  margin: 0;
+}
+h3 {
+  font-weight: 700;
+  letter-spacing: normal;
+  margin: 0;
+}
+h4 {
+  margin: 0;
+}
+h5 {
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+label {
+  font-size: 12px;
+  font-weight: 400;
+  padding-bottom: 5px;
+}
+button {
+  background: transparent;
+  outline: none;
+  border-style: none;
+  cursor: pointer;
+}
+button.medium {
+  width: 36px;
+  height: 36px;
+}

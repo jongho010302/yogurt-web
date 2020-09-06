@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="content-header">
-      <div class="content-header__inner">
+    <div class="create-header">
+      <div class="create-header-block">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 12px;">
           <el-breadcrumb-item :to="{ path: '/ticket' }">수강권</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: '/' }">수강권등록</el-breadcrumb-item>
+          <el-breadcrumb-item>수강권등록</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <div class="content-title">
+        <div class="create-header-block__title">
           <h3>수강권 생성</h3>
           <el-select v-model="classType" style="margin-left: 10px;">
             <el-option
@@ -23,42 +23,42 @@
     </div>
 
     <!-- Middle -->
-    <div class="product-form">
+    <div class="create-form">
       <!-- 수강권 종류 -->
-      <div class="form-block">
-        <div class="form-block__index">01</div>
-        <div class="form-block__content">
-          <div class="form-block__label">
-            <div class="form-block__label__title">수강권명 입력</div>
+      <div class="create-form-block">
+        <div class="create-form-block__index">01</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">수강권명 입력</div>
           </div>
-          <div class="form-block__input">
+          <div class="create-form-block__input">
             <el-input v-model="title" class="el-custom-input" />
           </div>
         </div>
       </div>
 
       <!-- 설명 -->
-      <div class="form-block">
-        <div class="form-block__index">02</div>
-        <div class="form-block__content">
-          <div class="form-block__label">
-            <div class="form-block__label__title">설명</div>
+      <div class="create-form-block">
+        <div class="create-form-block__index">02</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">설명</div>
           </div>
-          <div class="form-block__input">
+          <div class="create-form-block__input">
             <el-input v-model="description" class="el-custom-input" />
           </div>
         </div>
       </div>
 
       <!-- 총 이용 횟수 -->
-      <div class="form-block">
-        <div class="form-block__index">03</div>
-        <div class="form-block__content">
-          <div class="form-block__label">
-            <div class="form-block__label__title">이용 횟수</div>
+      <div class="create-form-block">
+        <div class="create-form-block__index">03</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">이용 횟수</div>
           </div>
-          <div class="form-block__input">
-            <div class="product-form__coupon-count">
+          <div class="create-form-block__input">
+            <div class="create-form-block__coupon-count">
               <div>
                 <label>총 이용횟수</label>
                 <el-input-number v-model.number="maxCoupon" :min="1"></el-input-number>
@@ -73,14 +73,14 @@
       </div>
 
       <!-- 수강권 사용기한 -->
-      <div class="form-block">
-        <div class="form-block__index">04</div>
-        <div class="form-block__content">
-          <div class="form-block__label">
-            <div class="form-block__label__title">수강권 사용기한</div>
+      <div class="create-form-block">
+        <div class="create-form-block__index">04</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">수강권 사용기한</div>
           </div>
-          <div class="form-block__input">
-            <div class="product-form__class-period">
+          <div class="create-form-block__input">
+            <div class="create-form__class-period">
               <el-radio
                 v-model="availableDays"
                 :label="30"
@@ -122,27 +122,27 @@
       </div>
 
       <!--수강 인원 정보 입력 -->
-      <div class="form-block">
-        <div class="form-block__index">05</div>
-        <div class="form-block__content">
-          <div class="form-block__label">
-            <div class="form-block__label__title">수강 인원 설정</div>
+      <div class="create-form-block">
+        <div class="create-form-block__index">05</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">수강 인원 설정</div>
           </div>
-          <div class="form-block__input">
+          <div class="create-form-block__input">
             <el-input-number v-model.number="maxTrainee" :min="1"></el-input-number>
           </div>
         </div>
       </div>
 
       <!--수강권 판매 정보 입력 -->
-      <div class="form-block">
-        <div class="form-block__index">06</div>
-        <div class="form-block__content">
-          <div class="form-block__label">
-            <div class="form-block__label__title">판매가 입력</div>
+      <div class="create-form-block">
+        <div class="create-form-block__index">06</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">판매가 입력</div>
           </div>
-          <div class="form-block__input">
-            <div class="product-form__price-input">
+          <div class="create-form-block__input">
+            <div class="create-form-block__price-input">
               <el-input v-model.number="price" class="el-custom-input" style="max-width: 200px;">
                 <span slot="suffix">원</span>
               </el-input>
@@ -152,13 +152,13 @@
       </div>
 
       <!-- 주간/월간 이용 횟수 설정 -->
-      <div class="form-block">
-        <div class="form-block__index">07</div>
-        <div class="form-block__content">
-          <div class="form-block__label">
-            <div class="form-block__label__title">주간/월간 이용 횟수 설정</div>
+      <div class="create-form-block">
+        <div class="create-form-block__index">07</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">주간/월간 이용 횟수 설정</div>
           </div>
-          <div class="form-block__input">
+          <div class="create-form-block__input">
             <div class="custom-radio-group">
               <label
                 :class="{ active: bookingLimitCriteria === 'week' }"
@@ -169,7 +169,7 @@
                 @click="bookingLimitCriteria = 'month'"
               >월간 이용 횟수</label>
             </div>
-            <div class="product-form__weekly-booking-limit">
+            <div class="create-form-block__weekly-booking-limit">
               <el-radio v-model="bookingLimit" :label="0" @change="isBookingLimitSelf = false">제한없음</el-radio>
               <el-radio v-model="bookingLimit" :label="1" @change="isBookingLimitSelf = false">1회</el-radio>
               <el-radio v-model="bookingLimit" :label="2" @change="isBookingLimitSelf = false">2회</el-radio>
@@ -191,16 +191,16 @@
       </div>
 
       <!-- 당일 예약 변경 -->
-      <div class="form-block">
-        <div class="form-block__index">08</div>
-        <div class="form-block__content">
-          <div class="form-block__label">
-            <div class="form-block__label__title">당일 예약 변경</div>
-            <div class="form-block__label__check">
+      <div class="create-form-block">
+        <div class="create-form-block__index">08</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">당일 예약 변경</div>
+            <div class="create-form-block__label__check">
               <el-checkbox v-model="isUseDailyBookingChangeLimit">사용함</el-checkbox>
             </div>
           </div>
-          <div class="form-block__input">
+          <div class="create-form-block__input">
             회원은 당일 수업 예약을 최대
             <el-input-number
               v-model.number="dailyBookingChangeLimit"
@@ -214,16 +214,16 @@
       </div>
 
       <!-- 예약 가능한 시간 설정 -->
-      <div class="form-block">
-        <div class="form-block__index">09</div>
-        <div class="form-block__content">
-          <div class="form-block__label">
-            <div class="form-block__label__title">예약 가능한 시간 설정</div>
-            <div class="form-block__label__check">
+      <div class="create-form-block">
+        <div class="create-form-block__index">09</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">예약 가능한 시간 설정</div>
+            <div class="create-form-block__label__check">
               <el-checkbox v-model="isUseBookingTime">사용함</el-checkbox>
             </div>
           </div>
-          <div class="form-block__input hours-input" style="display: flex;">
+          <div class="create-form-block__input hours-input" style="display: flex;">
             <el-time-select
               v-model="bookingStartTime"
               align="center"
@@ -257,7 +257,7 @@
         <i class="el-icon-arrow-left" style="font-size: 14px; margin-right: 8px" />뒤로가기
       </span>
       <div class="space"></div>
-      <el-button @click="onSubmit">수강권 등록 완료</el-button>
+      <el-button @click="onSubmit" style="color: black">수강권 등록 완료</el-button>
     </div>
   </div>
 </template>
@@ -266,6 +266,8 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { warningAlert } from '@/util/ui';
+import '@/css/CustomRadio.scss';
+import '@/css/Create.scss';
 
 const userNamespace = 'user';
 const ticketNamespace = 'ticket';
@@ -408,37 +410,17 @@ export default class TicketCard extends Vue {
 }
 </script>
 
-<style global>
-.product-form {
-  display: grid;
-  grid-row-gap: 30px;
-  padding: 60px 80px 120px;
-  margin: auto;
-}
-.product-form__class-period {
-  display: grid;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  justify-items: start;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 5px;
-  margin-top: 12px;
-  max-width: 480px;
-}
-.product-form .el-radio {
-  margin: 8px 0;
-}
-.product-form__coupon-count {
+<style>
+.create-form-block__coupon-count {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 200px));
   grid-gap: 12px;
 }
-.product-form__price-input .el-input__inner {
+.create-form-block__price-input .el-input__inner {
   padding-right: 30px;
   text-align: right;
 }
-.product-form__weekly-booking-limit {
+.create-form-block__weekly-booking-limit {
   display: grid;
   -webkit-box-align: center;
   -ms-flex-align: center;

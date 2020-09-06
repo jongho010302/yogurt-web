@@ -1,373 +1,445 @@
 <template>
   <div>
-    <div class="q-pa-lg q-pl-xl">
-      <div class="q-mb-xl text-weight-bold">강사 > 강사등록</div>
+    <!-- Header -->
+    <div class="create-header">
+      <div class="create-header-block">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 12px;">
+          <el-breadcrumb-item :to="{ path: '/staff' }">강사</el-breadcrumb-item>
+          <el-breadcrumb-item>강사등록</el-breadcrumb-item>
+        </el-breadcrumb>
 
-      <!-- 이름 -->
-      <div class="text-weight-bold">이름</div>
-      <q-input
-        v-model="name"
-        dense
-        placeholder="이름을 입력해 주세요."
-        color="primary"
-        style="width: 300px;"
-        class="q-mb-xl row"
-        @input="onNameChange"
-      >
-        <template v-slot:append>
-          <q-icon v-if="nameVerified" name="done" color="primary" />
-          <q-icon v-else name="warning" color="black">
-            <q-tooltip>이름의 형식을 맞춰주세요.</q-tooltip>
-          </q-icon>
-        </template>
-      </q-input>
-
-      <!-- 아이디 -->
-      <div class="text-weight-bold">아이디</div>
-      <div class="q-mb-xl row">
-        <q-input
-          v-model="username"
-          dense
-          placeholder="아이디를 입력해 주세요."
-          color="primary"
-          style="width: 300px;"
-          class="q-mr-sm"
-          @input="onUsernameChange"
-        >
-          <template v-slot:append>
-            <q-icon v-if="usernameVerified" name="done" color="primary" />
-            <q-icon v-if="!usernameVerified && !usernameVerifyVisible" name="warning" color="black">
-              <q-tooltip>아이디는 8자에서 10자이어야 합니다.</q-tooltip>
-            </q-icon>
-            <q-icon v-if="!usernameVerified && usernameVerifyVisible" name="error" color="warning">
-              <q-tooltip>아이디 중복검사를 해주세요.</q-tooltip>
-            </q-icon>
-          </template>
-        </q-input>
-        <q-btn
-          v-if="usernameVerifyVisible && !usernameVerified"
-          color="primary"
-          outline
-          label="중복검사"
-          @click="verifyUsername"
-        />
-      </div>
-
-      <!-- 이메일 -->
-      <div class="text-weight-bold">이메일</div>
-      <div class="q-mb-xl row">
-        <q-input
-          v-model="email"
-          type="email"
-          dense
-          placeholder="이메일을 입력해 주세요."
-          color="primary"
-          style="width: 300px;"
-          class="q-mr-sm"
-          @input="onEmailChange"
-        >
-          <template v-slot:append>
-            <q-icon v-if="isEmailVerifyCodeSend" name="done" color="primary" />
-            <q-icon v-if="!emailSendVerifyCodeVisible" name="warning" color="black">
-              <q-tooltip>이메일 형식을 맞춰 주세요.</q-tooltip>
-            </q-icon>
-            <q-icon
-              v-if="emailSendVerifyCodeVisible && !isEmailVerifyCodeSend"
-              name="warning"
-              color="black"
-            >
-              <q-tooltip>인증번호를 발송해 주세요.</q-tooltip>
-            </q-icon>
-          </template>
-        </q-input>
-        <q-btn
-          v-if="emailSendVerifyCodeVisible"
-          class="q-mr-sm"
-          color="primary"
-          outline
-          :label="!isEmailVerifyCodeSend ? '인증번호 보내기' : '다시보내기'"
-          @click="sendVerifyCode"
-        />
-      </div>
-
-      <!-- 인증번호 -->
-      <div class="text-weight-bold">인증번호</div>
-      <div class="q-mb-xl row">
-        <q-input
-          v-model="emailVerifyCode"
-          type="email"
-          :disable="!isEmailVerifyCodeSend"
-          dense
-          placeholder="이메일 인증번호를 입력해 주세요."
-          color="primary"
-          style="width: 300px;"
-          class="q-mr-sm"
-        >
-          <template v-slot:append>
-            <q-icon v-if="emailVerified" name="done" color="primary" />
-            <q-icon v-if="!emailVerified && isEmailVerifyCodeSend" name="warning" color="black">
-              <q-tooltip>인증해 주세요.</q-tooltip>
-            </q-icon>
-          </template>
-        </q-input>
-        <q-btn v-if="isEmailVerifyCodeSend" color="primary" outline label="인증" @click="verifyCode" />
-      </div>
-
-      <!-- 휴대폰 번호 -->
-      <div class="text-weight-bold">휴대폰 번호</div>
-      <q-input
-        v-model="phoneNumber"
-        dense
-        placeholder="휴대폰 번호를 입력해 주세요."
-        color="primary"
-        mask="###-####-####"
-        style="width: 300px;"
-        class="q-mb-xl row"
-        @input="onPhoneNumberChange"
-      >
-        <template v-slot:append>
-          <q-icon v-if="phoneNumberVerified" name="done" color="primary" />
-          <q-icon v-else name="warning" color="black">
-            <q-tooltip>올바른 휴대폰 번호를 입력해 주세요.</q-tooltip>
-          </q-icon>
-        </template>
-      </q-input>
-
-      <!-- 성별 -->
-      <div class="text-weight-bold">성별</div>
-      <q-option-group
-        v-model="gender"
-        :options="genderOptions"
-        color="primary"
-        inline
-        class="q-mb-xl row"
-      />
-
-      <!-- 역할 -->
-      <div class="text-weight-bold">역할</div>
-      <q-option-group
-        v-model="role"
-        :options="roleOptions"
-        color="primary"
-        inline
-        class="q-mb-xl row"
-      />
-
-      <!-- 생일 -->
-      <div class="text-weight-bold">생일</div>
-      <q-input
-        v-model="birth"
-        color="primary"
-        mask="####-##-##"
-        dense
-        class="q-mb-xl row"
-        style="width: 120px; height: 50px;"
-      >
-        <template v-slot:prepend>
-          <q-icon name="event" style="cursor: pointer;">
-            <q-menu>
-              <q-list dense>
-                <q-item style="padding: 0 0px;">
-                  <q-date v-model="birth" color="primary" minimal />
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-icon>
-        </template>
-      </q-input>
-
-      <!-- 고용 날짜 -->
-      <div class="text-weight-bold">고용 날짜</div>
-      <q-input
-        v-model="hiredAt"
-        color="primary"
-        mask="####-##-##"
-        dense
-        class="q-mb-xl row"
-        style="width: 120px; height: 50px;"
-      >
-        <template v-slot:prepend>
-          <q-icon name="event" style="cursor: pointer;">
-            <q-menu>
-              <q-list dense>
-                <q-item style="padding: 0 0px;">
-                  <q-date v-model="hiredAt" color="primary" minimal />
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-icon>
-        </template>
-      </q-input>
-
-      <!-- 자기 소개 -->
-      <div class="text-weight-bold">자기 소개</div>
-      <q-input
-        v-model="introduce"
-        dense
-        placeholder="자기 소개를 입력해주세요."
-        color="primary"
-        class="q-mb-xl row"
-        style="width: 80%; height: 50px;"
-      />
-
-      <div class="text-h5 text-weight-bold q-mb-lg">근무시간</div>
-
-      <div class="text-weight-bold q-mb-md q-mt-md">월요일</div>
-      <div class="row items-center">
-        <q-input
-          v-model="monWorkingStartTime"
-          dense
-          :disable="isMonDayOff"
-          class="q-mr-md"
-          style="width: 100px;"
-        />~
-        <q-input
-          v-model="monWorkingEndTime"
-          dense
-          :disable="isMonDayOff"
-          class="q-ml-md"
-          style="width: 100px;"
-        />
-        <q-checkbox v-model="isMonDayOff" color="primary" dense class="q-ml-md q-mr-sm" />off
-      </div>
-
-      <div class="text-weight-bold q-mb-md q-mt-md">화요일</div>
-      <div class="row items-center">
-        <q-input
-          v-model="tueWorkingStartTime"
-          dense
-          :disable="isTueDayOff"
-          class="q-mr-md"
-          style="width: 100px;"
-        />~
-        <q-input
-          v-model="tueWorkingEndTime"
-          dense
-          :disable="isTueDayOff"
-          class="q-ml-md"
-          style="width: 100px;"
-        />
-        <q-checkbox v-model="isTueDayOff" color="primary" dense class="q-ml-md q-mr-sm" />off
-      </div>
-
-      <div class="text-weight-bold q-mb-md q-mt-md">수요일</div>
-      <div class="row items-center">
-        <q-input
-          v-model="wedWorkingStartTime"
-          dense
-          :disable="isWedDayOff"
-          class="q-mr-md"
-          style="width: 100px;"
-        />~
-        <q-input
-          v-model="wedWorkingEndTime"
-          dense
-          :disable="isWedDayOff"
-          class="q-ml-md"
-          style="width: 100px;"
-        />
-        <q-checkbox v-model="isWedDayOff" color="primary" dense class="q-ml-md q-mr-sm" />off
-      </div>
-
-      <div class="text-weight-bold q-mb-md q-mt-md">목요일</div>
-      <div class="row items-center">
-        <q-input
-          v-model="thuWorkingStartTime"
-          dense
-          :disable="isThuDayOff"
-          class="q-mr-md"
-          style="width: 100px;"
-        />~
-        <q-input
-          v-model="thuWorkingEndTime"
-          dense
-          :disable="isThuDayOff"
-          class="q-ml-md"
-          style="width: 100px;"
-        />
-        <q-checkbox v-model="isThuDayOff" color="primary" dense class="q-ml-md q-mr-sm" />off
-      </div>
-
-      <div class="text-weight-bold q-mb-md q-mt-md">금요일</div>
-      <div class="row items-center">
-        <q-input
-          v-model="friWorkingStartTime"
-          dense
-          :disable="isFriDayOff"
-          class="q-mr-md"
-          style="width: 100px;"
-        />~
-        <q-input
-          v-model="friWorkingEndTime"
-          dense
-          :disable="isFriDayOff"
-          class="q-ml-md"
-          style="width: 100px;"
-        />
-        <q-checkbox v-model="isFriDayOff" color="primary" dense class="q-ml-md q-mr-sm" />off
-      </div>
-
-      <div class="text-weight-bold q-mb-md q-mt-md">토요일</div>
-      <div class="row items-center">
-        <q-input
-          v-model="satWorkingStartTime"
-          dense
-          :disable="isSatDayOff"
-          class="q-mr-md"
-          style="width: 100px;"
-        />~
-        <q-input
-          v-model="satWorkingEndTime"
-          dense
-          :disable="isSatDayOff"
-          class="q-ml-md"
-          style="width: 100px;"
-        />
-        <q-checkbox v-model="isSatDayOff" color="primary" dense class="q-ml-md q-mr-sm" />off
-      </div>
-
-      <div class="text-weight-bold q-mb-md q-mt-md">일요일</div>
-      <div class="row items-center" style="margin-bottom: 100px;">
-        <q-input
-          v-model="sunWorkingStartTime"
-          dense
-          :disable="isSunDayOff"
-          class="q-mr-md"
-          style="width: 100px;"
-        />~
-        <q-input
-          v-model="sunWorkingEndTime"
-          dense
-          :disable="isSunDayOff"
-          class="q-ml-md"
-          style="width: 100px;"
-        />
-        <q-checkbox v-model="isSunDayOff" color="primary" dense class="q-ml-md q-mr-sm" />off
+        <div class="create-header-block__title">
+          <h3>강사등록</h3>
+        </div>
       </div>
     </div>
 
-    <!-- Footer -->
-    <div
-      class="q-px-lg"
-      style="
-        position: fixed;
-        bottom: 0px;
-        left: 56px;
-        right: 0px;
-        background-color: #64aeff;
-        width: 97%;
-        height: 60px;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        color: white;
-      "
-    >
+    <!-- Middle -->
+    <div class="create-form">
+      <!-- 이름 -->
+      <div class="create-form-block">
+        <div class="create-form-block__index">01</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">이름</div>
+          </div>
+          <div class="create-form-block__input">
+            <el-input
+              v-model="name"
+              @input="onNameChange"
+              class="el-custom-input"
+              style="width: 300px;"
+            >
+              <span slot="suffix">
+                <i v-if="nameVerified" class="el-icon-check" style="font-size: 20px" />
+                <el-tooltip v-else content="이름의 형식을 맞춰주세요.">
+                  <i class="el-icon-warning-outline" style="font-size: 20px" />
+                </el-tooltip>
+              </span>
+            </el-input>
+          </div>
+        </div>
+      </div>
+
+      <!-- 아이디 -->
+      <div class="create-form-block">
+        <div class="create-form-block__index">02</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">아이디</div>
+          </div>
+          <div class="create-form-block__input">
+            <el-input
+              v-model="username"
+              @input="onUsernameChange"
+              class="el-custom-input"
+              style="width: 300px;"
+            >
+              <span slot="suffix">
+                <i v-if="usernameVerified" class="el-icon-check" style="font-size: 20px" />
+                <el-tooltip
+                  v-if="!usernameVerified && !usernameVerifyVisible"
+                  content="아이디는 8자에서 10자이어야 합니다."
+                >
+                  <i class="el-icon-warning-outline" style="font-size: 20px" />
+                </el-tooltip>
+                <el-tooltip
+                  v-if="!usernameVerified && usernameVerifyVisible"
+                  content="아이디 중복검사를 해주세요."
+                >
+                  <i class="el-icon-warning-outline" style="font-size: 20px" />
+                </el-tooltip>
+              </span>
+            </el-input>
+            <el-button
+              v-if="usernameVerifyVisible && !usernameVerified"
+              size="small"
+              style="margin-left: 5px"
+              @click="verifyUsername"
+            >중복검사</el-button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 이메일 -->
+      <div class="create-form-block">
+        <div class="create-form-block__index">03</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">이메일</div>
+          </div>
+          <div class="create-form-block__input">
+            <el-input
+              v-model="email"
+              type="email"
+              @input="onEmailChange"
+              class="el-custom-input"
+              style="width: 300px;"
+            >
+              <span slot="suffix">
+                <i v-if="isEmailVerifyCodeSend" class="el-icon-check" style="font-size: 20px" />
+                <el-tooltip v-if="!emailSendVerifyCodeVisible" content="이메일의 형식을 맞춰주세요.">
+                  <i class="el-icon-warning-outline" style="font-size: 20px" />
+                </el-tooltip>
+                <el-tooltip
+                  v-if="emailSendVerifyCodeVisible && !isEmailVerifyCodeSend"
+                  content="인증번호를 발송해 주세요."
+                >
+                  <i class="el-icon-warning-outline" style="font-size: 20px" />
+                </el-tooltip>
+              </span>
+            </el-input>
+            <el-button
+              v-if="emailSendVerifyCodeVisible"
+              size="small"
+              style="margin-left: 5px"
+              @click="sendVerifyCode"
+            >{{ !isEmailVerifyCodeSend ? '인증번호 보내기' : '다시보내기' }}</el-button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 인증번호 -->
+      <div class="create-form-block">
+        <div class="create-form-block__index">04</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">인증번호</div>
+          </div>
+          <div class="create-form-block__input">
+            <el-input
+              v-model="emailVerifyCode"
+              :disabled="!isEmailVerifyCodeSend"
+              class="el-custom-input"
+              style="width: 300px;"
+            >
+              <span slot="suffix">
+                <i v-if="emailVerified" class="el-icon-check" style="font-size: 20px" />
+                <el-tooltip v-if="!emailVerified && isEmailVerifyCodeSend" content="인증해 주세요.">
+                  <i class="el-icon-warning-outline" style="font-size: 20px" />
+                </el-tooltip>
+              </span>
+            </el-input>
+            <el-button
+              v-if="isEmailVerifyCodeSend"
+              size="small"
+              style="margin-left: 5px"
+              @click="verifyCode"
+            >인증</el-button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 휴대폰 번호  -->
+      <div class="create-form-block">
+        <div class="create-form-block__index">05</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">휴대폰 번호</div>
+          </div>
+          <div class="create-form-block__input">
+            <el-input
+              v-model="phoneNumber"
+              @input="onPhoneNumberChange"
+              mask="###-####-####"
+              class="el-custom-input"
+              style="width: 300px;"
+            >
+              <span slot="suffix">
+                <i v-if="phoneNumberVerified" class="el-icon-check" style="font-size: 20px" />
+                <el-tooltip v-else content="올바른 휴대폰 번호를 입력해 주세요.">
+                  <i class="el-icon-warning-outline" style="font-size: 20px" />
+                </el-tooltip>
+              </span>
+            </el-input>
+          </div>
+        </div>
+      </div>
+
+      <!-- 성별  -->
+      <div class="create-form-block">
+        <div class="create-form-block__index">06</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">성별</div>
+          </div>
+          <div class="create-form-block__input">
+            <el-radio v-model="gender" label="M">남자</el-radio>
+            <el-radio v-model="gender" label="F">여자</el-radio>
+          </div>
+        </div>
+      </div>
+
+      <!-- 직무 -->
+      <div class="create-form-block">
+        <div class="create-form-block__index">07</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">직무</div>
+          </div>
+          <div class="create-form-block__input">
+            <el-radio v-model="role" label="ROLE_INSTRUCTOR">강사</el-radio>
+            <el-radio v-model="role" label="ROLE_MANAGER">매니저</el-radio>
+            <el-radio v-model="role" label="ROLE_OWNER">오너</el-radio>
+          </div>
+        </div>
+      </div>
+
+      <!-- 생일 -->
+      <div class="create-form-block">
+        <div class="create-form-block__index">08</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">생일</div>
+          </div>
+          <div class="create-form-block__input">
+            <el-date-picker
+              v-model="birth"
+              type="date"
+              :clearable="false"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              style="width: 140px;"
+            ></el-date-picker>
+          </div>
+        </div>
+      </div>
+
+      <!-- 고용 날짜 -->
+      <div class="create-form-block">
+        <div class="create-form-block__index">09</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">고용 날짜</div>
+          </div>
+          <div class="create-form-block__input">
+            <el-date-picker
+              v-model="hiredAt"
+              type="date"
+              :clearable="false"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              style="width: 140px;"
+            ></el-date-picker>
+          </div>
+        </div>
+      </div>
+
+      <!-- 자기소개 -->
+      <div class="create-form-block">
+        <div class="create-form-block__index">10</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">자기소개</div>
+          </div>
+          <div class="create-form-block__input">
+            <el-input v-model="introduce" class="el-custom-input"></el-input>
+          </div>
+        </div>
+      </div>
+
+      <!-- 근무시간 -->
+      <div class="create-form-block">
+        <div class="create-form-block__index">11</div>
+        <div class="create-form-block__content">
+          <div class="create-form-block__label">
+            <div class="create-form-block__label__title">근무시간</div>
+          </div>
+          <div class="create-form-block__input">
+            <div class="create-form-block__working-hour__container">
+              <!-- 월요일 -->
+              <div class="create-form-block__working-hour">
+                <h5>월</h5>
+                <div class="create-form-block__working-hour__input">
+                  <el-time-select
+                    v-model="monWorkingStartTime"
+                    :disabled="isMonDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                  <span>~</span>
+                  <el-time-select
+                    v-model="monWorkingEndTime"
+                    :disabled="isMonDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                </div>
+                <div class="create-form-block__working-hour__check">
+                  <el-checkbox v-model="isMonDayOff">휴무일</el-checkbox>
+                </div>
+              </div>
+
+              <!-- 화요일 -->
+              <div class="create-form-block__working-hour">
+                <h5>화</h5>
+                <div class="create-form-block__working-hour__input">
+                  <el-time-select
+                    v-model="tueWorkingStartTime"
+                    :disabled="isTueDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                  <span>~</span>
+                  <el-time-select
+                    v-model="tueWorkingEndTime"
+                    :disabled="isTueDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                </div>
+                <div class="create-form-block__working-hour__check">
+                  <el-checkbox v-model="isTueDayOff">휴무일</el-checkbox>
+                </div>
+              </div>
+
+              <!-- 수요일 -->
+              <div class="create-form-block__working-hour">
+                <h5>수</h5>
+                <div class="create-form-block__working-hour__input">
+                  <el-time-select
+                    v-model="wedWorkingStartTime"
+                    :disabled="isWedDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                  <span>~</span>
+                  <el-time-select
+                    v-model="wedWorkingEndTime"
+                    :disabled="isWedDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                </div>
+                <div class="create-form-block__working-hour__check">
+                  <el-checkbox v-model="isWedDayOff">휴무일</el-checkbox>
+                </div>
+              </div>
+
+              <!-- 목요일 -->
+              <div class="create-form-block__working-hour">
+                <h5>수</h5>
+                <div class="create-form-block__working-hour__input">
+                  <el-time-select
+                    v-model="thuWorkingStartTime"
+                    :disabled="isThuDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                  <span>~</span>
+                  <el-time-select
+                    v-model="thuWorkingEndTime"
+                    :disabled="isThuDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                </div>
+                <div class="create-form-block__working-hour__check">
+                  <el-checkbox v-model="isThuDayOff">휴무일</el-checkbox>
+                </div>
+              </div>
+
+              <!-- 금요일 -->
+              <div class="create-form-block__working-hour">
+                <h5>금</h5>
+                <div class="create-form-block__working-hour__input">
+                  <el-time-select
+                    v-model="friWorkingStartTime"
+                    :disabled="isFriDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                  <span>~</span>
+                  <el-time-select
+                    v-model="friWorkingEndTime"
+                    :disabled="isFriDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                </div>
+                <div class="create-form-block__working-hour__check">
+                  <el-checkbox v-model="isFriDayOff">휴무일</el-checkbox>
+                </div>
+              </div>
+
+              <!-- 토요일 -->
+              <div class="create-form-block__working-hour">
+                <h5>토</h5>
+                <div class="create-form-block__working-hour__input">
+                  <el-time-select
+                    v-model="satWorkingStartTime"
+                    :disabled="isSatDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                  <span>~</span>
+                  <el-time-select
+                    v-model="satWorkingEndTime"
+                    :disabled="isSatDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                </div>
+                <div class="create-form-block__working-hour__check">
+                  <el-checkbox v-model="isSatDayOff">휴무일</el-checkbox>
+                </div>
+              </div>
+
+              <!-- 일요일 -->
+              <div class="create-form-block__working-hour">
+                <h5>일</h5>
+                <div class="create-form-block__working-hour__input">
+                  <el-time-select
+                    v-model="sunWorkingStartTime"
+                    :disabled="isSunDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                  <span>~</span>
+                  <el-time-select
+                    v-model="sunWorkingEndTime"
+                    :disabled="isSunDayOff"
+                    align="center"
+                    style="width: 120px"
+                  ></el-time-select>
+                </div>
+                <div class="create-form-block__working-hour__check">
+                  <el-checkbox v-model="isSunDayOff">휴무일</el-checkbox>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="bottom-action-bar">
       <span @click="$router.push('/staff')" style="cursor: pointer;">
-        <q-icon name="keyboard_arrow_left" />뒤로가기
+        <i class="el-icon-arrow-left" style="font-size: 14px; margin-right: 8px" />뒤로가기
       </span>
-      <q-space />
-      <q-btn label="강사 등록 완료" color="white" text-color="black" @click="onSubmit"></q-btn>
+      <div class="space"></div>
+      <el-button @click="onSubmit" style="color: black">강사 등록 완료</el-button>
     </div>
   </div>
 </template>
@@ -382,7 +454,8 @@ import {
   emailRegex,
   phoneNumberRegex,
 } from '@/util/regex';
-import { validateParam } from '@/util/common';
+import { validateParam } from '@/util/validation';
+import '@/css/Create.scss';
 
 const namespace = 'staff';
 const userNamespace = 'user';
@@ -403,37 +476,13 @@ export default class StaffCreate extends Vue {
       emailVerifyCode: '',
       phoneNumber: '',
       phoneNumberVerified: false,
-      gender: '',
-      genderOptions: [
-        {
-          label: '남자',
-          value: 'M',
-        },
-        {
-          label: '여자',
-          value: 'F',
-        },
-      ],
+      gender: 'M',
       birth: parseDate(new Date(), 'yyyy-mm-dd'),
       profileUrl:
         'https://seoulforest-image.s3.ap-northeast-2.amazonaws.com/default_profile.png',
       phone: '',
       introduce: '',
-      role: 'instructor',
-      roleOptions: [
-        {
-          label: '강사',
-          value: 'ROLE_INSTRUCTOR',
-        },
-        {
-          label: '매니저',
-          value: 'ROLE_MANAGER',
-        },
-        {
-          label: '오너',
-          value: 'ROLE_OWNER',
-        },
-      ],
+      role: 'ROLE_INSTRUCTOR',
       showCalendar: false,
       hiredAt: parseDate(new Date(), 'yyyy-mm-dd'),
 
@@ -459,10 +508,6 @@ export default class StaffCreate extends Vue {
       sunWorkingStartTime: '09:00',
       sunWorkingEndTime: '18:00',
     };
-  }
-
-  get primary() {
-    return this.$store.state.primary;
   }
 
   get user() {
@@ -498,7 +543,15 @@ export default class StaffCreate extends Vue {
   }
 
   onPhoneNumberChange(value: string) {
-    if (phoneNumberRegex.test(value)) {
+    this.$data.phoneNumber = value
+      .replace(/[^0-9]/g, '')
+      .replace(
+        /(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,
+        '$1-$2-$3',
+      )
+      .replace('--', '-');
+
+    if (phoneNumberRegex.test(this.$data.phoneNumber)) {
       this.$data.phoneNumberVerified = true;
     } else {
       this.$data.phoneNumberVerified = false;
@@ -689,3 +742,25 @@ export default class StaffCreate extends Vue {
   }
 }
 </script>
+
+<style>
+.create-form-block__working-hour__container {
+  display: grid;
+  row-gap: 2rem;
+  column-gap: 2rem;
+}
+.create-form-block__working-hour {
+  display: grid;
+  grid-template-columns: 40px 300px auto;
+  align-items: center;
+  padding-left: 20px;
+}
+.create-form-block__working-hour h5 {
+  font-size: 20px;
+  font-weight: 700;
+}
+.create-form-block__working-hour__check {
+  display: flex;
+  /* justify-content: flex-end; */
+}
+</style>

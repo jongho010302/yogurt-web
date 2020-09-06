@@ -1,15 +1,17 @@
 <template>
   <div @click="routerTo(`/ticket/detail/${ticket.id}`)">
-    <el-card class="ticket-card cursor-pointer" :body-style="{ padding: '0px' }">
+    <el-card class="ticket-card cursor-pointer" :body-style="{ padding: '0px' }" style="border: 0">
       <div class="ticket-card__contents">
-        <div class="ticket-card__header">횟수제 · {{ ticketClassType }} · {{ ticket.maxTrainee }}:1</div>
+        <div class="ticket-card__header">
+          <span>횟수제 · {{ ticketClassType }} · {{ ticket.maxTrainee }}:1</span>
+        </div>
         <div class="ticket-card__body">{{ ticket.title }}</div>
         <div class="ticket-card__footer">{{ ticket.availableDays }}일 {{ ticket.maxCoupon }}회</div>
       </div>
 
-      <div class="ticket-card__action">
-        <div class="text-body2 text-weight-bold">판매 금액 {{ numberCommaFormat(ticket.price) }}원</div>
-        <div class="text-caption">회당 가격 {{ numberCommaFormat(ticket.price / ticket.maxCoupon) }}원</div>
+      <div v-if="!hideBottom" class="ticket-card__action">
+        <h5>판매 금액 {{ numberCommaFormat(ticket.price) }}원</h5>
+        <span>회당 가격 {{ numberCommaFormat(ticket.price / ticket.maxCoupon) }}원</span>
       </div>
     </el-card>
   </div>
@@ -24,6 +26,7 @@ import { Ticket } from '@/store/ticket/types';
 @Component
 export default class TicketCard extends mixins(Methods) {
   @Prop() ticket!: Ticket;
+  @Prop() hideBottom?: boolean;
 
   data() {
     return {};
@@ -44,15 +47,11 @@ export default class TicketCard extends mixins(Methods) {
   display: flex;
   flex-direction: column;
   border-radius: 8px;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  width: 256px;
 }
 .ticket-card__contents {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 144px;
+  height: 115px;
   padding: 12px;
   color: #fff;
   background-image: linear-gradient(#b7e9f7, #87cefa);
@@ -63,14 +62,20 @@ export default class TicketCard extends mixins(Methods) {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 4px;
-  font-size: 12px;
-  font-weight: 400;
+}
+.ticket-card__header span {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 300;
 }
 .ticket-card__body {
   display: flex;
   flex: 1;
   align-items: flex-start;
-  -webkit-box-direction: normal;
   font-size: 18px;
   font-weight: 500;
 }
@@ -79,5 +84,11 @@ export default class TicketCard extends mixins(Methods) {
 }
 .ticket-card__action {
   padding: 12px;
+}
+.ticket-card__action h5 {
+  font-weight: 600;
+}
+.ticket-card__action span {
+  font-size: 0.7rem;
 }
 </style>

@@ -1,23 +1,25 @@
 <template>
-  <q-card class="my-card q-pt-md">
-    <q-card-section class="text-center">
-      <q-avatar size="90px" class="q-mb-sm cursor-pointer" @click="navigateToStaffDetail(staff.id)">
-        <img :src="staff.user.profileUrl" alt="default profile" />
-      </q-avatar>
-      <div class="q-mb-sm text-h6">{{ staff.user.name }}</div>
-      <div class="q-mb-md">{{ staff.user.phone }}</div>
-      <div class="q-mb-lg">아이디: {{ staff.user.username }}</div>
-      <q-btn outline size="sm" color="primary" @click="resetPassword">비밀번호 재설정</q-btn>
-    </q-card-section>
+  <el-card class="staff-card" :body-style="{ padding: '0px' }" style="border: 0;">
+    <div class="staff-card__content cursor-pointer" @click="navigateToStaffDetail(staff.id)">
+      <el-avatar
+        :src="
+          staff.user.profileUrl ||
+          'https://seoulforest-image.s3.ap-northeast-2.amazonaws.com/default_profile.png'
+        "
+        :size="90"
+      ></el-avatar>
+      <p style="margin-bottom: 10px !important;">{{ staff.user.name }}</p>
+      <p style="margin-bottom: 8px !important;">{{ staff.user.phone }}</p>
+      <p style="margin-bottom: 8px !important;">아이디: {{ staff.user.username }}</p>
+      <el-button style="color: #409eff;" size="mini" @click.stop="resetPassword">비밀번호 재설정</el-button>
+    </div>
 
-    <q-separator />
-
-    <q-card-actions>
-      <q-space></q-space>
-      <q-btn color="red" size="sm" @click="handleDeleteStaff">삭제</q-btn>
-      <q-btn color="light-blue" size="sm">수정</q-btn>
-    </q-card-actions>
-  </q-card>
+    <div class="staff-card__action">
+      <div class="space"></div>
+      <el-button type="danger" size="mini" @click="handleDeleteStaff">삭제</el-button>
+      <el-button type="primary" size="mini">수정</el-button>
+    </div>
+  </el-card>
 </template>
 
 <script lang="ts">
@@ -33,15 +35,15 @@ const namespace = 'staff';
 export default class TicketCard extends Vue {
   @Prop() staff!: StaffType;
 
-  get primary() {
-    return this.$store.state.primary;
-  }
-
   navigateToStaffDetail(id: number) {
     this.$router.push({ path: `/staff/detail/${id}` });
   }
 
   async resetPassword() {
+    if (!yogurtConfirm('정말 해당 직원의 비밀번호를 초기화하시겠습니까?')) {
+      return;
+    }
+
     await this.$store.dispatch(`${namespace}/resetPassword`, {
       userId: this.staff.user.id,
     });
@@ -62,3 +64,20 @@ export default class TicketCard extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.staff-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  text-align: center;
+}
+.staff-card__content {
+  padding: 16px;
+}
+.staff-card__action {
+  background-color: hsla(0, 0%, 92.2%, 0.3);
+  padding: 7px 11px;
+  display: flex;
+}
+</style>

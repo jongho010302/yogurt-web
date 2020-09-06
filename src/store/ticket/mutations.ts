@@ -1,11 +1,11 @@
 import { MutationTree } from 'vuex';
-import { TicketState, Ticket } from './types';
+import { TicketState, TicketsData, TicketData } from './types';
 
 const mutations: MutationTree<TicketState> = {
-  saveTickets(state, payload: Ticket[]) {
+  saveTickets(state, payload: TicketsData) {
     state.tickets = payload;
   },
-  saveTicket(state, payload: Ticket) {
+  saveTicket(state, payload: TicketData) {
     state.ticket = payload;
   },
 };

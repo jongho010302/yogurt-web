@@ -1,6 +1,5 @@
-import { Studio } from '../studio/types';
 import { User } from '@/store/user/types';
-import { BaseEntity } from '../types';
+import { BaseEntity, AsyncStatus } from '../types';
 
 export interface Staff extends BaseEntity {
   user: User;
@@ -29,6 +28,11 @@ export interface Staff extends BaseEntity {
   sunWorkingEndTime: string;
 }
 
+export interface StaffData {
+  data: Staff[] | null;
+  status: AsyncStatus;
+}
+
 export interface StaffState {
-  staffs: Staff[] | null;
+  staffs: StaffData;
 }

@@ -1,22 +1,14 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="content-header">
-      <div class="content-header__inner">
-        <q-breadcrumbs align="left" style="margin-bottom: 12px;">
-          <q-breadcrumbs-el label="수강권" />
-          <q-breadcrumbs-el label="수강권등록" />
-        </q-breadcrumbs>
-        <div class="content-title">
+    <div class="create-header">
+      <div class="create-header-block">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 12px;">
+          <el-breadcrumb-item :to="{ path: '/schedule' }">일정</el-breadcrumb-item>
+          <el-breadcrumb-item>수강권등록</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="create-header-block__title">
           <h3>수강권 생성</h3>
-          <q-select
-            v-model="classType"
-            :options="classTypeOptions"
-            color="primary"
-            outlined
-            dense
-            style="margin-left: 8px;"
-          />
         </div>
       </div>
     </div>

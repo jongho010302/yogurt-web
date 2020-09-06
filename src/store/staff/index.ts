@@ -3,10 +3,13 @@ import getters from './getters';
 import actions from './actions';
 import mutations from './mutations';
 import { StaffState } from './types';
-import { RootState } from '../types';
+import { RootState, AsyncStatus } from '../types';
 
 export const state: StaffState = {
-  staffs: [],
+  staffs: {
+    status: AsyncStatus.INIT,
+    data: null,
+  },
 };
 
 const namespaced = true;

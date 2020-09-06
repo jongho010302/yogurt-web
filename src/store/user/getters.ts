@@ -6,9 +6,6 @@ const getters: GetterTree<UserState, RootState> = {
   getUser(state) {
     return state.user;
   },
-  getJwtToken(state) {
-    return state.jwtToken;
-  },
   getMaskingUsernames(state) {
     return state.maskingUsernames;
   },
