@@ -1,6 +1,17 @@
 <template>
   <div class="padded">
-    <h3>회원</h3>
+    <h2>회원</h2>
+
+    <div class="user-filter">
+      <el-select v-model="isExit">
+        <el-option
+          v-for="item in isExitOptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        ></el-option>
+      </el-select>
+    </div>
 
     <el-table
       v-loading="usersWaiting"
@@ -8,9 +19,9 @@
       style="width: 100%;"
       @row-click="onRowClick"
     >
-      <el-table-column prop="name" label="이름" width="180"></el-table-column>
-      <el-table-column prop="phone" label="전화번호" width="180"></el-table-column>
-      <el-table-column prop="createdAt" label="등록일" width="180"></el-table-column>
+      <el-table-column prop="name" label="이름" width="180" sortable></el-table-column>
+      <el-table-column prop="phone" label="전화번호" width="180" sortable></el-table-column>
+      <el-table-column prop="createdAt" label="등록일" width="180" sortable></el-table-column>
       <el-table-column prop="ticket" label="보유 수강권" width="180"></el-table-column>
     </el-table>
 
@@ -27,6 +38,7 @@ import Component from 'vue-class-component';
 import { Skeleton } from 'vue-loading-skeleton';
 import { User as UserType, UsersData } from '@/store/user/types';
 import { AsyncStatus } from '@/store/types';
+import { Watch } from 'vue-property-decorator';
 
 const namespace = 'user';
 
@@ -47,8 +59,26 @@ interface Column {
 export default class User extends Vue {
   data() {
     return {
-      gridFilter: '',
+      isExit: '',
     };
+  }
+
+  get isExitOptions() {
+    const isExitOptions = [
+      {
+        label: `전체회원 (${this.users.data ? this.users.data.length : 0})`,
+        value: '',
+      },
+      {
+        label: '이용회원',
+        value: false,
+      },
+      {
+        label: '정지회원',
+        value: true,
+      },
+    ];
+    return isExitOptions;
   }
 
   get users(): UsersData {
@@ -65,7 +95,7 @@ export default class User extends Vue {
 
   get userData(): Column[] | null {
     if (this.users.data) {
-      const ang = this.users.data.map((user: UserType) => {
+      const userData = this.users.data.map((user: UserType) => {
         const userColumn: Column = {
           id: user.id,
           name: user.name,
@@ -77,7 +107,7 @@ export default class User extends Vue {
         };
         return userColumn;
       });
-      return ang;
+      return userData;
     } else {
       return null;
     }
@@ -88,13 +118,25 @@ export default class User extends Vue {
   }
 
   async getUsers() {
-    await this.$store.dispatch(`${namespace}/getUsers`);
+    await this.$store.dispatch(`${namespace}/getUsers`, {
+      isExit: this.$data.isExit,
+    });
   }
 
   onRowClick(row: Column) {
     this.$router.push(`/user/detail/${row.id}`);
   }
+
+  @Watch('isExit')
+  onIsExitChange() {
+    this.getUsers();
+  }
 }
 </script>
 
-<style></style>
+<style scoped>
+.user-filter {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+</style>

@@ -1,6 +1,27 @@
 <template>
   <div class="padded">
-    <h2 v-if="tickets.data">총 {{ tickets.data.length }}개의 수강권</h2>
+    <h2 v-if="ticketsSuccess && tickets.data">총 {{ tickets.data.length }}개의 수강권</h2>
+    <h2 v-if="ticketsWaiting">수강권 로딩중</h2>
+
+    <div class="product-filter">
+      <el-select v-model="isSelling">
+        <el-option
+          v-for="item in isSellingOptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        ></el-option>
+      </el-select>
+
+      <el-select v-model="classType" style="margin-left: 10px">
+        <el-option
+          v-for="item in classTypeOptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        ></el-option>
+      </el-select>
+    </div>
 
     <!-- 수강권 로딩 후 : 데이터가 있을 경우 -->
     <div v-if="ticketsSuccess && tickets.data.length" class="product-list">
@@ -36,6 +57,7 @@ import Component from 'vue-class-component';
 import { Skeleton } from 'vue-loading-skeleton';
 import TicketCard from '@/components/ticket/TicketCard.vue';
 import { AsyncStatus } from '@/store/types';
+import { Watch } from 'vue-property-decorator';
 
 const namespace = 'ticket';
 
@@ -50,6 +72,36 @@ export default class Ticket extends Vue {
   data() {
     return {
       icon: 'add',
+      isSelling: '',
+      isSellingOptions: [
+        {
+          label: '모든 수강권',
+          value: '',
+        },
+        {
+          label: '판매중인 수강권',
+          value: true,
+        },
+        {
+          label: '판매중지 수강권',
+          value: false,
+        },
+      ],
+      classType: '',
+      classTypeOptions: [
+        {
+          label: '모든 수업',
+          value: '',
+        },
+        {
+          label: '그룹형',
+          value: 'GROUP',
+        },
+        {
+          label: '프라이빗형',
+          value: 'PRIVATE',
+        },
+      ],
     };
   }
 
@@ -70,12 +122,29 @@ export default class Ticket extends Vue {
   }
 
   getTickets() {
-    this.$store.dispatch(`${namespace}/getTickets`);
+    this.$store.dispatch(`${namespace}/getTickets`, {
+      isSelling: this.$data.isSelling,
+      classType: this.$data.classType,
+    });
+  }
+
+  @Watch('isSelling')
+  onIsSellingChange() {
+    this.getTickets();
+  }
+
+  @Watch('classType')
+  onClassTypeChange() {
+    this.getTickets();
   }
 }
 </script>
 
 <style>
+.product-filter {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
 .product-list {
   display: grid;
   grid-template-columns: 256px;

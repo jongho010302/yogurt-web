@@ -84,7 +84,6 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import { parseDate, getCurrentDate, getDateByCalculateDay } from '@/util/date';
-import { Staff } from '@/store/staff/types';
 
 const lectureNamespace = 'lecture';
 const staffNamespace = 'staff';
@@ -132,11 +131,6 @@ export default class Lecture extends Vue {
 
   get lectures() {
     return this.$store.getters[`${lectureNamespace}/getLectures`];
-  }
-
-  get staffOptions() {
-    const staffs = this.$store.getters[`${staffNamespace}/getStaffs`];
-    return staffs.map((staff: Staff) => staff.user.name);
   }
 
   async created() {

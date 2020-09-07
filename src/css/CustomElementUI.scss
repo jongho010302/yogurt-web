@@ -24,15 +24,13 @@
   border-color: #409eff;
 }
 .el-input__suffix {
-  top: 1px;
-  height: 30px;
+  // top: 1px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.el-input__prefix i,
-.el-input__suffix i {
-  // margin-top: -5px;
+.el-input__icon {
+  line-height: 1;
 }
 .el-input-number .el-input__inner {
   padding-left: 32px;

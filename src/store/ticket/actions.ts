@@ -5,13 +5,13 @@ import { RootState, AsyncStatus } from '../types';
 import { infoAlert } from '@/util/ui';
 
 const actions: ActionTree<TicketState, RootState> = {
-  async getTickets({ commit, rootState }) {
+  async getTickets({ commit, rootState }, { isSelling, classType }) {
     try {
       commit('saveTickets', {
         ...rootState.ticket.tickets,
         status: AsyncStatus.WAITING,
       });
-      const { data } = await getTicketsApi();
+      const { data } = await getTicketsApi(isSelling, classType);
       commit('saveTickets', {
         ...rootState.ticket.tickets,
         status: AsyncStatus.SUCCESS,

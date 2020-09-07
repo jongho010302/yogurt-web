@@ -48,7 +48,8 @@ export const verifySignUpCodeApi = (email: string, verifyCode: string) =>
     verifyCode,
   });
 
-export const getUsersApi = () => apiAxios.get('/admin/user');
+export const getUsersApi = (isExit: boolean) =>
+  apiAxios.get(`/admin/user?isExit=${isExit}`);
 
 export const getUserApi = (id: string | number) =>
   apiAxios.get(`/admin/user/${id}`);
