@@ -1,4 +1,4 @@
-import apiAxios from '@/util/apiAxios';
+import apiAxios from '@/api/client';
 import { ClassType } from '@/store/ticket/types';
 
 export const getTicketsApi = (isSelling: boolean | '', classType: ClassType) =>

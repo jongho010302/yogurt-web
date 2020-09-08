@@ -410,7 +410,9 @@ export default class TicketCard extends Vue {
 }
 </script>
 
-<style>
+<style scoped>
+@import '../../css/CustomRadio.scss';
+@import '../../css/Create.scss';
 .create-form-block__coupon-count {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 200px));

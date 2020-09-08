@@ -1,4 +1,4 @@
-import apiAxios from '@/util/apiAxios';
+import apiAxios from '@/api/client';
 
 export const getStudiosApi = () => apiAxios.get('/admin/studio');
 

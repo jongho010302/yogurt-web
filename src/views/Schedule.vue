@@ -12,7 +12,7 @@
     <div class="floating-action-button">
       <div class="plus" @click="showModal = true">+</div>
     </div>
-    <el-dialog title="일정등록" :visible.sync="showModal" width="40%">
+    <el-dialog title="일정등록" :visible.sync="showModal" width="30%">
       <div class="create-lesson-modal__body">
         <a @click="$router.push('/course/private/create')">
           <div>

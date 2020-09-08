@@ -46,9 +46,7 @@
       </el-select>
 
       <!-- 강사 -->
-      <el-select v-model="staffFilter" placeholder="강사 전체" style="width: 140px; margin-left: 10px;">
-        <el-option v-for="item in staffOptions" :key="item" :label="item" :value="item"></el-option>
-      </el-select>
+      <StaffSelect style="margin-left: 14px;" @onChange="onStaffChange" />
 
       <!-- 수업 타입 -->
       <el-select
@@ -83,7 +81,9 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
+import StaffSelect from '@/components/staff/StaffSelect.vue';
 import { parseDate, getCurrentDate, getDateByCalculateDay } from '@/util/date';
+import { StaffData } from '@/store/staff/types';
 
 const lectureNamespace = 'lecture';
 const staffNamespace = 'staff';
@@ -92,7 +92,11 @@ interface Column {
   id: number;
 }
 
-@Component
+@Component({
+  components: {
+    StaffSelect,
+  },
+})
 export default class Lecture extends Vue {
   data() {
     return {
@@ -133,6 +137,15 @@ export default class Lecture extends Vue {
     return this.$store.getters[`${lectureNamespace}/getLectures`];
   }
 
+  get staffOptions() {
+    const staffs: StaffData = this.$store.getters[
+      `${staffNamespace}/getStaffs`
+    ];
+    if (staffs.data) {
+      return staffs.data.map((staff) => staff.user.name);
+    }
+  }
+
   async created() {
     await this.getStaffs();
   }
@@ -153,6 +166,10 @@ export default class Lecture extends Vue {
 
   onRowClick(row: Column) {
     console.log(row);
+  }
+
+  onStaffChange(staffId: string) {
+    this.$data.staffFilter = staffId;
   }
 
   @Watch('searchType')

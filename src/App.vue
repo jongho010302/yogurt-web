@@ -71,7 +71,7 @@
 import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
 import Login from '@/views/auth/Login.vue';
-import { getAccessToken } from '@/util/token';
+import { getAccessToken } from '@/util/storage';
 import './css/App.scss';
 import './css/CustomElementUI.scss';
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import app from '../main'; // import the instance
 import { errorAlert } from '@/util/ui';
-import { getAccessToken } from './token';
+import { getAccessToken } from '../util/storage';
 
 const { VUE_APP_MY_BACK_URL } = process.env;
 

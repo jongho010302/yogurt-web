@@ -23,7 +23,7 @@ import {
   removeUser,
   removeAccessToken,
   setAccessToken,
-} from '@/util/token';
+} from '@/util/storage';
 
 const actions: ActionTree<UserState, RootState> = {
   async checkUser({ commit }) {

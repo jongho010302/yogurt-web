@@ -4,14 +4,14 @@ import actions from './actions';
 import mutations from './mutations';
 import { UserState } from './types';
 import { RootState, AsyncStatus } from '../types';
-import { getUser } from '@/util/token';
+import { getUser } from '@/util/storage';
 
 export const state: UserState = {
   user: getUser(),
   maskingUsernames: null,
   users: {
     data: null,
-    status: AsyncStatus.INIT
+    status: AsyncStatus.INIT,
   },
   userDetail: null,
 };

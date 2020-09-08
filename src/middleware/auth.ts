@@ -1,5 +1,5 @@
 import { warningAlert } from '../util/ui';
-import { getAccessToken } from '@/util/token';
+import { getAccessToken } from '@/util/storage';
 
 export const isAuthenticated = ({ next, router, to }: any) => {
   const accessToken = getAccessToken();
