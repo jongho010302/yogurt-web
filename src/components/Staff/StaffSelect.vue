@@ -1,27 +1,27 @@
 <template>
-  <el-select v-model="staff" placeholder="강사 전체" style="width: 140px" @change="onChange">
-    <el-option
-      v-for="item in staffOptions"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value"
-    ></el-option>
+  <el-select v-model="staff" placeholder="강사 전체" style="width: 140px">
+    <el-option v-for="item in staffOptions" :key="item.value.id" :label="item.label" :value="item"></el-option>
   </el-select>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { Prop } from 'vue-property-decorator';
 import { StaffData } from '@/store/staff/types';
 
 const namespace = 'staff';
 
 @Component
 export default class StaffSelect extends Vue {
-  data() {
-    return {
-      staff: null,
-    };
+  @Prop() value!: number;
+
+  get staff() {
+    return this.value;
+  }
+
+  set staff(val) {
+    this.$emit('input', val);
   }
 
   get staffOptions() {
@@ -40,10 +40,6 @@ export default class StaffSelect extends Vue {
 
   async getStaffs() {
     await this.$store.dispatch(`${namespace}/getStaffs`);
-  }
-
-  onChange(staffId: string) {
-    this.$emit('onChange', staffId);
   }
 }
 </script>

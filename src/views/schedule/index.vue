@@ -14,13 +14,13 @@
     </div>
     <el-dialog title="일정등록" :visible.sync="showModal" width="30%">
       <div class="create-lesson-modal__body">
-        <a @click="$router.push('/course/private/create')">
+        <a @click="$router.push('/schedule/private/create')">
           <div>
             <h5>프라이빗 수업</h5>
             <p>개인/듀엣/트리플 레슨 (예약 필수)</p>
           </div>
         </a>
-        <a @click="$router.push('/course/group/create')">
+        <a @click="$router.push('/schedule/group/create')">
           <div>
             <h5>그룹 수업</h5>
             <p>고정된 스케쥴의 오픈형 수업 과정 (자유 수강형/예약 필수)</p>

@@ -1,6 +1,6 @@
-import apiAxios from '@/api/client';
+import client from '@/api/client';
 
-export const getStudiosApi = () => apiAxios.get('/admin/studio');
+export const getStudiosApi = () => client.get('/admin/studio');
 
 export const saveStudioApi = (payload: any) =>
-  apiAxios.post('/admin/studio', payload);
+  client.post('/admin/studio', payload);

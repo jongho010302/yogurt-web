@@ -83,26 +83,28 @@ const routes = [
     path: '/schedule',
     name: 'Schedule',
     component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/Schedule.vue'),
+      import(/* webpackChunkName: "about" */ '@/views/schedule/index.vue'),
     meta: {
       middleware: isAuthenticated,
     },
   },
   {
-    path: '/course/group/create',
+    path: '/schedule/group/create',
     name: 'CourseGroupCreate',
     component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/course/group/create.vue'),
+      import(
+        /* webpackChunkName: "about" */ '@/views/schedule/group/create.vue'
+      ),
     meta: {
       middleware: isAuthenticated,
     },
   },
   {
-    path: '/course/private/create',
+    path: '/schedule/private/create',
     name: 'CoursePrivateCreate',
     component: () =>
       import(
-        /* webpackChunkName: "about" */ '@/views/course/private/create.vue'
+        /* webpackChunkName: "about" */ '@/views/schedule/private/create.vue'
       ),
     meta: {
       middleware: isAuthenticated,

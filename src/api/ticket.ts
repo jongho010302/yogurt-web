@@ -1,10 +1,10 @@
-import apiAxios from '@/api/client';
+import client from '@/api/client';
 import { ClassType } from '@/store/ticket/types';
 
 export const getTicketsApi = (isSelling: boolean | '', classType: ClassType) =>
-  apiAxios.get(`/admin/ticket?isSelling=${isSelling}&classType=${classType}`);
+  client.get(`/admin/ticket?isSelling=${isSelling}&classType=${classType}`);
 
-export const getTicketApi = (id: number) => apiAxios.get(`/admin/ticket/${id}`);
+export const getTicketApi = (id: number) => client.get(`/admin/ticket/${id}`);
 
 export const saveTicketApi = (payload: any) =>
-  apiAxios.post('/admin/ticket', payload);
+  client.post('/admin/ticket', payload);

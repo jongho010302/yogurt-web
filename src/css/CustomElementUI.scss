@@ -6,12 +6,14 @@
 .el-input-number .el-input__inner,
 .el-date-editor--time-select .el-input__inner {
   height: 32px;
-  font-weight: 600;
   border-left: 0;
   border-top: 0;
   border-right: 0;
   border-radius: 0;
   border-bottom: 2px solid #eee;
+}
+.el-date-editor .el-input__inner {
+  text-align: center;
 }
 .el-custom-input .el-input__inner:hover,
 .el-input-number .el-input__inner:hover,

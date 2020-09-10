@@ -17,7 +17,7 @@
           @click="$router.push('/schedule').catch(() => {})"
           style="cursor: pointer;"
         />
-        <el-menu :default-active="tab" class="el-menu-demo" mode="horizontal" router>
+        <el-menu :default-active="activeLink" router class="el-menu-demo" mode="horizontal">
           <el-menu-item index="/schedule">일정</el-menu-item>
           <el-menu-item index="/lecture">수업</el-menu-item>
           <el-menu-item index="/user">회원</el-menu-item>
@@ -74,6 +74,7 @@ import Login from '@/views/auth/Login.vue';
 import { getAccessToken } from '@/util/storage';
 import './css/App.scss';
 import './css/CustomElementUI.scss';
+import { Watch } from 'vue-property-decorator';
 
 const namespace = 'user';
 
@@ -85,7 +86,7 @@ const namespace = 'user';
 export default class App extends mixins(Methods) {
   data() {
     return {
-      tab: window.location.pathname,
+      activeLink: this.$route.path,
       drawer: true,
       menu: false,
 
@@ -120,6 +121,17 @@ export default class App extends mixins(Methods) {
       this.$router.push('/staff/me');
     } else if (command === 'logout') {
       await this.handleLogOut();
+    }
+  }
+
+  @Watch('$route')
+  onRouteChange() {
+    const firstEndpointUrlPattern = /^\/\w*/;
+    const executedPattern = firstEndpointUrlPattern.exec(this.$route.path);
+    if (executedPattern) {
+      this.$data.activeLink = executedPattern[0];
+    } else {
+      this.$data.activeLink = this.$route.path;
     }
   }
 }

@@ -1,12 +1,12 @@
-import apiAxios from '@/api/client';
+import client from '@/api/client';
 
-export const getStaffsApi = () => apiAxios.get('/admin/staff');
+export const getStaffsApi = () => client.get('/admin/staff');
 
 export const saveStaffApi = (payload: any) =>
-  apiAxios.post('/admin/staff', payload);
+  client.post('/admin/staff', payload);
 
 export const deleteStaffApi = (payload: any) =>
-  apiAxios.post('/admin/staff', payload);
+  client.post('/admin/staff', payload);
 
 export const resetPasswordApi = (payload: any) =>
-  apiAxios.post('/admin/staff/reset-password', payload);
+  client.post('/admin/staff/reset-password', payload);

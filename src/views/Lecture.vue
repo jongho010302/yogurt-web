@@ -24,6 +24,7 @@
         value-format="yyyy-MM-dd"
         style="width: 140px; margin-left: 10px;"
       ></el-date-picker>
+
       <!-- 기간 날짜 -->
       <el-date-picker
         v-if="searchType === 'period'"

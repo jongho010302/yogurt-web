@@ -27,8 +27,6 @@
 }
 .create-form__class-period {
   display: grid;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   justify-items: start;
   grid-template-columns: repeat(3, 1fr);
