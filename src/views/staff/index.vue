@@ -5,7 +5,12 @@
 
     <!-- 수강권 로딩 후 : 데이터가 있을 경우 -->
     <div v-if="staffsSuccess && staffs.data.length" class="staff-list">
-      <StaffCard v-for="(staff, index) in staffs.data" :key="index" :staff="staff" style="width: 100%" />
+      <StaffCard
+        v-for="(staff, index) in staffs.data"
+        :key="index"
+        :staff="staff"
+        style="width: 100%"
+      />
     </div>
 
     <!-- 수강권 로딩 후 : 데이터가 없을 경우 -->
@@ -13,14 +18,14 @@
 
     <!-- 수강권 로딩 중 -->
     <div v-if="staffsWaiting" class="staff-list">
-      <div v-for="(dummy, index) in (Array(20)).fill(1)" :key="index">
+      <div v-for="(dummy, index) in Array(20).fill(1)" :key="index">
         <Skeleton width="220px" height="238px" />
         <Skeleton width="220px" height="42px" />
       </div>
     </div>
 
     <div class="floating-action-button">
-      <div class="plus" @click="$router.push('/staff/create')"> +</div>
+      <div class="plus" @click="$router.push('/staff/create')">+</div>
     </div>
   </div>
 </template>
@@ -38,7 +43,7 @@ const namespace = 'staff';
 @Component({
   components: {
     StaffCard,
-    Skeleton
+    Skeleton,
   },
 })
 export default class Staff extends Vue {
