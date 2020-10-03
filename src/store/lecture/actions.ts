@@ -1,18 +1,13 @@
 import { ActionTree } from 'vuex';
-import axios from 'axios';
 import { LectureState } from './types';
 import { RootState } from '../types';
-
-const { VUE_APP_MY_BACK_URL } = process.env;
+import { getCourseApi } from '@/api/lecture';
 
 const actions: ActionTree<LectureState, RootState> = {
-  async getLectures({ commit }, { lectureDate, lectureType }) {
+  async getLectures({ commit }, { startAt, endAt }) {
     try {
-      const response = await axios.get(
-        `${VUE_APP_MY_BACK_URL}/api/lecture?lectureDate=${lectureDate}&lectureType=${lectureType}`,
-      );
-      const payload = response && response.data;
-      commit('getLectures', payload);
+      const { data } = await getCourseApi(startAt, endAt);
+      commit('saveLectures', data.data);
     } catch (err) {
       console.error(err);
     }

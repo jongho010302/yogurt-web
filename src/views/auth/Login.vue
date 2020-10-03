@@ -22,7 +22,9 @@
         />
       </div>
 
-      <el-button class="login__form-button" type="primary" @click="handleLogin">로그인</el-button>
+      <el-button class="login__form-button" type="primary" @click="handleLogin"
+        >로그인</el-button
+      >
     </div>
 
     <hr class="auth__seperator" />
@@ -32,8 +34,13 @@
         <i class="el-icon-lock find-lock-icon"></i>계정을 잊으셨나요?
       </span>
       <span class="find__item-2">
-        <a class="find__item" @click="routerTo('/find/password')">비밀번호 재설정</a> ·
-        <a class="find__item" @click="routerTo('/find/masking-username')">아이디 찾기</a>
+        <a class="find__item" @click="routerTo('/find/password')"
+          >비밀번호 재설정</a
+        >
+        ·
+        <a class="find__item" @click="routerTo('/find/masking-username')"
+          >아이디 찾기</a
+        >
       </span>
     </div>
   </div>
@@ -49,7 +56,7 @@ const namespace = 'user';
 export default class Login extends mixins(Methods) {
   data() {
     return {
-      username: 'jongho010302',
+      username: 'jongho.dev',
       password: 'Wldms0302!',
     };
   }

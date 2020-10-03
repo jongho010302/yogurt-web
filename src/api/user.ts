@@ -3,49 +3,62 @@ import client from '@/api/client';
 export const checkUserApi = () => client.get('/user/check');
 
 export const logInApi = (username: string, password: string) =>
-  client.post('/auth/log-in', {
+  client.post('/auth/login', {
     username,
     password,
   });
 
-export const logOutApi = () => client.post('/user/log-out');
+export const logOutApi = () => client.post('/user/logout');
 
 export const findMaskingUsernameApi = (name: string) =>
-  client.get(`/auth/find/masking-username?name=${name}`);
+  client.post('/auth/find/masking-username', { name });
 
 export const findUsernameApi = (email: string) =>
-  client.get(`/auth/find/username?email=${email}`);
+  client.post('/auth/find/username', { email });
 
 export const sendFindPasswordCodeApi = (email: string) =>
-  client.get(`/auth/find/password/verify?email=${email}`);
-
-export const verifyFindPasswordCodeApi = (email: string, verifyCode: string) =>
-  client.post('/auth/find/password/verify', {
+  client.post('/auth/verification/send', {
     email,
-    verifyCode,
+    verificationType: 'FIND_PASSWORD',
+  });
+
+export const verifyFindPasswordCodeApi = (
+  email: string,
+  verificationCode: string,
+) =>
+  client.post('/auth/verification/verify', {
+    email,
+    verificationCode,
+    verificationType: 'FIND_PASSWORD',
   });
 
 export const changePasswordApi = (
   email: string,
   password: string,
-  verifyCode: string,
+  verificationCode: string,
 ) =>
   client.put('/auth/find/password', {
     email,
     password,
-    verifyCode,
+    verificationCode,
   });
 
 export const verifyUsernameApi = (username: string) =>
-  client.get(`/auth/sign-up/verify?username=${username}`);
+  client.post('/auth/validate/username', {
+    username,
+  });
 
 export const sendSignUpCodeApi = (email: string) =>
-  client.get(`/auth/sign-up/verify?email=${email}`);
-
-export const verifySignUpCodeApi = (email: string, verifyCode: string) =>
-  client.post('/auth/sign-up/verify', {
+  client.post('/auth/verification/send', {
     email,
-    verifyCode,
+    verificationType: 'SIGNUP',
+  });
+
+export const verifySignUpCodeApi = (email: string, verificationCode: string) =>
+  client.post('/auth/verification/verify', {
+    email,
+    verificationCode,
+    verificationType: 'SIGNUP',
   });
 
 export const getUsersApi = (isExit: boolean) =>

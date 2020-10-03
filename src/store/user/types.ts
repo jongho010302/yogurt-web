@@ -13,7 +13,7 @@ export interface User extends BaseEntity {
   phone: string;
   profileUrl: string;
   roles: Role[];
-  userTickets: UserTicket[];
+  tickets: UserTicket[];
 }
 
 export interface UsersData {
@@ -42,6 +42,6 @@ export enum Role {
 export interface UserState {
   user: User | null;
   maskingUsernames: string[] | null;
-  users: UsersData
+  users: UsersData;
   userDetail: User | null;
 }

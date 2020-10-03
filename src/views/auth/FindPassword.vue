@@ -14,8 +14,12 @@
       </div>
 
       <div class="auth__button-group">
-        <el-button type="info" @click="routerTo('/login')">로그인 화면으로</el-button>
-        <el-button type="primary" @click="sendFindPasswordCode">비밀번호 변경 링크 받기</el-button>
+        <el-button type="info" @click="routerTo('/login')"
+          >로그인 화면으로</el-button
+        >
+        <el-button type="primary" @click="sendFindPasswordCode"
+          >비밀번호 변경 링크 받기</el-button
+        >
       </div>
     </div>
 
@@ -25,12 +29,16 @@
       </div>
 
       <div class="auth__input-group">
-        <el-input v-model="verifyCode" placeholder="인증코드" />
+        <el-input v-model="verificationCode" placeholder="인증코드" />
       </div>
 
       <div class="auth__button-group">
-        <el-button type="info" @click="routerTo('/login')">로그인 화면으로</el-button>
-        <el-button type="primary" @click="verifyFindPasswordCode">인증하기</el-button>
+        <el-button type="info" @click="routerTo('/login')"
+          >로그인 화면으로</el-button
+        >
+        <el-button type="primary" @click="verifyFindPasswordCode"
+          >인증하기</el-button
+        >
       </div>
     </div>
 
@@ -49,8 +57,12 @@
         />
       </div>
       <div class="auth__button-group">
-        <el-button type="info" @click="routerTo('/login')">로그인 화면으로</el-button>
-        <el-button type="primary" @click="handleChangePassword">로그인 화면으로</el-button>
+        <el-button type="info" @click="routerTo('/login')"
+          >로그인 화면으로</el-button
+        >
+        <el-button type="primary" @click="handleChangePassword"
+          >로그인 화면으로</el-button
+        >
       </div>
     </div>
   </div>
@@ -70,7 +82,7 @@ export default class Login extends mixins(Methods) {
     return {
       status: 'init',
       email: '',
-      verifyCode: '',
+      verificationCode: '',
       password: '',
       secondPassword: '',
     };
@@ -89,14 +101,14 @@ export default class Login extends mixins(Methods) {
   }
 
   async verifyFindPasswordCode() {
-    if (!this.$data.verifyCode) {
+    if (!this.$data.verificationCode) {
       warningAlert('인증코드를 입력해 주세요.');
       return;
     }
 
     await this.$store.dispatch(`${namespace}/verifyFindPasswordCode`, {
       email: this.$data.email,
-      verifyCode: this.$data.verifyCode,
+      verificationCode: this.$data.verificationCode,
     });
     this.$data.status = 'verified';
   }
@@ -117,7 +129,7 @@ export default class Login extends mixins(Methods) {
       await this.$store.dispatch(`${namespace}/changePassword`, {
         email: this.$data.email,
         password: this.$data.password,
-        verifyCode: this.$data.verifyCode,
+        verificationCode: this.$data.verificationCode,
       });
       await router.push('/login');
     } catch (err) {

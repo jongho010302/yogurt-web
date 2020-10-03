@@ -36,17 +36,17 @@ const actions: ActionTree<TicketState, RootState> = {
       throw err;
     }
   },
-  async saveTicket({ commit, rootState }, payload) {
+  async saveTicket(none, payload) {
     try {
       const { data } = await saveTicketApi(payload);
       infoAlert(data.message);
-      if (rootState.ticket.tickets.data) {
-        const tickets = rootState.ticket.tickets.data.map((el) => ({ ...el }));
-        tickets.push(data.data);
-        commit('saveTickets', tickets);
-      } else {
-        commit('saveTickets', [data.data]);
-      }
+      // if (rootState.ticket.tickets.data) {
+      //   const tickets = rootState.ticket.tickets.data.map((el) => ({ ...el }));
+      //   tickets.push(data.data);
+      //   commit('saveTickets', tickets);
+      // } else {
+      //   commit('saveTickets', [data.data]);
+      // }
     } catch (err) {
       throw err;
     }

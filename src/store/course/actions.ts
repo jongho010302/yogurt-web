@@ -1,20 +1,85 @@
 import { ActionTree } from 'vuex';
-import axios from 'axios';
-import { LectureState } from './types';
+import { CourseState } from './types';
 import { RootState } from '../types';
+import { createCoursesApi } from '@/api/course';
 
-const { VUE_APP_MY_BACK_URL } = process.env;
-
-const actions: ActionTree<LectureState, RootState> = {
-  async getLectures({ commit }, { lectureDate, lectureType }) {
+const actions: ActionTree<CourseState, RootState> = {
+  async saveCourses(
+    none,
+    {
+      studioId,
+      staffId,
+      classType,
+      title,
+      description,
+      maxTrainee,
+      minTrainee,
+      startDate,
+      endDate,
+      bookingEndTime,
+      bookingCancelEndTime,
+      bookingChangeEndTime,
+      hasMonClass,
+      monClassStartTime,
+      monClassEndTime,
+      hasTueClass,
+      tueClassStartTime,
+      tueClassEndTime,
+      hasWedClass,
+      wedClassStartTime,
+      wedClassEndTime,
+      hasThuClass,
+      thuClassStartTime,
+      thuClassEndTime,
+      hasFriClass,
+      friClassStartTime,
+      friClassEndTime,
+      hasSatClass,
+      satClassStartTime,
+      satClassEndTime,
+      hasSunClass,
+      sunClassStartTime,
+      sunClassEndTime,
+    },
+  ) {
     try {
-      const response = await axios.get(
-        `${VUE_APP_MY_BACK_URL}/api/lecture?lectureDate=${lectureDate}&lectureType=${lectureType}`,
+      await createCoursesApi(
+        studioId,
+        staffId,
+        classType,
+        title,
+        description,
+        maxTrainee,
+        minTrainee,
+        startDate,
+        endDate,
+        bookingEndTime,
+        bookingCancelEndTime,
+        bookingChangeEndTime,
+        hasMonClass,
+        monClassStartTime,
+        monClassEndTime,
+        hasTueClass,
+        tueClassStartTime,
+        tueClassEndTime,
+        hasWedClass,
+        wedClassStartTime,
+        wedClassEndTime,
+        hasThuClass,
+        thuClassStartTime,
+        thuClassEndTime,
+        hasFriClass,
+        friClassStartTime,
+        friClassEndTime,
+        hasSatClass,
+        satClassStartTime,
+        satClassEndTime,
+        hasSunClass,
+        sunClassStartTime,
+        sunClassEndTime,
       );
-      const payload = response && response.data;
-      commit('getLectures', payload);
     } catch (err) {
-      console.error(err);
+      throw err;
     }
   },
 };

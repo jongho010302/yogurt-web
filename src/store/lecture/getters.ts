@@ -4,23 +4,23 @@ import { RootState } from '../types';
 
 const getters: GetterTree<LectureState, RootState> = {
   getLectures(state): any {
-    if (!state) {
-      return null;
-    }
-
     const week = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)'];
 
     const lectures = state.lectures?.map((lecture) => {
-      const lectureDay = week[new Date(lecture.lectureDate).getDay()];
+      const lectureDay = week[new Date(lecture.startAt).getDay()];
+      const lectureAt = `${lecture.startAt.split(' ')[0]} ${lectureDay} ${
+        lecture.startAt.split(' ')[1]
+      } ~ ${lecture.endAt.split(' ')[1]}`;
 
       return {
-        name: `${lecture.lectureDate} ${lectureDay} ${lecture.startTime}~${lecture.endTime}`,
+        lectureAt: lectureAt,
         instructor: lecture.staff.user.name,
-        lectureType: lecture.lectureType.name,
-        lectureName: lecture.lectureName,
-        entry: `${lecture.attendedCount}/${lecture.totalCount}`,
-        reservationTime: '',
-        cancelTime: '',
+        lectureType: lecture.course.classType,
+        title: lecture.title,
+        entry: `${lecture.maxTrainee}/${lecture.minTrainee}`,
+        bookingEndAt: lecture.bookingEndAt,
+        bookingCancelEndAt: lecture.bookingCancelEndAt,
+        bookingChangeEndAt: lecture.bookingChangeEndAt,
       };
     });
     return lectures;

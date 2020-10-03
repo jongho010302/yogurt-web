@@ -6,6 +6,9 @@ const getters: GetterTree<UserState, RootState> = {
   getUser(state) {
     return state.user;
   },
+  getStudio(state) {
+    return state.user?.studio;
+  },
   getMaskingUsernames(state) {
     return state.maskingUsernames;
   },

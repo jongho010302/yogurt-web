@@ -1,10 +1,6 @@
 import { MutationTree } from 'vuex';
-import { LectureState, Lecture } from './types';
+import { CourseState } from './types';
 
-const mutations: MutationTree<LectureState> = {
-  getLectures(state, payload: Lecture[]) {
-    state.lectures = payload;
-  },
-};
+const mutations: MutationTree<CourseState> = {};
 
 export default mutations;

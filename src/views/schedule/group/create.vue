@@ -3,8 +3,13 @@
     <!-- Header -->
     <div class="create-header">
       <div class="create-header-block">
-        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 12px;">
-          <el-breadcrumb-item :to="{ path: '/schedule' }">일정</el-breadcrumb-item>
+        <el-breadcrumb
+          separator-class="el-icon-arrow-right"
+          style="margin-bottom: 12px"
+        >
+          <el-breadcrumb-item :to="{ path: '/schedule' }"
+            >일정</el-breadcrumb-item
+          >
           <el-breadcrumb-item>그룹 수업 등록</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="create-header-block__title">
@@ -65,11 +70,18 @@
             <div class="create-form-block__trainee">
               <div>
                 <label>최대 수강 인원</label>
-                <el-input-number v-model.number="maxTrainee" :min="1"></el-input-number>
+                <el-input-number
+                  v-model.number="maxTrainee"
+                  :min="1"
+                ></el-input-number>
               </div>
               <div>
                 <label>최소 수강 인원</label>
-                <el-input-number v-model.number="minTrainee" :min="1" :max="maxTrainee"></el-input-number>
+                <el-input-number
+                  v-model.number="minTrainee"
+                  :min="1"
+                  :max="maxTrainee"
+                ></el-input-number>
               </div>
             </div>
           </div>
@@ -81,7 +93,9 @@
         <div class="create-form-block__index">05</div>
         <div class="create-form-block__content">
           <div class="create-form-block__label">
-            <div class="create-form-block__label__title">에약 / 취소 / 변경 가능 시간 (HH:MM)</div>
+            <div class="create-form-block__label__title">
+              에약 / 취소 / 변경 가능 시간 (HH:MM)
+            </div>
           </div>
           <div class="create-form-block__input">
             <div class="create-form-block__booking-time">
@@ -91,7 +105,7 @@
                 :picker-options="{
                   start: '00:00',
                   step: '00:05',
-                  end: '47:55'
+                  end: '47:55',
                 }"
                 style="width: 120px"
               ></el-time-select>
@@ -108,7 +122,7 @@
                 :picker-options="{
                   start: '00:00',
                   step: '00:05',
-                  end: '47:55'
+                  end: '47:55',
                 }"
                 style="width: 120px"
               ></el-time-select>
@@ -125,7 +139,7 @@
                 :picker-options="{
                   start: '00:00',
                   step: '00:05',
-                  end: '47:55'
+                  end: '47:55',
                 }"
                 style="width: 120px"
               ></el-time-select>
@@ -154,7 +168,7 @@
                 :clearable="false"
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
-                style="margin-left: 10px;"
+                style="margin-left: 10px"
               ></el-date-picker>
             </div>
 
@@ -164,52 +178,87 @@
                 class="week-button"
                 :class="hasMonClass ? 'button--primary' : null"
                 @click="hasMonClass = !hasMonClass"
-              >월</el-button>
+                >월</el-button
+              >
               <el-button
                 size="mini"
                 class="week-button"
                 :class="hasTueClass ? 'button--primary' : null"
                 @click="hasTueClass = !hasTueClass"
-              >화</el-button>
+                >화</el-button
+              >
               <el-button
                 size="mini"
                 class="week-button"
                 :class="hasWedClass ? 'button--primary' : null"
                 @click="hasWedClass = !hasWedClass"
-              >수</el-button>
+                >수</el-button
+              >
               <el-button
                 size="mini"
                 class="week-button"
                 :class="hasThuClass ? 'button--primary' : null"
                 @click="hasThuClass = !hasThuClass"
-              >목</el-button>
+                >목</el-button
+              >
               <el-button
                 size="mini"
                 class="week-button"
                 :class="hasFriClass ? 'button--primary' : null"
                 @click="hasFriClass = !hasFriClass"
-              >금</el-button>
+                >금</el-button
+              >
               <el-button
                 size="mini"
                 class="week-button"
                 :class="hasSatClass ? 'button--primary' : null"
                 @click="hasSatClass = !hasSatClass"
-              >토</el-button>
+                >토</el-button
+              >
               <el-button
                 size="mini"
                 class="week-button"
                 :class="hasSunClass ? 'button--primary' : null"
                 @click="hasSunClass = !hasSunClass"
-              >일</el-button>
+                >일</el-button
+              >
             </div>
 
-            <course-week-detail v-if="hasMonClass" v-model="monClassTime" day="월요일"></course-week-detail>
-            <course-week-detail v-if="hasTueClass" v-model="tueClassTime" day="화요일"></course-week-detail>
-            <course-week-detail v-if="hasWedClass" v-model="wedClassTime" day="수요일"></course-week-detail>
-            <course-week-detail v-if="hasThuClass" v-model="thuClassTime" day="목요일"></course-week-detail>
-            <course-week-detail v-if="hasFriClass" v-model="friClassTime" day="금요일"></course-week-detail>
-            <course-week-detail v-if="hasSatClass" v-model="satClassTime" day="토요일"></course-week-detail>
-            <course-week-detail v-if="hasSunClass" v-model="sunClassTime" day="일요일"></course-week-detail>
+            <course-week-detail
+              v-if="hasMonClass"
+              v-model="monClassTime"
+              day="월요일"
+            ></course-week-detail>
+            <course-week-detail
+              v-if="hasTueClass"
+              v-model="tueClassTime"
+              day="화요일"
+            ></course-week-detail>
+            <course-week-detail
+              v-if="hasWedClass"
+              v-model="wedClassTime"
+              day="수요일"
+            ></course-week-detail>
+            <course-week-detail
+              v-if="hasThuClass"
+              v-model="thuClassTime"
+              day="목요일"
+            ></course-week-detail>
+            <course-week-detail
+              v-if="hasFriClass"
+              v-model="friClassTime"
+              day="금요일"
+            ></course-week-detail>
+            <course-week-detail
+              v-if="hasSatClass"
+              v-model="satClassTime"
+              day="토요일"
+            ></course-week-detail>
+            <course-week-detail
+              v-if="hasSunClass"
+              v-model="sunClassTime"
+              day="일요일"
+            ></course-week-detail>
           </div>
         </div>
       </div>
@@ -217,11 +266,16 @@
 
     <!-- Bottom -->
     <div class="bottom-action-bar">
-      <span @click="$router.push('/schedule')" style="cursor: pointer;">
-        <i class="el-icon-arrow-left" style="font-size: 14px; margin-right: 8px" />뒤로가기
+      <span @click="$router.push('/schedule')" style="cursor: pointer">
+        <i
+          class="el-icon-arrow-left"
+          style="font-size: 14px; margin-right: 8px"
+        />뒤로가기
       </span>
       <div class="space"></div>
-      <el-button @click="onSubmit" style="color: black">그룹 수업 등록 완료</el-button>
+      <el-button @click="onSubmit" style="color: black"
+        >그룹 수업 등록 완료</el-button
+      >
     </div>
   </div>
 </template>
@@ -233,6 +287,9 @@ import StaffSelect from '@/components/staff/StaffSelect.vue';
 import CourseWeekDetail from '@/components/course/CourseWeekDetail.vue';
 import { getCurrentDate, getDateByCalculateDay, parseDate } from '@/util/date';
 import { warningAlert } from '@/util/ui';
+
+const courseNamespace = 'course';
+const userNamespace = 'user';
 
 @Component({
   components: {
@@ -272,7 +329,15 @@ export default class TicketCard extends Vue {
     };
   }
 
-  onSubmit() {
+  get user() {
+    return this.$store.getters[`${userNamespace}/getUser`];
+  }
+
+  get studio() {
+    return this.$store.getters[`${userNamespace}/getStudio`];
+  }
+
+  async onSubmit() {
     if (!this.$data.title) {
       warningAlert('01. 수업명을 입력해 주세요.');
       return;
@@ -305,12 +370,10 @@ export default class TicketCard extends Vue {
       warningAlert('05. 예약 변경 시간을 입력해 주세요.');
       return;
     }
-    if (!this.$data.courseData[0] || !this.$data.courseData[1]) {
+    if (!this.$data.courseDate[0] || !this.$data.courseDate[1]) {
       warningAlert('06. 수업 일정 날짜를 입력해 주세요.');
       return;
     }
-    console.log(this.$data.monClassTime);
-    console.log(this.$data.monClassTime[0]);
     if (
       (this.$data.hasMonClass && !this.$data.monClassTime[0]) ||
       !this.$data.monClassTime[1]
@@ -361,28 +424,46 @@ export default class TicketCard extends Vue {
       return;
     }
 
-    // try {
-    //   this.$store.dispatch(`${ticketNamespace}/saveTicket`, {
-    //     studioId: this.user.studio.id,
-    //     classType: this.$data.classType,
-    //     title: this.$data.title,
-    //     description: this.$data.description,
-    //     price: this.$data.price,
-    //     maxTrainee: this.$data.maxTrainee,
-    //     maxCoupon: this.$data.maxCoupon,
-    //     maxCancel: this.$data.maxCancel,
-    //     availableDays: this.$data.availableDays,
-    //     bookingLimitPerWeek,
-    //     bookingLimitPerMonth,
-    //     dailyBookingChangeLimit,
-    //     bookingStartTime,
-    //     bookingEndTime,
-    //     isSelling: true,
-    //   });
-    //   this.$router.push({ path: '/ticket' });
-    // } catch (err) {
-    //   console.error(err);
-    // }
+    try {
+      await this.$store.dispatch(`${courseNamespace}/saveCourses`, {
+        studioId: this.studio.id,
+        staffId: this.$data.staff.value,
+        classType: 'GROUP',
+        title: this.$data.title,
+        description: this.$data.description,
+        maxTrainee: this.$data.maxTrainee,
+        minTrainee: this.$data.minTrainee,
+        startDate: this.$data.courseDate[0],
+        endDate: this.$data.courseDate[1],
+        bookingEndTime: this.$data.bookingEndTime,
+        bookingCancelEndTime: this.$data.bookingCancelEndTime,
+        bookingChangeEndTime: this.$data.bookingChangeEndTime,
+        hasMonClass: this.$data.hasMonClass,
+        monClassStartTime: this.$data.monClassTime[0],
+        monClassEndTime: this.$data.monClassTime[1],
+        hasTueClass: this.$data.hasTueClass,
+        tueClassStartTime: this.$data.tueClassTime[0],
+        tueClassEndTime: this.$data.tueClassTime[1],
+        hasWedClass: this.$data.hasWedClass,
+        wedClassStartTime: this.$data.wedClassTime[0],
+        wedClassEndTime: this.$data.wedClassTime[1],
+        hasThuClass: this.$data.hasThuClass,
+        thuClassStartTime: this.$data.thuClassTime[0],
+        thuClassEndTime: this.$data.thuClassTime[1],
+        hasFriClass: this.$data.hasFriClass,
+        friClassStartTime: this.$data.friClassTime[0],
+        friClassEndTime: this.$data.friClassTime[1],
+        hasSatClass: this.$data.hasSatClass,
+        satClassStartTime: this.$data.satClassTime[0],
+        satClassEndTime: this.$data.satClassTime[1],
+        hasSunClass: this.$data.hasSunClass,
+        sunClassStartTime: this.$data.sunClassTime[0],
+        sunClassEndTime: this.$data.sunClassTime[1],
+      });
+      this.$router.push({ path: '/' });
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 </script>

@@ -5,7 +5,7 @@
     <!-- 검색 조건 -->
     <div>
       <!-- 날짜/기간 -->
-      <el-select v-model="searchType" style="width: 90px;">
+      <el-select v-model="searchType" style="width: 90px">
         <el-option
           v-for="item in searchTypeOptions"
           :key="item.value"
@@ -22,7 +22,7 @@
         :clearable="false"
         format="yyyy-MM-dd"
         value-format="yyyy-MM-dd"
-        style="width: 140px; margin-left: 10px;"
+        style="width: 140px; margin-left: 10px"
       ></el-date-picker>
 
       <!-- 기간 날짜 -->
@@ -33,11 +33,15 @@
         :clearable="false"
         format="yyyy-MM-dd"
         value-format="yyyy-MM-dd"
-        style="margin-left: 10px;"
+        style="margin-left: 10px"
       ></el-date-picker>
 
       <!-- 요일 -->
-      <el-select v-model="weekFilter" placeholder="모든 요일" style="width: 140px; margin-left: 10px;">
+      <el-select
+        v-model="weekFilter"
+        placeholder="모든 요일"
+        style="width: 140px; margin-left: 10px"
+      >
         <el-option
           v-for="item in ['월', '화', '수', '목', '금', '토', '일']"
           :key="item"
@@ -47,14 +51,14 @@
       </el-select>
 
       <!-- 강사 -->
-      <StaffSelect style="margin-left: 14px;" @onChange="onStaffChange" />
+      <StaffSelect v-model="staffFilter" style="margin-left: 14px" />
 
       <!-- 수업 타입 -->
       <el-select
         v-model="lectureType"
         clearable
         placeholder="수업 전체"
-        style="width: 140px; margin-left: 10px;"
+        style="width: 140px; margin-left: 10px"
       >
         <el-option
           v-for="item in lectureTypeOptions"
@@ -66,14 +70,49 @@
     </div>
 
     <!-- 테이블 -->
-    <el-table :data="lectures" style="width: 100%;" @row-click="onRowClick">
-      <el-table-column prop="name" label="수업일시" width="180"></el-table-column>
-      <el-table-column prop="phone" label="강사" width="180"></el-table-column>
-      <el-table-column prop="createdAt" label="수업" width="180"></el-table-column>
-      <el-table-column prop="ticket" label="수업명" width="180"></el-table-column>
-      <el-table-column prop="ticket" label="수강인원" width="180"></el-table-column>
-      <el-table-column prop="ticket" label="예약 가능 시간" width="180"></el-table-column>
-      <el-table-column prop="ticket" label="취소 가능 시간" width="180"></el-table-column>
+    <el-table :data="lectures" style="width: 100%" @row-click="onRowClick">
+      <el-table-column type="selection" width="55"> </el-table-column>
+      <el-table-column
+        prop="lectureAt"
+        label="수업일시"
+        header-align="center"
+        width="300"
+      ></el-table-column>
+      <el-table-column
+        prop="instructor"
+        label="강사"
+        width="100"
+      ></el-table-column>
+      <el-table-column
+        prop="lectureType"
+        label="수업"
+        width="90"
+      ></el-table-column>
+      <el-table-column
+        prop="title"
+        label="수업명"
+        width="120"
+      ></el-table-column>
+      <el-table-column
+        prop="entry"
+        label="수강인원"
+        width="90"
+      ></el-table-column>
+      <el-table-column
+        prop="bookingEndAt"
+        label="예약 가능 시간"
+        width="180"
+      ></el-table-column>
+      <el-table-column
+        prop="bookingCancelEndAt"
+        label="취소 가능 시간"
+        width="180"
+      ></el-table-column>
+      <el-table-column
+        prop="bookingChangeEndAt"
+        label="예약 변경 가능 시간"
+        width="180"
+      ></el-table-column>
     </el-table>
   </div>
 </template>
@@ -149,28 +188,33 @@ export default class Lecture extends Vue {
 
   async created() {
     await this.getStaffs();
+    await this.getLectures();
+    console.log(this.lectures);
   }
 
   async getStaffs() {
     await this.$store.dispatch(`${staffNamespace}/getStaffs`);
   }
 
-  getLectures() {
-    // const searchType = this.$data.searchType;
-    // if (searchType === 'date') {
-    // }
-    // this.$store.dispatch(`${lectureNamespace}/getLectures`, {
-    //   lectureDate: this.$data.dateFilter,
-    //   lectureType: this.$data.lectureType,
-    // });
+  async getLectures() {
+    const searchType = this.$data.searchType;
+    if (searchType === 'date') {
+      this.$store.dispatch(`${lectureNamespace}/getLectures`, {
+        startAt: this.$data.dateFilter,
+        endAt: this.$data.dateFilter,
+      });
+    } else if (searchType === 'period') {
+      this.$store.dispatch(`${lectureNamespace}/getLectures`, {
+        startAt: this.$data.periodFilter[0],
+        endAt: this.$data.periodFilter[1],
+      });
+    } else {
+      console.error('searchType error occured.');
+    }
   }
 
   onRowClick(row: Column) {
     console.log(row);
-  }
-
-  onStaffChange(staffId: string) {
-    this.$data.staffFilter = staffId;
   }
 
   @Watch('searchType')

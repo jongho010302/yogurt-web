@@ -13,8 +13,12 @@ export const removeAccessToken = () => {
 };
 
 export const getUser = (): User | null => {
-  const user = localStorage.getItem('user');
-  return user ? JSON.parse(user) : user;
+  try {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : user;
+  } catch (err) {
+    return null;
+  }
 };
 
 export const removeUser = () => {

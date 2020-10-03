@@ -16,13 +16,32 @@
     <el-table
       v-loading="usersWaiting"
       :data="userData"
-      style="width: 100%;"
+      style="width: 100%"
       @row-click="onRowClick"
     >
-      <el-table-column prop="name" label="이름" width="180" sortable></el-table-column>
-      <el-table-column prop="phone" label="전화번호" width="180" sortable></el-table-column>
-      <el-table-column prop="createdAt" label="등록일" width="180" sortable></el-table-column>
-      <el-table-column prop="ticket" label="보유 수강권" width="180"></el-table-column>
+      <el-table-column
+        prop="name"
+        label="이름"
+        width="180"
+        sortable
+      ></el-table-column>
+      <el-table-column
+        prop="phone"
+        label="전화번호"
+        width="180"
+        sortable
+      ></el-table-column>
+      <el-table-column
+        prop="createdAt"
+        label="등록일"
+        width="180"
+        sortable
+      ></el-table-column>
+      <el-table-column
+        prop="ticket"
+        label="보유 수강권"
+        width="180"
+      ></el-table-column>
     </el-table>
 
     <!-- 유저 로딩 중 -->
@@ -101,9 +120,7 @@ export default class User extends Vue {
           name: user.name,
           phone: user.phone,
           createdAt: user.createdAt.substring(0, 10),
-          ticket: user.userTickets.length
-            ? user.userTickets[0].ticket.title
-            : '',
+          ticket: user.tickets.length ? user.tickets[0].ticket.title : '',
         };
         return userColumn;
       });

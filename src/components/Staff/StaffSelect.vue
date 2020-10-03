@@ -1,6 +1,11 @@
 <template>
   <el-select v-model="staff" placeholder="강사 전체" style="width: 140px">
-    <el-option v-for="item in staffOptions" :key="item.value.id" :label="item.label" :value="item"></el-option>
+    <el-option
+      v-for="item in staffOptions"
+      :key="item.value"
+      :label="item.label"
+      :value="item"
+    ></el-option>
   </el-select>
 </template>
 

@@ -6,7 +6,7 @@ import { StudioState } from './types';
 import { RootState } from '../types';
 
 export const state: StudioState = {
-  studios: null
+  studios: null,
 };
 
 const namespaced = true;

@@ -29,7 +29,6 @@ const actions: ActionTree<UserState, RootState> = {
   async checkUser({ commit }) {
     try {
       const { data } = await checkUserApi();
-
       commit('saveUser', data.data);
       setUser(data.data);
     } catch (err) {
@@ -100,17 +99,21 @@ const actions: ActionTree<UserState, RootState> = {
       throw err;
     }
   },
-  async verifyFindPasswordCode(none, { email, verifyCode }) {
+  async verifyFindPasswordCode(none, { email, verificationCode }) {
     try {
-      const { data } = await verifyFindPasswordCodeApi(email, verifyCode);
+      const { data } = await verifyFindPasswordCodeApi(email, verificationCode);
       infoAlert(data.message);
     } catch (err) {
       throw err;
     }
   },
-  async changePassword(none, { email, password, verifyCode }) {
+  async changePassword(none, { email, password, verificationCode }) {
     try {
-      const { data } = await changePasswordApi(email, password, verifyCode);
+      const { data } = await changePasswordApi(
+        email,
+        password,
+        verificationCode,
+      );
       positiveAlert(data.message);
     } catch (err) {
       throw err;
@@ -132,9 +135,9 @@ const actions: ActionTree<UserState, RootState> = {
       throw err;
     }
   },
-  async verifySignUpCode(none, { email, verifyCode }) {
+  async verifySignUpCode(none, { email, verificationCode }) {
     try {
-      const { data } = await verifySignUpCodeApi(email, verifyCode);
+      const { data } = await verifySignUpCodeApi(email, verificationCode);
       infoAlert(data.message);
     } catch (err) {
       throw err;

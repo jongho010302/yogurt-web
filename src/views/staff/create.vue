@@ -3,7 +3,10 @@
     <!-- Header -->
     <div class="create-header">
       <div class="create-header-block">
-        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 12px;">
+        <el-breadcrumb
+          separator-class="el-icon-arrow-right"
+          style="margin-bottom: 12px"
+        >
           <el-breadcrumb-item :to="{ path: '/staff' }">강사</el-breadcrumb-item>
           <el-breadcrumb-item>강사등록</el-breadcrumb-item>
         </el-breadcrumb>
@@ -28,10 +31,14 @@
               v-model="name"
               @input="onNameChange"
               class="el-custom-input"
-              style="width: 300px;"
+              style="width: 300px"
             >
               <span slot="suffix">
-                <i v-if="nameVerified" class="el-icon-check" style="font-size: 20px" />
+                <i
+                  v-if="nameVerified"
+                  class="el-icon-check"
+                  style="font-size: 20px"
+                />
                 <el-tooltip v-else content="이름의 형식을 맞춰주세요.">
                   <i class="el-icon-warning-outline" style="font-size: 20px" />
                 </el-tooltip>
@@ -53,10 +60,14 @@
               v-model="username"
               @input="onUsernameChange"
               class="el-custom-input"
-              style="width: 300px;"
+              style="width: 300px"
             >
               <span slot="suffix">
-                <i v-if="usernameVerified" class="el-icon-check" style="font-size: 20px" />
+                <i
+                  v-if="usernameVerified"
+                  class="el-icon-check"
+                  style="font-size: 20px"
+                />
                 <el-tooltip
                   v-if="!usernameVerified && !usernameVerifyVisible"
                   content="아이디는 8자에서 10자이어야 합니다."
@@ -76,7 +87,8 @@
               size="small"
               style="margin-left: 5px"
               @click="verifyUsername"
-            >중복검사</el-button>
+              >중복검사</el-button
+            >
           </div>
         </div>
       </div>
@@ -94,15 +106,25 @@
               type="email"
               @input="onEmailChange"
               class="el-custom-input"
-              style="width: 300px;"
+              style="width: 300px"
             >
               <span slot="suffix">
-                <i v-if="isEmailVerifyCodeSend" class="el-icon-check" style="font-size: 20px" />
-                <el-tooltip v-if="!emailSendVerifyCodeVisible" content="이메일의 형식을 맞춰주세요.">
+                <i
+                  v-if="isEmailVerificationCodeSend"
+                  class="el-icon-check"
+                  style="font-size: 20px"
+                />
+                <el-tooltip
+                  v-if="!emailSendVerificationCodeVisible"
+                  content="이메일의 형식을 맞춰주세요."
+                >
                   <i class="el-icon-warning-outline" style="font-size: 20px" />
                 </el-tooltip>
                 <el-tooltip
-                  v-if="emailSendVerifyCodeVisible && !isEmailVerifyCodeSend"
+                  v-if="
+                    emailSendVerificationCodeVisible &&
+                    !isEmailVerificationCodeSend
+                  "
                   content="인증번호를 발송해 주세요."
                 >
                   <i class="el-icon-warning-outline" style="font-size: 20px" />
@@ -110,11 +132,14 @@
               </span>
             </el-input>
             <el-button
-              v-if="emailSendVerifyCodeVisible"
+              v-if="emailSendVerificationCodeVisible"
               size="small"
               style="margin-left: 5px"
-              @click="sendVerifyCode"
-            >{{ !isEmailVerifyCodeSend ? '인증번호 보내기' : '다시보내기' }}</el-button>
+              @click="sendVerificationCode"
+              >{{
+                !isEmailVerificationCodeSend ? '인증번호 보내기' : '다시보내기'
+              }}</el-button
+            >
           </div>
         </div>
       </div>
@@ -128,24 +153,32 @@
           </div>
           <div class="create-form-block__input">
             <el-input
-              v-model="emailVerifyCode"
-              :disabled="!isEmailVerifyCodeSend"
+              v-model="emailVerificationCode"
+              :disabled="!isEmailVerificationCodeSend"
               class="el-custom-input"
-              style="width: 300px;"
+              style="width: 300px"
             >
               <span slot="suffix">
-                <i v-if="emailVerified" class="el-icon-check" style="font-size: 20px" />
-                <el-tooltip v-if="!emailVerified && isEmailVerifyCodeSend" content="인증해 주세요.">
+                <i
+                  v-if="emailVerified"
+                  class="el-icon-check"
+                  style="font-size: 20px"
+                />
+                <el-tooltip
+                  v-if="!emailVerified && isEmailVerificationCodeSend"
+                  content="인증해 주세요."
+                >
                   <i class="el-icon-warning-outline" style="font-size: 20px" />
                 </el-tooltip>
               </span>
             </el-input>
             <el-button
-              v-if="isEmailVerifyCodeSend"
+              v-if="isEmailVerificationCodeSend"
               size="small"
               style="margin-left: 5px"
-              @click="verifyCode"
-            >인증</el-button>
+              @click="verificationCode"
+              >인증</el-button
+            >
           </div>
         </div>
       </div>
@@ -163,11 +196,18 @@
               @input="onPhoneNumberChange"
               mask="###-####-####"
               class="el-custom-input"
-              style="width: 300px;"
+              style="width: 300px"
             >
               <span slot="suffix">
-                <i v-if="phoneNumberVerified" class="el-icon-check" style="font-size: 20px" />
-                <el-tooltip v-else content="올바른 휴대폰 번호를 입력해 주세요.">
+                <i
+                  v-if="phoneNumberVerified"
+                  class="el-icon-check"
+                  style="font-size: 20px"
+                />
+                <el-tooltip
+                  v-else
+                  content="올바른 휴대폰 번호를 입력해 주세요."
+                >
                   <i class="el-icon-warning-outline" style="font-size: 20px" />
                 </el-tooltip>
               </span>
@@ -219,7 +259,7 @@
               :clearable="false"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
-              style="width: 140px;"
+              style="width: 140px"
             ></el-date-picker>
           </div>
         </div>
@@ -239,7 +279,7 @@
               :clearable="false"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
-              style="width: 140px;"
+              style="width: 140px"
             ></el-date-picker>
           </div>
         </div>
@@ -435,11 +475,16 @@
 
     <!-- Bottom -->
     <div class="bottom-action-bar">
-      <span @click="$router.push('/staff')" style="cursor: pointer;">
-        <i class="el-icon-arrow-left" style="font-size: 14px; margin-right: 8px" />뒤로가기
+      <span @click="$router.push('/staff')" style="cursor: pointer">
+        <i
+          class="el-icon-arrow-left"
+          style="font-size: 14px; margin-right: 8px"
+        />뒤로가기
       </span>
       <div class="space"></div>
-      <el-button @click="onSubmit" style="color: black">강사 등록 완료</el-button>
+      <el-button @click="onSubmit" style="color: black"
+        >강사 등록 완료</el-button
+      >
     </div>
   </div>
 </template>
@@ -471,9 +516,9 @@ export default class StaffCreate extends Vue {
       usernameVerifyVisible: false,
       email: '',
       emailVerified: false,
-      emailSendVerifyCodeVisible: false,
-      isEmailVerifyCodeSend: false,
-      emailVerifyCode: '',
+      emailSendVerificationCodeVisible: false,
+      isEmailVerificationCodeSend: false,
+      emailVerificationCode: '',
       phoneNumber: '',
       phoneNumberVerified: false,
       gender: 'M',
@@ -533,12 +578,12 @@ export default class StaffCreate extends Vue {
 
   onEmailChange(value: string) {
     this.$data.emailVerified = false;
-    this.$data.isEmailVerifyCodeSend = false;
-    this.$data.emailVerifyCode = '';
+    this.$data.isEmailVerificationCodeSend = false;
+    this.$data.emailVerificationCode = '';
     if (emailRegex.test(value)) {
-      this.$data.emailSendVerifyCodeVisible = true;
+      this.$data.emailSendVerificationCodeVisible = true;
     } else {
-      this.$data.emailSendVerifyCodeVisible = false;
+      this.$data.emailSendVerificationCodeVisible = false;
     }
   }
 
@@ -572,7 +617,7 @@ export default class StaffCreate extends Vue {
     }
   }
 
-  async sendVerifyCode() {
+  async sendVerificationCode() {
     try {
       validateParam(this.$data.email, '이메일을 입력해 주세요.');
 
@@ -580,20 +625,23 @@ export default class StaffCreate extends Vue {
         email: this.$data.email,
       });
 
-      this.$data.isEmailVerifyCodeSend = true;
+      this.$data.isEmailVerificationCodeSend = true;
     } catch (err) {
       console.error(err);
     }
   }
 
-  async verifyCode() {
+  async verificationCode() {
     try {
       validateParam(this.$data.email, '이메일을 입력해 주세요.');
-      validateParam(this.$data.emailVerifyCode, '인증번호를 입력해 주세요.');
+      validateParam(
+        this.$data.emailVerificationCode,
+        '인증번호를 입력해 주세요.',
+      );
 
       await this.$store.dispatch(`${userNamespace}/verifySignUpCode`, {
         email: this.$data.email,
-        verifyCode: this.$data.emailVerifyCode,
+        verificationCode: this.$data.emailVerificationCode,
       });
 
       this.$data.emailVerified = true;

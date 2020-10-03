@@ -2,16 +2,14 @@ import { Module } from 'vuex';
 import getters from './getters';
 import actions from './actions';
 import mutations from './mutations';
-import { LectureState } from './types';
+import { CourseState } from './types';
 import { RootState } from '../types';
 
-export const state: LectureState = {
-  lectures: [],
-};
+export const state: CourseState = {};
 
 const namespaced = true;
 
-const lecture: Module<LectureState, RootState> = {
+const course: Module<CourseState, RootState> = {
   namespaced,
   state,
   getters,
@@ -19,4 +17,4 @@ const lecture: Module<LectureState, RootState> = {
   mutations,
 };
 
-export default lecture;
+export default course;
