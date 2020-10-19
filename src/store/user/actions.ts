@@ -1,5 +1,5 @@
 import { ActionTree } from 'vuex';
-import { roleType } from '@/constants';
+import { RoleType } from '@/constants';
 import { UserState } from './types';
 import {
   checkUserApi,
@@ -41,12 +41,12 @@ const actions: ActionTree<UserState, RootState> = {
   async logIn({ commit }, { username, password }) {
     try {
       const { data } = await logInApi(username, password);
-      const userRole = data.data.user.roles[0];
+      const userRole = data.data.user.role;
       if (
         !(
-          userRole === roleType.ROLE_DEVELOPER ||
-          userRole === roleType.ROLE_OWNER ||
-          userRole === roleType.ROLE_MANAGER
+          userRole === RoleType.ROLE_DEVELOPER ||
+          userRole === RoleType.ROLE_OWNER ||
+          userRole === RoleType.ROLE_MANAGER
         )
       ) {
         errorAlert('로그인 할 권한이 없습니다.');

@@ -6,6 +6,7 @@ export const logInApi = (username: string, password: string) =>
   client.post('/auth/login', {
     username,
     password,
+    studioId: 1,
   });
 
 export const logOutApi = () => client.post('/user/logout');
