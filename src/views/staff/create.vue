@@ -48,54 +48,9 @@
         </div>
       </div>
 
-      <!-- 아이디 -->
-      <div class="create-form-block">
-        <div class="create-form-block__index">02</div>
-        <div class="create-form-block__content">
-          <div class="create-form-block__label">
-            <div class="create-form-block__label__title">아이디</div>
-          </div>
-          <div class="create-form-block__input">
-            <el-input
-              v-model="username"
-              @input="onUsernameChange"
-              class="el-custom-input"
-              style="width: 300px"
-            >
-              <span slot="suffix">
-                <i
-                  v-if="usernameVerified"
-                  class="el-icon-check"
-                  style="font-size: 20px"
-                />
-                <el-tooltip
-                  v-if="!usernameVerified && !usernameVerifyVisible"
-                  content="아이디는 8자에서 10자이어야 합니다."
-                >
-                  <i class="el-icon-warning-outline" style="font-size: 20px" />
-                </el-tooltip>
-                <el-tooltip
-                  v-if="!usernameVerified && usernameVerifyVisible"
-                  content="아이디 중복검사를 해주세요."
-                >
-                  <i class="el-icon-warning-outline" style="font-size: 20px" />
-                </el-tooltip>
-              </span>
-            </el-input>
-            <el-button
-              v-if="usernameVerifyVisible && !usernameVerified"
-              size="small"
-              style="margin-left: 5px"
-              @click="verifyUsername"
-              >중복검사</el-button
-            >
-          </div>
-        </div>
-      </div>
-
       <!-- 이메일 -->
       <div class="create-form-block">
-        <div class="create-form-block__index">03</div>
+        <div class="create-form-block__index">02</div>
         <div class="create-form-block__content">
           <div class="create-form-block__label">
             <div class="create-form-block__label__title">이메일</div>
@@ -146,7 +101,7 @@
 
       <!-- 인증번호 -->
       <div class="create-form-block">
-        <div class="create-form-block__index">04</div>
+        <div class="create-form-block__index">03</div>
         <div class="create-form-block__content">
           <div class="create-form-block__label">
             <div class="create-form-block__label__title">인증번호</div>
@@ -185,7 +140,7 @@
 
       <!-- 휴대폰 번호  -->
       <div class="create-form-block">
-        <div class="create-form-block__index">05</div>
+        <div class="create-form-block__index">04</div>
         <div class="create-form-block__content">
           <div class="create-form-block__label">
             <div class="create-form-block__label__title">휴대폰 번호</div>
@@ -218,7 +173,7 @@
 
       <!-- 성별  -->
       <div class="create-form-block">
-        <div class="create-form-block__index">06</div>
+        <div class="create-form-block__index">05</div>
         <div class="create-form-block__content">
           <div class="create-form-block__label">
             <div class="create-form-block__label__title">성별</div>
@@ -232,7 +187,7 @@
 
       <!-- 직무 -->
       <div class="create-form-block">
-        <div class="create-form-block__index">07</div>
+        <div class="create-form-block__index">06</div>
         <div class="create-form-block__content">
           <div class="create-form-block__label">
             <div class="create-form-block__label__title">직무</div>
@@ -247,7 +202,7 @@
 
       <!-- 생일 -->
       <div class="create-form-block">
-        <div class="create-form-block__index">08</div>
+        <div class="create-form-block__index">07</div>
         <div class="create-form-block__content">
           <div class="create-form-block__label">
             <div class="create-form-block__label__title">생일</div>
@@ -267,7 +222,7 @@
 
       <!-- 고용 날짜 -->
       <div class="create-form-block">
-        <div class="create-form-block__index">09</div>
+        <div class="create-form-block__index">08</div>
         <div class="create-form-block__content">
           <div class="create-form-block__label">
             <div class="create-form-block__label__title">고용 날짜</div>
@@ -287,7 +242,7 @@
 
       <!-- 자기소개 -->
       <div class="create-form-block">
-        <div class="create-form-block__index">10</div>
+        <div class="create-form-block__index">09</div>
         <div class="create-form-block__content">
           <div class="create-form-block__label">
             <div class="create-form-block__label__title">자기소개</div>
@@ -300,7 +255,7 @@
 
       <!-- 근무시간 -->
       <div class="create-form-block">
-        <div class="create-form-block__index">11</div>
+        <div class="create-form-block__index">10</div>
         <div class="create-form-block__content">
           <div class="create-form-block__label">
             <div class="create-form-block__label__title">근무시간</div>
@@ -493,12 +448,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { parseDate } from '@/util/date';
-import {
-  usernameRegex,
-  nameRegex,
-  emailRegex,
-  phoneNumberRegex,
-} from '@/util/regex';
+import { nameRegex, emailRegex, phoneNumberRegex } from '@/util/regex';
 import { validateParam } from '@/util/validation';
 import '@/css/Create.scss';
 
@@ -511,9 +461,6 @@ export default class StaffCreate extends Vue {
     return {
       name: '',
       nameVerified: false,
-      username: '',
-      usernameVerified: false,
-      usernameVerifyVisible: false,
       email: '',
       emailVerified: false,
       emailSendVerificationCodeVisible: false,
@@ -523,8 +470,7 @@ export default class StaffCreate extends Vue {
       phoneNumberVerified: false,
       gender: 'M',
       birth: parseDate(new Date(), 'yyyy-mm-dd'),
-      profileUrl:
-        'https://seoulforest-image.s3.ap-northeast-2.amazonaws.com/default_profile.png',
+      profileUrl: '',
       phone: '',
       introduce: '',
       role: 'ROLE_INSTRUCTOR',
@@ -567,15 +513,6 @@ export default class StaffCreate extends Vue {
     }
   }
 
-  onUsernameChange(value: string) {
-    this.$data.usernameVerified = false;
-    if (usernameRegex.test(value)) {
-      this.$data.usernameVerifyVisible = true;
-    } else {
-      this.$data.usernameVerifyVisible = false;
-    }
-  }
-
   onEmailChange(value: string) {
     this.$data.emailVerified = false;
     this.$data.isEmailVerificationCodeSend = false;
@@ -600,20 +537,6 @@ export default class StaffCreate extends Vue {
       this.$data.phoneNumberVerified = true;
     } else {
       this.$data.phoneNumberVerified = false;
-    }
-  }
-
-  async verifyUsername() {
-    try {
-      validateParam(this.$data.username, '아이디를 입력해 주세요.');
-
-      await this.$store.dispatch(`${userNamespace}/verifyUsername`, {
-        username: this.$data.username,
-      });
-
-      this.$data.usernameVerified = true;
-    } catch (err) {
-      console.error(err);
     }
   }
 
@@ -654,11 +577,6 @@ export default class StaffCreate extends Vue {
     try {
       validateParam(this.$data.name, '이름을 입력해 주세요.');
       validateParam(this.$data.nameVerified, '올바른 이름을 입력해 주세요.');
-      validateParam(this.$data.username, '아이디를 입력해 주세요.');
-      validateParam(
-        this.$data.usernameVerified,
-        '올바른 아이디를 입력해 주세요.',
-      );
       validateParam(this.$data.email, '이메일을 입력해 주세요.');
       validateParam(this.$data.emailVerified, '올바른 이메일릏 입력해 주세요.');
       validateParam(this.$data.phoneNumber, '전화번호를 입력해 주세요.');
@@ -752,7 +670,6 @@ export default class StaffCreate extends Vue {
       await this.$store.dispatch(`${namespace}/saveStaff`, {
         studioId: this.user.studio.id,
         name: this.$data.name,
-        username: this.$data.username,
         email: this.$data.email,
         gender: this.$data.gender,
         phone: this.$data.phoneNumber,

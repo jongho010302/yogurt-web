@@ -8,7 +8,7 @@
     <div class="auth__form">
       <div class="auth__input-group">
         <el-input
-          v-model="username"
+          v-model="email"
           type="text"
           placeholder="아이디"
           @keyup.enter.native="handleLogin"
@@ -37,10 +37,6 @@
         <a class="find__item" @click="routerTo('/find/password')"
           >비밀번호 재설정</a
         >
-        ·
-        <a class="find__item" @click="routerTo('/find/masking-username')"
-          >아이디 찾기</a
-        >
       </span>
     </div>
   </div>
@@ -56,7 +52,7 @@ const namespace = 'user';
 export default class Login extends mixins(Methods) {
   data() {
     return {
-      username: 'jongho.dev',
+      email: 'jongho.dev@gmail.com',
       password: 'Wldms0302!',
     };
   }
@@ -64,7 +60,7 @@ export default class Login extends mixins(Methods) {
   async handleLogin() {
     try {
       await this.$store.dispatch(`${namespace}/logIn`, {
-        username: this.$data.username,
+        email: this.$data.email,
         password: this.$data.password,
       });
       await this.$router.push('/schedule');

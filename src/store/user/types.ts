@@ -4,7 +4,6 @@ import { Ticket } from '../ticket/types';
 
 export interface User extends BaseEntity {
   studio: Studio;
-  username: string;
   password: string;
   email: string;
   name: string;
@@ -41,7 +40,6 @@ export enum Role {
 
 export interface UserState {
   user: User | null;
-  maskingUsernames: string[] | null;
   users: UsersData;
   userDetail: User | null;
 }

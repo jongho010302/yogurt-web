@@ -24,21 +24,7 @@ const routes = [
     },
   },
   {
-    path: '/find/masking-username',
-    name: 'FindMaskingUsername',
-    component: () =>
-      import(
-        /* webpackChunkName: "about" */ '@/views/auth/FindMaskingUsername.vue'
-      ),
-  },
-  {
-    path: '/find/username',
-    name: 'FindUsername',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/auth/FindUsername.vue'),
-  },
-  {
-    path: '/find/password',
+    path: '/find-password',
     name: 'FindPassword',
     component: () =>
       import(/* webpackChunkName: "about" */ '@/views/auth/FindPassword.vue'),

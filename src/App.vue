@@ -15,9 +15,14 @@
           width="50"
           class="main__header-logo"
           @click="$router.push('/schedule').catch(() => {})"
-          style="cursor: pointer;"
+          style="cursor: pointer"
         />
-        <el-menu :default-active="activeLink" router class="el-menu-demo" mode="horizontal">
+        <el-menu
+          :default-active="activeLink"
+          router
+          class="el-menu-demo"
+          mode="horizontal"
+        >
           <el-menu-item index="/schedule">일정</el-menu-item>
           <el-menu-item index="/lecture">수업</el-menu-item>
           <el-menu-item index="/user">회원</el-menu-item>
@@ -34,9 +39,11 @@
                 user.profileUrl ||
                 'https://seoulforest-image.s3.ap-northeast-2.amazonaws.com/default_profile.png'
               "
-              style="margin-right: 5px;"
+              style="margin-right: 5px"
             ></el-avatar>
-            <span style="margin-right: 2px;">{{ user.name }}님 {{ user.role }}</span>
+            <span style="margin-right: 2px"
+              >{{ user.name }}님 {{ user.displayRole }}</span
+            >
             <i class="el-icon-arrow-down"></i>
           </div>
           <el-dropdown-menu slot="dropdown">
@@ -55,7 +62,7 @@
     <!-- Login -->
     <div v-else>
       <div class="auth">
-        <img src="@/assets/login.svg" alt="login_image" style="width: 100%;" />
+        <img src="@/assets/login.svg" alt="login_image" style="width: 100%" />
       </div>
       <div class="auth__contents">
         <router-view></router-view>

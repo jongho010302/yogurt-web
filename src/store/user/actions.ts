@@ -5,12 +5,9 @@ import {
   checkUserApi,
   logInApi,
   logOutApi,
-  findMaskingUsernameApi,
-  findUsernameApi,
   sendFindPasswordCodeApi,
   verifyFindPasswordCodeApi,
   changePasswordApi,
-  verifyUsernameApi,
   sendSignUpCodeApi,
   verifySignUpCodeApi,
   getUsersApi,
@@ -38,9 +35,9 @@ const actions: ActionTree<UserState, RootState> = {
       throw err;
     }
   },
-  async logIn({ commit }, { username, password }) {
+  async logIn({ commit }, { email, password }) {
     try {
-      const { data } = await logInApi(username, password);
+      const { data } = await logInApi(email, password);
       const userRole = data.data.user.role;
       if (
         !(
@@ -74,23 +71,6 @@ const actions: ActionTree<UserState, RootState> = {
       throw err;
     }
   },
-  async findMaskingUsername({ commit }, { name }) {
-    try {
-      const { data } = await findMaskingUsernameApi(name);
-      commit('saveMaskingUsernames', data.data);
-      positiveAlert(data.message);
-    } catch (err) {
-      throw err;
-    }
-  },
-  async findUsername(none, { email }) {
-    try {
-      const { data } = await findUsernameApi(email);
-      positiveAlert(data.message);
-    } catch (err) {
-      throw err;
-    }
-  },
   async sendFindPasswordCode(none, { email }) {
     try {
       const { data } = await sendFindPasswordCodeApi(email);
@@ -115,14 +95,6 @@ const actions: ActionTree<UserState, RootState> = {
         verificationCode,
       );
       positiveAlert(data.message);
-    } catch (err) {
-      throw err;
-    }
-  },
-  async verifyUsername(none, { username }) {
-    try {
-      const { data } = await verifyUsernameApi(username);
-      infoAlert(data.message);
     } catch (err) {
       throw err;
     }

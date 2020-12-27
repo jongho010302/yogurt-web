@@ -8,7 +8,6 @@ import { getUser } from '@/util/storage';
 
 export const state: UserState = {
   user: getUser(),
-  maskingUsernames: null,
   users: {
     data: null,
     status: AsyncStatus.INIT,

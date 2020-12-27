@@ -1,6 +1,13 @@
 <template>
-  <el-card class="staff-card" :body-style="{ padding: '0px' }" style="border: 0;">
-    <div class="staff-card__content cursor-pointer" @click="navigateToStaffDetail(staff.id)">
+  <el-card
+    class="staff-card"
+    :body-style="{ padding: '0px' }"
+    style="border: 0"
+  >
+    <div
+      class="staff-card__content cursor-pointer"
+      @click="navigateToStaffDetail(staff.id)"
+    >
       <el-avatar
         :src="
           staff.user.profileUrl ||
@@ -8,15 +15,21 @@
         "
         :size="90"
       ></el-avatar>
-      <p style="margin-bottom: 10px !important;">{{ staff.user.name }}</p>
-      <p style="margin-bottom: 8px !important;">{{ staff.user.phone }}</p>
-      <p style="margin-bottom: 8px !important;">아이디: {{ staff.user.username }}</p>
-      <el-button style="color: #409eff;" size="mini" @click.stop="resetPassword">비밀번호 재설정</el-button>
+      <p style="margin-bottom: 10px !important">{{ staff.user.name }}</p>
+      <p style="margin-bottom: 8px !important">{{ staff.user.phone }}</p>
+      <p style="margin-bottom: 8px !important">
+        이메일: {{ staff.user.email }}
+      </p>
+      <el-button style="color: #409eff" size="mini" @click.stop="resetPassword"
+        >비밀번호 재설정</el-button
+      >
     </div>
 
     <div class="staff-card__action">
       <div class="space"></div>
-      <el-button type="danger" size="mini" @click="handleDeleteStaff">삭제</el-button>
+      <el-button type="danger" size="mini" @click="handleDeleteStaff"
+        >삭제</el-button
+      >
       <el-button type="primary" size="mini">수정</el-button>
     </div>
   </el-card>

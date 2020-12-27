@@ -1,21 +1,15 @@
 import client from '@/api/client';
 
-export const checkUserApi = () => client.get('/user/check');
+export const checkUserApi = () => client.get('/user');
 
-export const logInApi = (username: string, password: string) =>
-  client.post('/auth/login', {
-    username,
+export const logInApi = (email: string, password: string) =>
+  client.post('/auth/tokens', {
+    email,
     password,
     studioId: 1,
   });
 
-export const logOutApi = () => client.post('/user/logout');
-
-export const findMaskingUsernameApi = (name: string) =>
-  client.post('/auth/find/masking-username', { name });
-
-export const findUsernameApi = (email: string) =>
-  client.post('/auth/find/username', { email });
+export const logOutApi = () => client.delete('/auth/tokens');
 
 export const sendFindPasswordCodeApi = (email: string) =>
   client.post('/auth/verification/send', {
@@ -42,11 +36,6 @@ export const changePasswordApi = (
     email,
     password,
     verificationCode,
-  });
-
-export const verifyUsernameApi = (username: string) =>
-  client.post('/auth/validate/username', {
-    username,
   });
 
 export const sendSignUpCodeApi = (email: string) =>
