@@ -37,7 +37,7 @@
             <el-avatar
               :src="
                 user.profileUrl ||
-                'https://seoulforest-image.s3.ap-northeast-2.amazonaws.com/default_profile.png'
+                'https://yogurt-s3.s3.ap-northeast-2.amazonaws.com/resources/default_profile.png'
               "
               style="margin-right: 5px"
             ></el-avatar>
@@ -76,12 +76,12 @@
 
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
+import { Watch } from 'vue-property-decorator';
 import { Methods } from '@/mixins';
 import Login from '@/views/auth/Login.vue';
 import { getAccessToken } from '@/util/storage';
 import './css/App.scss';
 import './css/CustomElementUI.scss';
-import { Watch } from 'vue-property-decorator';
 
 const namespace = 'user';
 

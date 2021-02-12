@@ -7,7 +7,7 @@ const getters: GetterTree<UserState, RootState> = {
     return state.user;
   },
   getStudio(state) {
-    return state.user?.studio;
+    return state.studio;
   },
   getUsers(state) {
     return state.users;

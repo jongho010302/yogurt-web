@@ -3,7 +3,7 @@ import client from '@/api/client';
 export const checkUserApi = () => client.get('/user');
 
 export const logInApi = (email: string, password: string) =>
-  client.post('/auth/tokens', {
+  client.post('/auth/tokens/email', {
     email,
     password,
     studioId: 1,
@@ -12,19 +12,17 @@ export const logInApi = (email: string, password: string) =>
 export const logOutApi = () => client.delete('/auth/tokens');
 
 export const sendFindPasswordCodeApi = (email: string) =>
-  client.post('/auth/verification/send', {
+  client.post('/auth/verification/find-password/send', {
     email,
-    verificationType: 'FIND_PASSWORD',
   });
 
 export const verifyFindPasswordCodeApi = (
   email: string,
   verificationCode: string,
 ) =>
-  client.post('/auth/verification/verify', {
+  client.post('/auth/verification/find-password/verify', {
     email,
     verificationCode,
-    verificationType: 'FIND_PASSWORD',
   });
 
 export const changePasswordApi = (
@@ -32,27 +30,25 @@ export const changePasswordApi = (
   password: string,
   verificationCode: string,
 ) =>
-  client.put('/auth/find/password', {
+  client.put('/auth/password', {
     email,
     password,
     verificationCode,
   });
 
 export const sendSignUpCodeApi = (email: string) =>
-  client.post('/auth/verification/send', {
+  client.post('/auth/verifications/signup/send', {
     email,
-    verificationType: 'SIGNUP',
   });
 
 export const verifySignUpCodeApi = (email: string, verificationCode: string) =>
-  client.post('/auth/verification/verify', {
+  client.post('/auth/verifications/signup/verify', {
     email,
     verificationCode,
-    verificationType: 'SIGNUP',
   });
 
 export const getUsersApi = (isExit: boolean) =>
-  client.get(`/admin/user?isExit=${isExit}`);
+  client.get(`/admin/users?isExit=${isExit.toString()}`);
 
 export const getUserApi = (id: string | number) =>
-  client.get(`/admin/user/${id}`);
+  client.get(`/admin/users/${id}`);

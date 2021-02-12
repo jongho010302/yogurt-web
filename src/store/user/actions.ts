@@ -20,14 +20,18 @@ import {
   removeUser,
   removeAccessToken,
   setAccessToken,
+  setStudio,
 } from '@/util/storage';
 
 const actions: ActionTree<UserState, RootState> = {
   async checkUser({ commit }) {
     try {
       const { data } = await checkUserApi();
-      commit('saveUser', data.data);
-      setUser(data.data);
+      const { user, studio } = data.data;
+      commit('saveUser', user);
+      commit('saveStudio', studio);
+      setUser(user);
+      setStudio(studio);
     } catch (err) {
       commit('saveUser', null);
       removeAccessToken();
@@ -50,11 +54,13 @@ const actions: ActionTree<UserState, RootState> = {
         return;
       }
 
-      const { accessToken, user } = data.data;
+      const { accessToken, user, studio } = data.data;
 
       positiveAlert(data.message);
       commit('saveUser', user);
+      commit('saveStudio', studio);
       setUser(user);
+      setStudio(studio);
       setAccessToken(accessToken);
     } catch (err) {
       throw err;

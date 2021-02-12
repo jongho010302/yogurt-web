@@ -343,6 +343,8 @@ import Component from 'vue-class-component';
 import { warningAlert } from '@/util/ui';
 import '@/css/CustomRadio.scss';
 import '@/css/Create.scss';
+import { User } from '@/store/user/types';
+import { Studio } from '@/store/studio/types';
 
 const userNamespace = 'user';
 const ticketNamespace = 'ticket';
@@ -409,8 +411,12 @@ export default class TicketCard extends Vue {
     };
   }
 
-  get user() {
+  get user(): User {
     return this.$store.getters[`${userNamespace}/getUser`];
+  }
+
+  get studio(): Studio {
+    return this.$store.getters[`${userNamespace}/getStudio`];
   }
 
   async onSubmit() {
@@ -460,8 +466,9 @@ export default class TicketCard extends Vue {
     }
 
     try {
+      console.log(this.studio);
       await this.$store.dispatch(`${ticketNamespace}/saveTicket`, {
-        studioId: this.user.studio.id,
+        studioId: this.studio.id,
         classType: this.$data.classType,
         title: this.$data.title,
         description: this.$data.description,

@@ -1,3 +1,4 @@
+import { Studio } from '@/store/studio/types';
 import { User } from '@/store/user/types';
 
 export const getAccessToken = () => {
@@ -27,4 +28,21 @@ export const removeUser = () => {
 
 export const setUser = (user: User) => {
   return localStorage.setItem('user', JSON.stringify(user));
+};
+
+export const getStudio = (): Studio | null => {
+  try {
+    const studio = localStorage.getItem('studio');
+    return studio ? JSON.parse(studio) : studio;
+  } catch (err) {
+    return null;
+  }
+};
+
+export const removeStudio = () => {
+  return localStorage.removeItem('studio');
+};
+
+export const setStudio = (studio: Studio) => {
+  return localStorage.setItem('studio', JSON.stringify(studio));
 };

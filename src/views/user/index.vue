@@ -78,7 +78,7 @@ interface Column {
 export default class User extends Vue {
   data() {
     return {
-      isExit: '',
+      isExit: false,
     };
   }
 

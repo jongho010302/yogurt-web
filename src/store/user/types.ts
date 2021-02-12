@@ -40,6 +40,7 @@ export enum Role {
 
 export interface UserState {
   user: User | null;
+  studio: Studio | null;
   users: UsersData;
   userDetail: User | null;
 }
