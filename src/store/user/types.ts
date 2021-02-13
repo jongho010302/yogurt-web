@@ -16,8 +16,24 @@ export interface User extends BaseEntity {
 }
 
 export interface UsersData {
-  data: User[] | null;
+  data: UsersResponse[] | null;
   status: AsyncStatus;
+}
+
+export interface UsersResponse {
+  id: number;
+  email: string;
+  authType: string;
+  name: string;
+  phone: string;
+  profileUrl: string;
+  createdAt: string;
+  ticketTitle: string;
+  maxCoupon: number;
+  remainingCoupon: number;
+  startDate: string;
+  endDate: string;
+  role: string;
 }
 
 export interface UserTicket extends BaseEntity {

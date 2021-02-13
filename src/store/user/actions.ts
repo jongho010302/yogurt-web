@@ -121,13 +121,13 @@ const actions: ActionTree<UserState, RootState> = {
       throw err;
     }
   },
-  async getUsers({ commit, rootState }, { isExit }) {
+  async getUsers({ commit, rootState }) {
     try {
       commit('saveUsers', {
         ...rootState.user.users,
         status: AsyncStatus.WAITING,
       });
-      const { data } = await getUsersApi(isExit);
+      const { data } = await getUsersApi();
       commit('saveUsers', {
         ...rootState.user.users,
         status: AsyncStatus.SUCCESS,

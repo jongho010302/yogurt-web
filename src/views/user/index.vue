@@ -15,7 +15,7 @@
 
     <el-table
       v-loading="usersWaiting"
-      :data="userData"
+      :data="users.data"
       style="width: 100%"
       @row-click="onRowClick"
     >
@@ -38,16 +38,11 @@
         sortable
       ></el-table-column>
       <el-table-column
-        prop="ticket"
+        prop="ticketTitle"
         label="보유 수강권"
         width="180"
       ></el-table-column>
     </el-table>
-
-    <!-- 유저 로딩 중 -->
-    <!-- <div v-if="usersWaiting">
-      <Skeleton height="50px" />
-    </div>-->
   </div>
 </template>
 
@@ -55,7 +50,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Skeleton } from 'vue-loading-skeleton';
-import { User as UserType, UsersData } from '@/store/user/types';
+import { UsersData } from '@/store/user/types';
 import { AsyncStatus } from '@/store/types';
 import { Watch } from 'vue-property-decorator';
 
@@ -65,7 +60,7 @@ interface Column {
   id: number;
   name: string;
   phone: string;
-  ticket: string;
+  ticketTitle: string;
   createdAt: string;
 }
 
@@ -110,24 +105,6 @@ export default class User extends Vue {
 
   get usersSuccess() {
     return this.users.status === AsyncStatus.SUCCESS;
-  }
-
-  get userData(): Column[] | null {
-    if (this.users.data) {
-      const userData = this.users.data.map((user: UserType) => {
-        const userColumn: Column = {
-          id: user.id,
-          name: user.name,
-          phone: user.phone,
-          createdAt: user.createdAt.substring(0, 10),
-          ticket: user.tickets.length ? user.tickets[0].ticket.title : '',
-        };
-        return userColumn;
-      });
-      return userData;
-    } else {
-      return null;
-    }
   }
 
   async created() {

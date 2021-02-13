@@ -47,8 +47,7 @@ export const verifySignUpCodeApi = (email: string, verificationCode: string) =>
     verificationCode,
   });
 
-export const getUsersApi = (isExit: boolean) =>
-  client.get(`/admin/users?isExit=${isExit.toString()}`);
+export const getUsersApi = () => client.get(`/admin/users`);
 
 export const getUserApi = (id: string | number) =>
   client.get(`/admin/users/${id}`);
