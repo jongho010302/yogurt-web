@@ -1,7 +1,50 @@
 <template>
   <div class="padded">
-    <h3>{{ getTitle() }}</h3>
-    <FullCalendar :options="calendarOptions" />
+    <h3>{{ getTitle }}</h3>
+    <div class="calendar-header">
+      <el-button size="mini" @click="onPrevClick">
+        <i class="el-icon-arrow-left" />
+      </el-button>
+      <el-button size="mini" @click="onThisWeekClick">이번주</el-button>
+      <el-button size="mini" style="margin-right: 8px" @click="onNextClick">
+        <i class="el-icon-arrow-right" />
+      </el-button>
+      <el-dropdown trigger="click">
+        <el-button size="mini" style="margin-right: 8px">강사별보기</el-button>
+        <el-dropdown-menu slot="dropdown" style="padding: 20px">
+          <el-checkbox
+            v-model="checkAllInstructors"
+            :indeterminate="isIndeterminate"
+            @change="onCheckAllInstructorsChange"
+            >전체 선택</el-checkbox
+          >
+          <el-divider></el-divider>
+          <el-checkbox-group
+            v-model="instructors"
+            @change="onCheckedInstructorsChange"
+          >
+            <div
+              v-for="(value, index) in staffs.data"
+              :key="index"
+              style="margin-bottom: 6px"
+            >
+              <el-checkbox :label="value.id">{{ value.name }}</el-checkbox>
+            </div>
+          </el-checkbox-group>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <el-radio-group
+        v-model="calendarView"
+        size="mini"
+        @change="onCalendarViewChange"
+      >
+        <el-radio-button label="dayGridMonth">월간</el-radio-button>
+        <el-radio-button label="timeGridWeek">주간</el-radio-button>
+        <el-radio-button label="timeGridDay">일간</el-radio-button>
+      </el-radio-group>
+    </div>
+
+    <FullCalendar ref="fullCalendar" :options="calendarOptions" />
 
     <div class="floating-action-button">
       <div class="plus" @click="showModal = true">+</div>
@@ -39,21 +82,36 @@ import FullCalendar from '@fullcalendar/vue';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction'; // for selectable
 import timeGridPlugin from '@fullcalendar/timegrid';
-import VueCal from 'vue-cal';
 import { parseDate, getWeek } from '@/util/date';
-import { createEventId } from '@/util/event-utils';
-import 'vue-cal/dist/i18n/zh-cn';
-import 'vue-cal/dist/vuecal.css';
+import { StaffData } from '@/store/staff/types';
+import { LecturesData } from '@/store/lecture/types';
+
+const lectureNamespace = 'lecture';
+const staffNamespace = 'staff';
 
 @Component({
   components: {
-    VueCal,
     FullCalendar,
   },
 })
 export default class Schedule extends Vue {
   data() {
     return {
+      // 일정 등록 모달
+      showModal: false,
+
+      // 강사
+      instructors: [],
+      isIndeterminate: true,
+      checkAllInstructors: true,
+
+      // 캘린더 타입
+      calendarView: 'timeGridWeek',
+
+      // 캘린더 제목
+      calendarDate: new Date(),
+
+      // 캘린더 옵션
       calendarOptions: {
         plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
         initialView: 'timeGridWeek',
@@ -61,11 +119,6 @@ export default class Schedule extends Vue {
         eventClick: (info: any) => {
           console.log(info);
         },
-        // headerToolbar: {
-        //   left: 'prev,next today',
-        //   center: 'title',
-        //   right: 'dayGridMonth,timeGridWeek,timeGridDay',
-        // },
         selectable: true,
         events: [
           {
@@ -77,63 +130,137 @@ export default class Schedule extends Vue {
           { title: 'event 2', date: '2021-02-15' },
         ],
         select: this.onDateSelect,
-
-        themeSystem: 'bootstrap',
-
         headerToolbar: {
           left: '',
-          right: 'prev,today,next dayGridMonth,timeGridWeek,timeGridDay',
+          right: '',
         },
       },
-      showModal: false,
     };
   }
 
-  onDateSelect(selectInfo: any) {
-    let title = prompt('Please enter a new title for your event');
-    console.log(selectInfo);
-    let calendarApi = selectInfo.view.calendar;
+  get staffs(): StaffData {
+    return this.$store.getters[`${staffNamespace}/getStaffs`];
+  }
 
-    calendarApi.unselect(); // clear date selection
+  get lectures(): LecturesData {
+    return this.$store.getters[`${lectureNamespace}/getLectures`];
+  }
 
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-      });
+  async created() {
+    await Promise.all([this.getLectures(), this.getStaffs()]);
+    this.onCheckAllInstructorsChange(true);
+  }
+
+  async getStaffs() {
+    try {
+      await this.$store.dispatch(`${staffNamespace}/getStaffs`);
+    } catch (err) {
+      console.error(err);
     }
   }
 
-  getTitle() {
-    const currentDate = new Date();
+  async getLectures() {
+    try {
+      const searchType = this.$data.searchType;
+      if (searchType === 'date') {
+        this.$store.dispatch(`${lectureNamespace}/getLectures`, {
+          startAt: this.$data.dateFilter,
+          endAt: `${this.$data.dateFilter} 23:59`,
+        });
+      } else if (searchType === 'period') {
+        this.$store.dispatch(`${lectureNamespace}/getLectures`, {
+          startAt: this.$data.periodFilter[0],
+          endAt: this.$data.periodFilter[1],
+        });
+      } else {
+        console.error('searchType error occured.');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  get getTitle() {
+    const currentDate = this.$data.calendarDate;
     return `${parseDate(currentDate, 'yyyy월 mm월 dd일')} (${getWeek(
       currentDate,
     )})`;
   }
 
-  handleClose(done: any) {
-    this.$confirm('Are you sure to close this dialog?')
-      .then(() => {
-        done();
-      })
-      .catch(() => {
-        console.log('hi');
-      });
+  onPrevClick() {
+    const calendarRef = this.$refs.fullCalendar as any;
+    calendarRef.getApi().prev();
+    this.setCalendarDate();
+  }
+
+  onThisWeekClick() {
+    const calendarRef = this.$refs.fullCalendar as any;
+    calendarRef.getApi().today();
+    this.setCalendarDate();
+  }
+
+  onNextClick() {
+    const calendarRef = this.$refs.fullCalendar as any;
+    calendarRef.getApi().next();
+    this.setCalendarDate();
+  }
+
+  setCalendarDate() {
+    const calendarRef = this.$refs.fullCalendar as any;
+    this.$data.calendarDate = calendarRef.getApi().currentData.currentDate;
+  }
+
+  onDateSelect() {
+    this.$data.showModal = true;
+  }
+
+  onCalendarViewChange(label: string) {
+    const calendarRef = this.$refs.fullCalendar as any;
+    calendarRef.getApi().changeView(label);
+  }
+
+  onCheckAllInstructorsChange(val: boolean) {
+    this.$data.instructors = val
+      ? this.staffs.data.map((staff) => staff.id)
+      : [];
+    this.$data.isIndeterminate = false;
+  }
+
+  onCheckedInstructorsChange(value: number[]) {
+    const checkedCount = value.length;
+    this.$data.checkAllInstructors = checkedCount === this.staffs.data.length;
+    this.$data.isIndeterminate =
+      checkedCount > 0 && checkedCount < this.staffs.data.length;
   }
 }
 </script>
 
-<style gloabl>
+<style>
 /* Row Height */
 .fc .fc-timegrid-slot {
   height: 4em;
 }
-</style>
 
-<style>
+/* Table Top Margin */
+.fc .fc-toolbar.fc-header-toolbar {
+  margin-bottom: 0.5em;
+}
+
+/* Calendar */
+.calendar-header {
+  display: flex;
+  justify-content: flex-end;
+}
+.calendar-header .el-button + .el-button {
+  margin-left: 0px;
+}
+
+/* Divider */
+.el-divider--horizontal {
+  margin: 12px 0px;
+}
+
+/* Dialog */
 .el-dialog__title {
   font-size: 24px;
   font-weight: 700;
@@ -167,7 +294,7 @@ export default class Schedule extends Vue {
   transition: 0.15s;
 }
 .create-lesson-modal__body h5 {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   color: black;
 }

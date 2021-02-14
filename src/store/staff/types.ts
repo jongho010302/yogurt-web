@@ -29,7 +29,7 @@ export interface Staff extends BaseEntity {
 }
 
 export interface StaffData {
-  data: Staff[] | null;
+  data: Staff[];
   status: AsyncStatus;
 }
 

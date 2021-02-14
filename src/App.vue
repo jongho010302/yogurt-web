@@ -36,10 +36,12 @@
           <div class="main__header-profile">
             <el-avatar
               :src="user.profileUrl || defaultProfileUrl"
+              :size="35"
               style="margin-right: 5px"
             ></el-avatar>
             <span style="margin-right: 2px"
-              >{{ user.name }}님 {{ user.displayRole }}</span
+              ><span style="font-weight: bold">{{ user.name }}님</span>
+              {{ user.displayRole }}</span
             >
             <i class="el-icon-arrow-down"></i>
           </div>

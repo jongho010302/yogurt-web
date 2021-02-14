@@ -8,7 +8,7 @@ import { RootState, AsyncStatus } from '../types';
 export const state: StaffState = {
   staffs: {
     status: AsyncStatus.INIT,
-    data: null,
+    data: [],
   },
 };
 
