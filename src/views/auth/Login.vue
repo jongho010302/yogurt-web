@@ -59,7 +59,7 @@ export default class Login extends mixins(Methods) {
 
   async handleLogin() {
     try {
-      await this.$store.dispatch(`${namespace}/logIn`, {
+      await this.$store.dispatch(`${namespace}/login`, {
         email: this.$data.email,
         password: this.$data.password,
       });

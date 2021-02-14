@@ -3,10 +3,13 @@ import getters from './getters';
 import actions from './actions';
 import mutations from './mutations';
 import { LectureState } from './types';
-import { RootState } from '../types';
+import { AsyncStatus, RootState } from '../types';
 
 export const state: LectureState = {
-  lectures: [],
+  lectures: {
+    data: [],
+    status: AsyncStatus.INIT,
+  },
 };
 
 const namespaced = true;

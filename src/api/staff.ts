@@ -1,12 +1,14 @@
 import client from '@/api/client';
+import { ApiResponse } from '@/types';
 
-export const getStaffsApi = () => client.get('/admin/staffs');
+export const getStaffsApi = (): Promise<ApiResponse> =>
+  client.get('/admin/staffs');
 
-export const saveStaffApi = (payload: any) =>
+export const saveStaffApi = (payload: any): Promise<ApiResponse> =>
   client.post('/admin/staffs', payload);
 
-export const deleteStaffApi = (payload: any) =>
+export const deleteStaffApi = (payload: any): Promise<ApiResponse> =>
   client.post('/admin/staffs', payload);
 
-export const resetPasswordApi = (payload: any) =>
+export const resetPasswordApi = (payload: any): Promise<ApiResponse> =>
   client.post('/admin/staffs/reset-password', payload);

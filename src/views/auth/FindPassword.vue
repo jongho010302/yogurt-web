@@ -126,7 +126,7 @@ export default class Login extends mixins(Methods) {
     }
 
     try {
-      await this.$store.dispatch(`${namespace}/changePassword`, {
+      await this.$store.dispatch(`${namespace}/findPassword`, {
         email: this.$data.email,
         password: this.$data.password,
         verificationCode: this.$data.verificationCode,
@@ -138,4 +138,3 @@ export default class Login extends mixins(Methods) {
   }
 }
 </script>
-

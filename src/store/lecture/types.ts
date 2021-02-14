@@ -1,21 +1,21 @@
-import { Course } from '../course/types';
-import { Staff } from '../staff/types';
-import { BaseEntity } from '../types';
+import { AsyncStatus, BaseEntity } from '../types';
+
+export interface LecturesData {
+  data: Lecture[];
+  status: AsyncStatus;
+}
 
 export interface Lecture extends BaseEntity {
   title: string;
+  classType: string;
+  lectureAt: string;
+  entry: string;
+  bookingEndAt: string;
   bookingCancelEndAt: string;
   bookingChangeEndAt: string;
-  bookingEndAt: string;
-  course: Course;
-  description: string;
-  endAt: string;
-  maxTrainee: number;
-  minTrainee: number;
-  staff: Staff;
-  startAt: string;
+  staffName: string;
 }
 
 export interface LectureState {
-  lectures: Lecture[] | null;
+  lectures: LecturesData;
 }

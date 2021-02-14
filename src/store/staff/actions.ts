@@ -15,11 +15,11 @@ const actions: ActionTree<StaffState, RootState> = {
         ...rootState.staff.staffs,
         status: AsyncStatus.WAITING,
       });
-      const { data } = await getStaffsApi();
+      const res = await getStaffsApi();
       commit('saveStaffs', {
         ...rootState.staff.staffs,
         status: AsyncStatus.SUCCESS,
-        data: data.data,
+        data: res.data,
       });
     } catch (err) {
       throw err;

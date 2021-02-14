@@ -1,4 +1,8 @@
 import client from '@/api/client';
+import { ApiResponse } from '@/types';
 
-export const getCourseApi = (startAt: string, endAt: string) =>
-  client.get(`/member/lectures?start_at=${startAt}&end_at=${endAt}`);
+export const getLecturesApi = (
+  startAt: string,
+  endAt: string,
+): Promise<ApiResponse> =>
+  client.get(`/admin/lectures?start_at=${startAt}&end_at=${endAt}`);

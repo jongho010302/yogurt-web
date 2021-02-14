@@ -1,13 +1,12 @@
 import { ActionTree } from 'vuex';
-import { RoleType } from '@/constants';
 import { UserState } from './types';
 import {
   checkUserApi,
-  logInApi,
+  loginApi,
   logOutApi,
   sendFindPasswordCodeApi,
   verifyFindPasswordCodeApi,
-  changePasswordApi,
+  findPasswordApi,
   sendSignUpCodeApi,
   verifySignUpCodeApi,
   getUsersApi,
@@ -22,12 +21,16 @@ import {
   setAccessToken,
   setStudio,
 } from '@/util/storage';
+import { whoCanLogins } from '@/util/role';
 
 const actions: ActionTree<UserState, RootState> = {
+  /**
+   * 유저 로그인 정보 확인
+   */
   async checkUser({ commit }) {
     try {
-      const { data } = await checkUserApi();
-      const { user, studio } = data.data;
+      const res = await checkUserApi();
+      const { user, studio } = res.data;
       commit('saveUser', user);
       commit('saveStudio', studio);
       setUser(user);
@@ -39,24 +42,21 @@ const actions: ActionTree<UserState, RootState> = {
       throw err;
     }
   },
-  async logIn({ commit }, { email, password }) {
+  /**
+   * 로그인: 이메일
+   */
+  async login({ commit }, { email, password }) {
     try {
-      const { data } = await logInApi(email, password);
-      const userRole = data.data.user.role;
-      if (
-        !(
-          userRole === RoleType.ROLE_DEVELOPER ||
-          userRole === RoleType.ROLE_OWNER ||
-          userRole === RoleType.ROLE_MANAGER
-        )
-      ) {
+      const res = await loginApi(email, password);
+      const userRole = res.data.user.role;
+      if (!whoCanLogins.includes(userRole)) {
         errorAlert('로그인 할 권한이 없습니다.');
         return;
       }
 
-      const { accessToken, user, studio } = data.data;
+      const { accessToken, user, studio } = res.data;
 
-      positiveAlert(data.message);
+      positiveAlert(res.message);
       commit('saveUser', user);
       commit('saveStudio', studio);
       setUser(user);
@@ -66,81 +66,101 @@ const actions: ActionTree<UserState, RootState> = {
       throw err;
     }
   },
+  /**
+   * 로그아웃
+   */
   async logOut({ commit }) {
     try {
-      const { data } = await logOutApi();
+      const res = await logOutApi();
       commit('saveUser', null);
       removeAccessToken();
       removeUser();
-      positiveAlert(data.message);
+      positiveAlert(res.message);
     } catch (err) {
       throw err;
     }
   },
+  /**
+   * 인증번호 전송: 비밀번호 찾기
+   */
   async sendFindPasswordCode(none, { email }) {
     try {
-      const { data } = await sendFindPasswordCodeApi(email);
-      infoAlert(data.message);
+      const res = await sendFindPasswordCodeApi(email);
+      infoAlert(res.message);
     } catch (err) {
       throw err;
     }
   },
+  /**
+   * 인증번호 인증: 비밀번호 찾기
+   */
   async verifyFindPasswordCode(none, { email, verificationCode }) {
     try {
-      const { data } = await verifyFindPasswordCodeApi(email, verificationCode);
-      infoAlert(data.message);
+      const res = await verifyFindPasswordCodeApi(email, verificationCode);
+      infoAlert(res.message);
     } catch (err) {
       throw err;
     }
   },
-  async changePassword(none, { email, password, verificationCode }) {
+  /**
+   * 비밀번호 찾기
+   */
+  async findPassword(none, { email, password, verificationCode }) {
     try {
-      const { data } = await changePasswordApi(
-        email,
-        password,
-        verificationCode,
-      );
-      positiveAlert(data.message);
+      const res = await findPasswordApi(email, password, verificationCode);
+      positiveAlert(res.message);
     } catch (err) {
       throw err;
     }
   },
+  /**
+   * 인증번호 전송: 회원가입
+   */
   async sendSignUpCode(none, { email }) {
     try {
-      const { data } = await sendSignUpCodeApi(email);
-      infoAlert(data.message);
+      const res = await sendSignUpCodeApi(email);
+      infoAlert(res.message);
     } catch (err) {
       throw err;
     }
   },
+  /**
+   * 인증번호 인증: 회원가입
+   */
   async verifySignUpCode(none, { email, verificationCode }) {
     try {
-      const { data } = await verifySignUpCodeApi(email, verificationCode);
-      infoAlert(data.message);
+      const res = await verifySignUpCodeApi(email, verificationCode);
+      infoAlert(res.message);
     } catch (err) {
       throw err;
     }
   },
+  /**
+   * 유저 리스트 조회
+   */
   async getUsers({ commit, rootState }) {
     try {
       commit('saveUsers', {
         ...rootState.user.users,
         status: AsyncStatus.WAITING,
       });
-      const { data } = await getUsersApi();
+      const res = await getUsersApi();
       commit('saveUsers', {
         ...rootState.user.users,
         status: AsyncStatus.SUCCESS,
-        data: data.data,
+        data: res.data,
       });
     } catch (err) {
       throw err;
     }
   },
+  /**
+   * 하나의 유저 조회
+   */
   async getUser({ commit }, { id }) {
     try {
-      const { data } = await getUserApi(id);
-      commit('saveUserDetail', data.data);
+      const res = await getUserApi(id);
+      commit('saveUserDetail', res.data);
     } catch (err) {
       throw err;
     }

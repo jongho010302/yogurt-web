@@ -11,11 +11,11 @@ const actions: ActionTree<TicketState, RootState> = {
         ...rootState.ticket.tickets,
         status: AsyncStatus.WAITING,
       });
-      const { data } = await getTicketsApi(isSelling, classType);
+      const res = await getTicketsApi(isSelling, classType);
       commit('saveTickets', {
         ...rootState.ticket.tickets,
         status: AsyncStatus.SUCCESS,
-        data: data.data,
+        data: res.data,
       });
     } catch (err) {
       throw err;
@@ -27,10 +27,10 @@ const actions: ActionTree<TicketState, RootState> = {
         status: AsyncStatus.WAITING,
         data: rootState.ticket.ticket.data,
       });
-      const { data } = await getTicketApi(id);
+      const res = await getTicketApi(id);
       commit('saveTicket', {
         status: AsyncStatus.SUCCESS,
-        data: data.data,
+        data: res.data,
       });
     } catch (err) {
       throw err;
@@ -38,14 +38,14 @@ const actions: ActionTree<TicketState, RootState> = {
   },
   async saveTicket(none, payload) {
     try {
-      const { data } = await saveTicketApi(payload);
-      infoAlert(data.message);
+      const res = await saveTicketApi(payload);
+      infoAlert(res.message);
       // if (rootState.ticket.tickets.data) {
-      //   const tickets = rootState.ticket.tickets.data.map((el) => ({ ...el }));
-      //   tickets.push(data.data);
+      //   const tickets = rootState.ticket.tickets.res.map((el) => ({ ...el }));
+      //   tickets.push(res.data);
       //   commit('saveTickets', tickets);
       // } else {
-      //   commit('saveTickets', [data.data]);
+      //   commit('saveTickets', [res.data]);
       // }
     } catch (err) {
       throw err;

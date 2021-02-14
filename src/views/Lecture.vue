@@ -70,7 +70,7 @@
     </div>
 
     <!-- 테이블 -->
-    <el-table :data="lectures" style="width: 100%" @row-click="onRowClick">
+    <el-table :data="lectures.data" style="width: 100%" @row-click="onRowClick">
       <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column
         prop="lectureAt"
@@ -79,12 +79,12 @@
         width="300"
       ></el-table-column>
       <el-table-column
-        prop="instructor"
+        prop="staffName"
         label="강사"
         width="100"
       ></el-table-column>
       <el-table-column
-        prop="lectureType"
+        prop="classType"
         label="수업"
         width="90"
       ></el-table-column>
@@ -127,10 +127,6 @@ import { StaffData } from '@/store/staff/types';
 
 const lectureNamespace = 'lecture';
 const staffNamespace = 'staff';
-
-interface Column {
-  id: number;
-}
 
 @Component({
   components: {
@@ -189,7 +185,6 @@ export default class Lecture extends Vue {
   async created() {
     await this.getStaffs();
     await this.getLectures();
-    console.log(this.lectures);
   }
 
   async getStaffs() {
@@ -213,12 +208,12 @@ export default class Lecture extends Vue {
     }
   }
 
-  onRowClick(row: Column) {
+  onRowClick(row: Lecture) {
     console.log(row);
   }
 
   @Watch('searchType')
-  onPeriodFilterChanged() {
+  onSearchTypeChanged() {
     this.getLectures();
   }
 
@@ -229,6 +224,10 @@ export default class Lecture extends Vue {
 
   @Watch('dateFilter')
   onDateFilterChanged() {
+    this.getLectures();
+  }
+  @Watch('periodFilter')
+  onPeriodFilterChanged() {
     this.getLectures();
   }
 }

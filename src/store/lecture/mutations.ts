@@ -1,9 +1,13 @@
 import { MutationTree } from 'vuex';
+import { AsyncStatus } from '../types';
 import { LectureState, Lecture } from './types';
 
 const mutations: MutationTree<LectureState> = {
-  saveLectures(state, payload: Lecture[]) {
-    state.lectures = payload;
+  saveLecturesData(state, payload: Lecture[]) {
+    state.lectures.data = payload;
+  },
+  saveLecturesState(state, payload: AsyncStatus) {
+    state.lectures.status = payload;
   },
 };
 

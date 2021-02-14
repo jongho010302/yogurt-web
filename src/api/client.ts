@@ -21,7 +21,7 @@ instance.interceptors.response.use(
   (response) => {
     // @ts-ignore
     app.$Progress.finish(); // finish when a response is received
-    return response;
+    return response.data;
   },
   (error) => {
     errorAlert(error.response.data.message);

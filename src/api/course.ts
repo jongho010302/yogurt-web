@@ -1,4 +1,5 @@
 import client from '@/api/client';
+import { ApiResponse } from '@/types';
 
 export const createCoursesApi = (
   studioId: number,
@@ -34,7 +35,7 @@ export const createCoursesApi = (
   hasSunClass: string,
   sunClassStartTime: string,
   sunClassEndTime: string,
-) =>
+): Promise<ApiResponse> =>
   client.post('/admin/course', {
     studioId,
     staffId,

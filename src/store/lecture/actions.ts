@@ -1,15 +1,18 @@
 import { ActionTree } from 'vuex';
 import { LectureState } from './types';
-import { RootState } from '../types';
-import { getCourseApi } from '@/api/lecture';
+import { AsyncStatus, RootState } from '../types';
+import { getLecturesApi } from '@/api/lecture';
 
 const actions: ActionTree<LectureState, RootState> = {
   async getLectures({ commit }, { startAt, endAt }) {
     try {
-      const { data } = await getCourseApi(startAt, endAt);
-      commit('saveLectures', data.data);
+      commit('saveLecturesState', AsyncStatus.WAITING);
+      const res = await getLecturesApi(startAt, endAt);
+      commit('saveLecturesData', res.data);
+      commit('saveLecturesState', AsyncStatus.SUCCESS);
     } catch (err) {
-      console.error(err);
+      commit('saveLecturesState', AsyncStatus.FAILURE);
+      throw err;
     }
   },
 };
