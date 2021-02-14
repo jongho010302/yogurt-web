@@ -1,14 +1,8 @@
 <template>
   <div class="padded">
     <h3>{{ getTitle() }}</h3>
+    <FullCalendar :options="calendarOptions" />
 
-    <vue-cal
-      :time-from="8 * 60"
-      :time-to="20 * 60"
-      :special-hours="specialHours"
-      :disable-views="['years', 'year', 'month']"
-      :events="events"
-    />
     <div class="floating-action-button">
       <div class="plus" @click="showModal = true">+</div>
     </div>
@@ -31,8 +25,7 @@
         <p>
           수업/클래스란?
           <br />수업은 말 그대로 하루 한 회차의 수업을 의미하며, 그런 수업들이
-          모여
-          <br />이루어진 프로그램을 일컬어 클래스라 칭합니다.
+          모여 <br />이루어진 프로그램을 일컬어 클래스라 칭합니다.
         </p>
       </div>
     </el-dialog>
@@ -42,51 +35,76 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import FullCalendar from '@fullcalendar/vue';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction'; // for selectable
+import timeGridPlugin from '@fullcalendar/timegrid';
 import VueCal from 'vue-cal';
 import { parseDate, getWeek } from '@/util/date';
+import { createEventId } from '@/util/event-utils';
 import 'vue-cal/dist/i18n/zh-cn';
 import 'vue-cal/dist/vuecal.css';
-
-// const namespace = 'schedule';
-const dailyHours = { from: 9 * 60, to: 18 * 60, class: 'business-hours' };
 
 @Component({
   components: {
     VueCal,
+    FullCalendar,
   },
 })
 export default class Schedule extends Vue {
   data() {
     return {
-      showModal: false,
-      specialHours: {
-        1: dailyHours,
-        2: dailyHours,
-        3: dailyHours,
-        4: dailyHours,
-        5: dailyHours,
+      calendarOptions: {
+        plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+        initialView: 'timeGridWeek',
+        editable: true,
+        eventClick: (info: any) => {
+          console.log(info);
+        },
+        // headerToolbar: {
+        //   left: 'prev,next today',
+        //   center: 'title',
+        //   right: 'dayGridMonth,timeGridWeek,timeGridDay',
+        // },
+        selectable: true,
+        events: [
+          {
+            title: 'event 1',
+            start: '2021-02-14 12:30:00',
+            end: '2021-02-14 12:50:00',
+          },
+          { title: 'event 2', date: '2021-02-15' },
+          { title: 'event 2', date: '2021-02-15' },
+        ],
+        select: this.onDateSelect,
+
+        themeSystem: 'bootstrap',
+
+        headerToolbar: {
+          left: '',
+          right: 'prev,today,next dayGridMonth,timeGridWeek,timeGridDay',
+        },
       },
-      events: [
-        {
-          start: '2020-04-05 09:00',
-          end: '2020-04-05 09:50',
-          title: 'Need to go shopping',
-          class: 'sport',
-        },
-        {
-          start: '2020-04-05 10:00',
-          end: '2020-04-05 10:50',
-          title: 'Golf with John',
-          class: 'sport',
-        },
-        {
-          start: '2020-04-06 09:00',
-          end: '2020-04-06 09:50',
-          title: "Dad's birthday!",
-          class: 'sport',
-        },
-      ],
+      showModal: false,
     };
+  }
+
+  onDateSelect(selectInfo: any) {
+    let title = prompt('Please enter a new title for your event');
+    console.log(selectInfo);
+    let calendarApi = selectInfo.view.calendar;
+
+    calendarApi.unselect(); // clear date selection
+
+    if (title) {
+      calendarApi.addEvent({
+        id: createEventId(),
+        title,
+        start: selectInfo.startStr,
+        end: selectInfo.endStr,
+        allDay: selectInfo.allDay,
+      });
+    }
   }
 
   getTitle() {
@@ -108,37 +126,10 @@ export default class Schedule extends Vue {
 }
 </script>
 
-<style global>
-/* Green-theme. */
-.vuecal__menu,
-.vuecal__cell-events-count {
-  background-color: #027be3;
-  color: white;
-}
-.vuecal__title-bar {
-  background-color: rgb(73, 166, 248);
-}
-.vuecal__cell--today,
-.vuecal__cell--current {
-  background-color: rgba(240, 240, 255, 0.4);
-}
-.vuecal:not(.vuecal--day-view) .vuecal__cell--selected {
-  background-color: rgba(28, 148, 196, 0.4);
-}
-.vuecal__cell--selected:before {
-  border-color: rgba(28, 148, 196, 0.5);
-}
-/* Cells and buttons get highlighted when an event is dragged over it. */
-.vuecal__cell--highlighted:not(.vuecal__cell--has-splits),
-.vuecal__cell-split--highlighted {
-  background-color: rgba(195, 255, 225, 0.5);
-}
-.vuecal__arrow.vuecal__arrow--highlighted,
-.vuecal__view-btn.vuecal__view-btn--highlighted {
-  background-color: rgba(136, 236, 191, 0.25);
-}
-.sport {
-  background-color: rgb(73, 166, 248);
+<style gloabl>
+/* Row Height */
+.fc .fc-timegrid-slot {
+  height: 4em;
 }
 </style>
 

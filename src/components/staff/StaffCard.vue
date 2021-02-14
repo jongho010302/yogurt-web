@@ -9,10 +9,7 @@
       @click="navigateToStaffDetail(staff.id)"
     >
       <el-avatar
-        :src="
-          staff.user.profileUrl ||
-          'https://seoulforest-image.s3.ap-northeast-2.amazonaws.com/default_profile.png'
-        "
+        :src="staff.user.profileUrl || defaultProfileUrl"
         :size="90"
       ></el-avatar>
       <p style="margin-bottom: 10px !important">{{ staff.user.name }}</p>
@@ -40,6 +37,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { Staff as StaffType } from '@/store/staff/types';
+import { defaultProfileUrl } from '@/util/image';
 import { yogurtConfirm } from '@/util/ui';
 
 const namespace = 'staff';
@@ -47,6 +45,8 @@ const namespace = 'staff';
 @Component
 export default class TicketCard extends Vue {
   @Prop() staff!: StaffType;
+
+  defaultProfileUrl = defaultProfileUrl;
 
   navigateToStaffDetail(id: number) {
     this.$router.push({ path: `/staff/detail/${id}` });

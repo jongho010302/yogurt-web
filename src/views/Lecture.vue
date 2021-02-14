@@ -201,7 +201,7 @@ export default class Lecture extends Vue {
     if (searchType === 'date') {
       this.$store.dispatch(`${lectureNamespace}/getLectures`, {
         startAt: this.$data.dateFilter,
-        endAt: this.$data.dateFilter,
+        endAt: `${this.$data.dateFilter} 23:59`,
       });
     } else if (searchType === 'period') {
       this.$store.dispatch(`${lectureNamespace}/getLectures`, {

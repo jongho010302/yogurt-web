@@ -35,10 +35,7 @@
         <el-dropdown trigger="click" @command="handleCommand">
           <div class="main__header-profile">
             <el-avatar
-              :src="
-                user.profileUrl ||
-                'https://yogurt-s3.s3.ap-northeast-2.amazonaws.com/resources/default_profile.png'
-              "
+              :src="user.profileUrl || defaultProfileUrl"
               style="margin-right: 5px"
             ></el-avatar>
             <span style="margin-right: 2px"
@@ -80,6 +77,7 @@ import { Watch } from 'vue-property-decorator';
 import { Methods } from '@/mixins';
 import Login from '@/views/auth/Login.vue';
 import { getAccessToken } from '@/util/storage';
+import { defaultProfileUrl } from '@/util/image';
 import './css/App.scss';
 import './css/CustomElementUI.scss';
 
@@ -102,6 +100,8 @@ export default class App extends mixins(Methods) {
       bluetooth: true,
     };
   }
+
+  defaultProfileUrl = defaultProfileUrl;
 
   get user() {
     return this.$store.getters[`${namespace}/getUser`];
