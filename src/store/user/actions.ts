@@ -3,7 +3,7 @@ import { UserState } from './types';
 import {
   checkUserApi,
   loginApi,
-  logOutApi,
+  logoutApi,
   sendFindPasswordCodeApi,
   verifyFindPasswordCodeApi,
   findPasswordApi,
@@ -69,12 +69,13 @@ const actions: ActionTree<UserState, RootState> = {
   /**
    * 로그아웃
    */
-  async logOut({ commit }) {
+  async logout({ commit }) {
     try {
-      const res = await logOutApi();
       commit('saveUser', null);
+      commit('saveStudio', null);
       removeAccessToken();
       removeUser();
+      const res = await logoutApi();
       positiveAlert(res.message);
     } catch (err) {
       throw err;

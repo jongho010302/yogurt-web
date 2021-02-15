@@ -9,19 +9,14 @@ import { StaffState } from './types';
 import { RootState, AsyncStatus } from '../types';
 
 const actions: ActionTree<StaffState, RootState> = {
-  async getStaffs({ commit, rootState }) {
+  async getStaffs({ commit }) {
     try {
-      commit('saveStaffs', {
-        ...rootState.staff.staffs,
-        status: AsyncStatus.WAITING,
-      });
+      commit('saveStaffsStatus', AsyncStatus.WAITING);
       const res = await getStaffsApi();
-      commit('saveStaffs', {
-        ...rootState.staff.staffs,
-        status: AsyncStatus.SUCCESS,
-        data: res.data,
-      });
+      commit('saveStaffsStatus', AsyncStatus.SUCCESS);
+      commit('saveStaffsData', res.data);
     } catch (err) {
+      commit('saveStaffsStatus', AsyncStatus.FAILURE);
       throw err;
     }
   },

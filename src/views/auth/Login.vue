@@ -1,49 +1,55 @@
 <template>
-  <div>
-    <div class="auth__header">
-      <img src="@/assets/logo.jpg" width="40" />
-      <h2>서울숲 필라테스</h2>
-    </div>
-
-    <div class="auth__form">
-      <div class="auth__input-group">
-        <el-input
-          v-model="email"
-          type="text"
-          placeholder="아이디"
-          @keyup.enter.native="handleLogin"
-        />
-        <el-input
-          v-model="password"
-          type="password"
-          placeholder="비밀번호"
-          style="margin-top: 5px"
-          @keyup.enter.native="handleLogin"
-        />
+  <div class="auth__container">
+    <div class="auth__contents">
+      <div class="auth__header">
+        <img src="@/assets/logo.jpg" width="40" />
+        <h2>서울숲 필라테스</h2>
       </div>
 
-      <el-button class="login__form-button" type="primary" @click="handleLogin"
-        >로그인</el-button
-      >
-    </div>
+      <div class="auth__form">
+        <div class="auth__input-group">
+          <el-input
+            v-model="email"
+            type="text"
+            placeholder="아이디"
+            @keyup.enter.native="handleLogin"
+          />
+          <el-input
+            v-model="password"
+            type="password"
+            placeholder="비밀번호"
+            style="margin-top: 5px"
+            @keyup.enter.native="handleLogin"
+          />
+        </div>
 
-    <hr class="auth__seperator" />
-
-    <div>
-      <span class="find__item-1">
-        <i class="el-icon-lock find-lock-icon"></i>계정을 잊으셨나요?
-      </span>
-      <span class="find__item-2">
-        <a class="find__item" @click="routerTo('/find/password')"
-          >비밀번호 재설정</a
+        <el-button
+          class="login__form-button"
+          type="primary"
+          @click="handleLogin"
+          >로그인</el-button
         >
-      </span>
+      </div>
+
+      <hr class="auth__seperator" />
+
+      <div>
+        <span class="find__item-1">
+          <i class="el-icon-lock find-lock-icon"></i>계정을 잊으셨나요?
+        </span>
+        <span class="find__item-2">
+          <a class="find__item" @click="routerTo('/find/password')"
+            >비밀번호 재설정</a
+          >
+        </span>
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
+import { warningAlert } from '@/util/ui';
 import './auth.css';
 
 const namespace = 'user';
@@ -55,6 +61,17 @@ export default class Login extends mixins(Methods) {
       email: 'jongho.dev@gmail.com',
       password: 'Wldms0302!',
     };
+  }
+
+  created() {
+    if (this.isLogined) {
+      warningAlert('이미 로그인 되어있습니다.');
+      this.$router.push('/schedule');
+    }
+  }
+
+  get isLogined() {
+    return this.$store.getters[`${namespace}/getIsLogined`];
   }
 
   async handleLogin() {
@@ -72,6 +89,14 @@ export default class Login extends mixins(Methods) {
 </script>
 
 <style>
+.auth__container {
+  display: flex;
+  padding: 180px 60px 60px 60px;
+}
+.auth__contents {
+  margin: auto;
+}
+
 .find__item:hover {
   text-decoration: underline;
   cursor: pointer;

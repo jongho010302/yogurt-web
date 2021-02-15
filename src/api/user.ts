@@ -13,7 +13,7 @@ export const loginApi = (
     studioId: 1,
   });
 
-export const logOutApi = (): Promise<ApiResponse> =>
+export const logoutApi = (): Promise<ApiResponse> =>
   client.delete('/auth/tokens');
 
 export const sendFindPasswordCodeApi = (email: string): Promise<ApiResponse> =>

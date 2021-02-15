@@ -1,9 +1,13 @@
 import { MutationTree } from 'vuex';
-import { StaffState, StaffData } from './types';
+import { AsyncStatus } from '../types';
+import { StaffState, Staff } from './types';
 
 const mutations: MutationTree<StaffState> = {
-  saveStaffs(state, payload: StaffData) {
-    state.staffs = payload;
+  saveStaffsData(state, payload: Staff[]) {
+    state.staffs.data = payload;
+  },
+  saveStaffsStatus(state, payload: AsyncStatus) {
+    state.staffs.status = payload;
   },
 };
 

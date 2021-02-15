@@ -1,10 +1,60 @@
 <template>
   <div>
-    <!-- Login -->
-    <router-view></router-view>
+    <!-- Left -->
+    <aside class="main__sider">
+      <button class="notification__toggle medium">
+        <i class="el-icon-bell" />
+      </button>
+    </aside>
 
-    <!-- Async Loading: Progress Bar -->
-    <vue-progress-bar></vue-progress-bar>
+    <!-- Header -->
+    <header class="main__header">
+      <img
+        src="@/assets/logo.jpg"
+        width="50"
+        class="main__header-logo"
+        @click="$router.push('/schedule').catch(() => {})"
+        style="cursor: pointer"
+      />
+      <el-menu
+        :default-active="activeLink"
+        router
+        class="el-menu-demo"
+        mode="horizontal"
+      >
+        <el-menu-item index="/schedule">일정</el-menu-item>
+        <el-menu-item index="/lecture">수업</el-menu-item>
+        <el-menu-item index="/user">회원</el-menu-item>
+        <el-menu-item index="/staff">직원</el-menu-item>
+        <el-menu-item index="/ticket">수강권</el-menu-item>
+        <el-menu-item index="/setting">설정</el-menu-item>
+        <el-menu-item index="/sales">매출</el-menu-item>
+      </el-menu>
+      <div class="space"></div>
+      <el-dropdown trigger="click" @command="handleCommand">
+        <div class="main__header-profile">
+          <el-avatar
+            :src="user.profileUrl || defaultProfileUrl"
+            :size="35"
+            style="margin-right: 5px"
+          ></el-avatar>
+          <span style="margin-right: 2px"
+            ><span style="font-weight: bold">{{ user.name }}님</span>
+            {{ user.displayRole }}</span
+          >
+          <i class="el-icon-arrow-down"></i>
+        </div>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="mypage">마이페이지</el-dropdown-item>
+          <el-dropdown-item command="logout">로그아웃</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </header>
+
+    <!-- Contents -->
+    <section class="main__contents">
+      <router-view></router-view>
+    </section>
   </div>
 </template>
 
@@ -13,10 +63,7 @@ import Component, { mixins } from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import { Methods } from '@/mixins';
 import Login from '@/views/auth/Login.vue';
-import { getAccessToken } from '@/util/storage';
 import { defaultProfileUrl } from '@/util/image';
-import './css/App.scss';
-import './css/CustomElementUI.scss';
 
 const namespace = 'user';
 
@@ -25,7 +72,7 @@ const namespace = 'user';
     Login,
   },
 })
-export default class App extends mixins(Methods) {
+export default class MainLayout extends mixins(Methods) {
   defaultProfileUrl = defaultProfileUrl;
 
   data() {
@@ -42,21 +89,6 @@ export default class App extends mixins(Methods) {
 
   get user() {
     return this.$store.getters[`${namespace}/getUser`];
-  }
-
-  get isLogined() {
-    return this.$store.getters[`${namespace}/getIsLogined`];
-  }
-
-  async created() {
-    try {
-      const jwtToken = getAccessToken();
-      if (jwtToken) {
-        await this.$store.dispatch(`${namespace}/checkUser`);
-      }
-    } catch (err) {
-      console.error(err);
-    }
   }
 
   async handleCommand(command: string) {

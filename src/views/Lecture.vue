@@ -124,6 +124,7 @@ import { Watch } from 'vue-property-decorator';
 import StaffSelect from '@/components/staff/StaffSelect.vue';
 import { parseDate, getCurrentDate, getDateByCalculateDay } from '@/util/date';
 import { StaffData } from '@/store/staff/types';
+import { AsyncStatus } from '@/store/types';
 
 const lectureNamespace = 'lecture';
 const staffNamespace = 'staff';
@@ -163,7 +164,7 @@ export default class Lecture extends Vue {
       ],
       dateFilter: parseDate(getCurrentDate(), 'yyyy-mm-dd'),
       periodFilter: [
-        parseDate(getDateByCalculateDay(-7), 'yyyy-mm-dd'),
+        parseDate(getDateByCalculateDay(getCurrentDate(), -7), 'yyyy-mm-dd'),
         parseDate(getCurrentDate(), 'yyyy-mm-dd'),
       ],
     };
@@ -185,6 +186,18 @@ export default class Lecture extends Vue {
   async created() {
     await this.getStaffs();
     await this.getLectures();
+  }
+
+  async destroyed() {
+    // Initialize: Lecture
+    this.$store.commit(`${lectureNamespace}/saveLecturesData`, []);
+    this.$store.commit(
+      `${lectureNamespace}/saveLecturesStatus`,
+      AsyncStatus.INIT,
+    );
+
+    // Initialize: Lecture
+    this.$store.commit(`${staffNamespace}/saveStaffssStatus`, AsyncStatus.INIT);
   }
 
   async getStaffs() {

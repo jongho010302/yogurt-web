@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import MainLayout from '@/layouts/MainLayout.vue';
 import { isAuthenticated } from '@/middleware/auth';
 import Home from '../views/Home.vue';
 
@@ -17,8 +18,7 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/auth/Login.vue'),
+    component: () => import('@/views/auth/Login.vue'),
     meta: {
       middleware: isAuthenticated,
     },
@@ -26,14 +26,12 @@ const routes = [
   {
     path: '/find-password',
     name: 'FindPassword',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/auth/FindPassword.vue'),
+    component: () => import('@/views/auth/FindPassword.vue'),
   },
   {
     path: '/ticket',
     name: 'Ticket',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/ticket/index.vue'),
+    component: () => import('@/views/ticket/index.vue'),
     meta: {
       middleware: isAuthenticated,
     },
@@ -41,8 +39,7 @@ const routes = [
   {
     path: '/ticket/detail/:id',
     name: 'TicketDetail',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/ticket/detail.vue'),
+    component: () => import('@/views/ticket/detail.vue'),
     meta: {
       middleware: isAuthenticated,
     },
@@ -50,8 +47,7 @@ const routes = [
   {
     path: '/ticket/create',
     name: 'TicketCreate',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/ticket/create.vue'),
+    component: () => import('@/views/ticket/create.vue'),
     meta: {
       middleware: isAuthenticated,
     },
@@ -59,8 +55,7 @@ const routes = [
   {
     path: '/salse',
     name: 'Sales',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/Sales.vue'),
+    component: () => import('@/views/Sales.vue'),
     meta: {
       middleware: isAuthenticated,
     },
@@ -68,19 +63,16 @@ const routes = [
   {
     path: '/schedule',
     name: 'Schedule',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/schedule/index.vue'),
+    component: () => import('@/views/schedule/index.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: MainLayout,
     },
   },
   {
     path: '/schedule/group/create',
     name: 'CourseGroupCreate',
-    component: () =>
-      import(
-        /* webpackChunkName: "about" */ '@/views/schedule/group/create.vue'
-      ),
+    component: () => import('@/views/schedule/group/create.vue'),
     meta: {
       middleware: isAuthenticated,
     },
@@ -88,10 +80,7 @@ const routes = [
   {
     path: '/schedule/private/create',
     name: 'CoursePrivateCreate',
-    component: () =>
-      import(
-        /* webpackChunkName: "about" */ '@/views/schedule/private/create.vue'
-      ),
+    component: () => import('@/views/schedule/private/create.vue'),
     meta: {
       middleware: isAuthenticated,
     },
@@ -99,8 +88,7 @@ const routes = [
   {
     path: '/setting',
     name: 'Setting',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/Setting.vue'),
+    component: () => import('@/views/Setting.vue'),
     meta: {
       middleware: isAuthenticated,
     },
@@ -108,8 +96,7 @@ const routes = [
   {
     path: '/staff',
     name: 'Staff',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/staff/index.vue'),
+    component: () => import('@/views/staff/index.vue'),
     meta: {
       middleware: isAuthenticated,
     },
@@ -117,8 +104,7 @@ const routes = [
   {
     path: '/staff/create',
     name: 'StaffCreate',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/staff/create.vue'),
+    component: () => import('@/views/staff/create.vue'),
     meta: {
       middleware: isAuthenticated,
     },
@@ -126,8 +112,7 @@ const routes = [
   {
     path: '/staff/detail/:id',
     name: 'StaffDetail',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/staff/detail.vue'),
+    component: () => import('@/views/staff/detail.vue'),
     meta: {
       middleware: isAuthenticated,
     },
@@ -135,8 +120,7 @@ const routes = [
   {
     path: '/lecture',
     name: 'Lecture',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/Lecture.vue'),
+    component: () => import('@/views/Lecture.vue'),
     meta: {
       middleware: isAuthenticated,
     },
@@ -144,8 +128,7 @@ const routes = [
   {
     path: '/user',
     name: 'User',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/user/index.vue'),
+    component: () => import('@/views/user/index.vue'),
     meta: {
       middleware: isAuthenticated,
     },
@@ -153,11 +136,14 @@ const routes = [
   {
     path: '/user/detail/:id',
     name: 'UserDetail',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '@/views/user/detail.vue'),
+    component: () => import('@/views/user/detail.vue'),
     meta: {
       middleware: isAuthenticated,
     },
+  },
+  {
+    path: '*',
+    redirect: '/login',
   },
 ];
 

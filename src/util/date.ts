@@ -36,8 +36,7 @@ export const getCurrentDate = () => {
   return new Date();
 };
 
-export const getDateByCalculateDay = (day: number) => {
-  const date = getCurrentDate();
+export const getDateByCalculateDay = (date: Date, day: number) => {
   date.setDate(date.getDate() + day);
   return date;
 };

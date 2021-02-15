@@ -310,7 +310,7 @@ export default class TicketCard extends Vue {
       bookingChangeEndTime: '00:10',
       courseDate: [
         parseDate(getCurrentDate(), 'yyyy-mm-dd'),
-        parseDate(getDateByCalculateDay(30), 'yyyy-mm-dd'),
+        parseDate(getDateByCalculateDay(getCurrentDate(), 30), 'yyyy-mm-dd'),
       ],
       hasMonClass: false,
       hasTueClass: false,
