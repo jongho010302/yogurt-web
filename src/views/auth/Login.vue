@@ -49,7 +49,6 @@
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component';
 import { Methods } from '@/mixins';
-import { warningAlert } from '@/util/ui';
 import './auth.css';
 
 const namespace = 'user';
@@ -61,13 +60,6 @@ export default class Login extends mixins(Methods) {
       email: 'jongho.dev@gmail.com',
       password: 'Wldms0302!',
     };
-  }
-
-  created() {
-    if (this.isLogined) {
-      warningAlert('이미 로그인 되어있습니다.');
-      this.$router.push('/schedule');
-    }
   }
 
   get isLogined() {

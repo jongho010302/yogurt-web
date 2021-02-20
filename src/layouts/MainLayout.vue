@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <!-- Left -->
     <aside class="main__sider">
       <button class="notification__toggle medium">
@@ -101,8 +101,8 @@ export default class MainLayout extends mixins(Methods) {
 
   async handleLogout() {
     try {
+      await this.$router.push('/login');
       await this.$store.dispatch(`${namespace}/logout`);
-      // await this.$router.push('/login');
     } catch (err) {
       console.error(err);
     }

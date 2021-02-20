@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!-- Login -->
-    <router-view></router-view>
+    <the-layout></the-layout>
 
     <!-- Async Loading: Progress Bar -->
     <vue-progress-bar></vue-progress-bar>
@@ -13,6 +12,7 @@ import Component, { mixins } from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import { Methods } from '@/mixins';
 import Login from '@/views/auth/Login.vue';
+import TheLayout from '@/layouts/TheLayout.vue';
 import { getAccessToken } from '@/util/storage';
 import { defaultProfileUrl } from '@/util/image';
 import './css/App.scss';
@@ -23,6 +23,7 @@ const namespace = 'user';
 @Component({
   components: {
     Login,
+    TheLayout,
   },
 })
 export default class App extends mixins(Methods) {
@@ -88,64 +89,3 @@ export default class App extends mixins(Methods) {
   }
 }
 </script>
-
-<style scoped>
-.main {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 55px calc(100vw - 55px);
-  grid-template-rows: auto 1fr;
-  grid-template-areas:
-    'sider header'
-    'sider contents';
-  font-family: Noto Sans KR, sans-serif;
-}
-.main__sider {
-  grid-area: sider;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
-  border-right: 1px solid #ebebeb;
-  width: 56px;
-  z-index: 101;
-}
-.notification__toggle {
-  margin: 20px 10px;
-}
-.notification__toggle i {
-  font-size: 18px;
-}
-.main__header {
-  grid-area: header;
-  display: flex;
-  flex-direction: row;
-  border-bottom: 1px solid #ebebed;
-  align-items: center;
-  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
-  z-index: 99;
-  height: 60px;
-  padding: 0 12px;
-}
-.main__header .el-menu {
-  border-bottom: 0;
-}
-.main__header-logo {
-  margin: 5px 20px;
-  border-radius: 50%;
-}
-.main__header-profile {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-.main__contents {
-  grid-area: contents;
-  overflow-y: auto;
-}
-.padded {
-  padding: 30px;
-}
-</style>

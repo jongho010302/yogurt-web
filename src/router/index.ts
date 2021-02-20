@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import MainLayout from '@/layouts/MainLayout.vue';
 import { isAuthenticated } from '@/middleware/auth';
 import Home from '../views/Home.vue';
 
@@ -13,6 +12,7 @@ const routes = [
     component: Home,
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
@@ -21,12 +21,17 @@ const routes = [
     component: () => import('@/views/auth/Login.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'AuthLayout',
     },
   },
   {
     path: '/find-password',
     name: 'FindPassword',
     component: () => import('@/views/auth/FindPassword.vue'),
+    meta: {
+      middleware: isAuthenticated,
+      layout: 'AuthLayout',
+    },
   },
   {
     path: '/ticket',
@@ -34,6 +39,7 @@ const routes = [
     component: () => import('@/views/ticket/index.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
@@ -42,6 +48,7 @@ const routes = [
     component: () => import('@/views/ticket/detail.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
@@ -50,6 +57,7 @@ const routes = [
     component: () => import('@/views/ticket/create.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
@@ -58,6 +66,7 @@ const routes = [
     component: () => import('@/views/Sales.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
@@ -66,7 +75,7 @@ const routes = [
     component: () => import('@/views/schedule/index.vue'),
     meta: {
       middleware: isAuthenticated,
-      layout: MainLayout,
+      layout: 'MainLayout',
     },
   },
   {
@@ -75,6 +84,7 @@ const routes = [
     component: () => import('@/views/schedule/group/create.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
@@ -83,6 +93,7 @@ const routes = [
     component: () => import('@/views/schedule/private/create.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
@@ -91,6 +102,7 @@ const routes = [
     component: () => import('@/views/Setting.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
@@ -99,6 +111,7 @@ const routes = [
     component: () => import('@/views/staff/index.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
@@ -107,6 +120,7 @@ const routes = [
     component: () => import('@/views/staff/create.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
@@ -115,6 +129,7 @@ const routes = [
     component: () => import('@/views/staff/detail.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
@@ -123,6 +138,7 @@ const routes = [
     component: () => import('@/views/Lecture.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
@@ -131,6 +147,7 @@ const routes = [
     component: () => import('@/views/user/index.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
@@ -139,6 +156,7 @@ const routes = [
     component: () => import('@/views/user/detail.vue'),
     meta: {
       middleware: isAuthenticated,
+      layout: 'MainLayout',
     },
   },
   {
